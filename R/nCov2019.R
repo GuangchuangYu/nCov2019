@@ -6,15 +6,8 @@
 #' @importFrom jsonlite fromJSON
 #' @author Guangchuang Yu
 get_nCov2019 <- function() {
-  url = 'https://view.inews.qq.com/g2/getOnsInfo?name=disease_h5&callback=1580373566110'
-  x = suppressWarnings(readLines(url, encoding="UTF-8"))
-  x = sub("^\\d+\\(", "", x)
-  x = sub("\\)$", "", x)
-  y = jsonlite::fromJSON(x)
-  d = jsonlite::fromJSON(y$data)
-  
-  class(d) <- 'nCov2019'
-  return(d)
+  structure(jsonlite::fromJSON(.get_json()),
+            class = 'nCov2019')
 }
 
 ##' @method print nCov2019
@@ -26,26 +19,55 @@ print.nCov2019 = function(x, ...) {
 
 ##' @method [ nCov2019
 ##' @export
-`[.nCov2019` = function(object, i, j, ...) {
+`[.nCov2019` = function(object, i, j, by="total", ...) {
+  by <- match.arg(by, c("total", "today"))
   d <- object$areaTree[1,2][[1]]
   name = d[[1]]
   if (missing(i)) {
-    res <- cbind(name=name, d[[3]])
-  } else if (i == 'global') {
-    res <- cbind(name = object$areaTree[[1]], object$areaTree[[3]])
+    res <- cbind(name=name, d[[by]])
+  } else if (length(i) == 1) {
+    res <- extract_province(object, i, by)
   } else {
-    if (is.character(i)) {
-      i <- which(name == i)
-    }
-    stats <- d[i, 2][[1]]
-    res <- cbind(name=stats$name, stats$total)
+    res <- lapply(i, function(ii) {
+      extract_province(object, ii, by)
+    }) %>% do.call('rbind', .)
   }
+    
   res[1:nrow(res), j, drop=F]
 }
 
-
 ##' @method summary nCov2019
 ##' @export
-summary.nCov2019 = function(object, ...) {
-  object$chinaDayList
+summary.nCov2019 = function(object, by = "total", ...) {
+  by <- match.arg(by, c("total", "today"))
+  if (by == "total") {
+    return(object$chinaDayList)
+  }
+  return(object$chinaDayAddList)
 }
+
+
+extract_province <- function(object, i, by) {
+  if (i == 'global') {
+    res <- cbind(name = object$areaTree[[1]], object$areaTree[[by]])
+    return(res)
+  } 
+  
+  d <- object$areaTree[1,2][[1]]
+  name = d[[1]]
+  if (is.character(i)) {
+    i <- which(name == i)
+  }
+  stats <- d[i, 2][[1]]
+  cbind(name=stats$name, stats[[by]])
+}
+
+.get_json <- function() {
+  url <- 'https://view.inews.qq.com/g2/getOnsInfo?name=disease_h5&callback=1580373566110'
+  x <- suppressWarnings(readLines(url, encoding="UTF-8"))
+  x <- sub("^\\d+\\(", "", x)
+  x <- sub("\\)$", "", x)
+  y <- jsonlite::fromJSON(x)
+  return(y$data)  
+}
+
