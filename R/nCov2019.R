@@ -28,9 +28,11 @@ print.nCov2019 = function(x, ...) {
   } else if (length(i) == 1) {
     res <- extract_province(object, i, by)
   } else {
-    res <- lapply(i, function(ii) {
-      extract_province(object, ii, by)
-    }) %>% do.call('rbind', .)
+    res <- do.call("rbind",
+                   lapply(i, function(ii) {
+                     extract_province(object, ii, by)
+                    })
+                   )
   }
     
   res[1:nrow(res), j, drop=F]
