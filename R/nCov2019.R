@@ -12,14 +12,29 @@ get_nCov2019 <- function() {
 
 ##' @method print nCov2019
 ##' @export
-print.nCov2019 = function(x, ...) {
+print.nCov2019 <- function(x, ...) {
   cat("China (total confirmed cases):", x$chinaTotal$confirm)
-  cat("\nlast update:", x$lastUpdateTime, "\n")
+  cat("\nlast update:", time(x), "\n")
+}
+
+##' @importFrom stats time
+##' @method time nCov2019
+##' @export
+time.nCov2019 <- function(x, ...) {
+  x$lastUpdateTime
+}
+
+##' @method open nCov2019
+##' @export
+open.nCov2019 <- function(con, ...) {
+  url <- 'https://news.qq.com/zt2020/page/feiyan.htm'
+  utils::browseURL(url)
+  invisible(url)
 }
 
 ##' @method [ nCov2019
 ##' @export
-`[.nCov2019` = function(object, i, j, by="total", ...) {
+`[.nCov2019` <- function(object, i, j, by="total", ...) {
   by <- match.arg(by, c("total", "today"))
   d <- object$areaTree[1,2][[1]]
   name = d[[1]]
@@ -40,7 +55,7 @@ print.nCov2019 = function(x, ...) {
 
 ##' @method summary nCov2019
 ##' @export
-summary.nCov2019 = function(object, by = "total", ...) {
+summary.nCov2019 <- function(object, by = "total", ...) {
   by <- match.arg(by, c("total", "today"))
   if (by == "total") {
     return(object$chinaDayList)

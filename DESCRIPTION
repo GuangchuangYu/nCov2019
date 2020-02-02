@@ -4,7 +4,11 @@ Version: 0.0.1
 Authors@R: person("Guangchuang", "Yu", email = "guangchuangyu@gmail.com", role = c("aut", "cre"))
 Description: Download statistical number of the Wuhan 2019-nCov cases. 
 Depends: R (>= 3.4.0)
-Imports: jsonlite
+Imports: 
+  jsonlite,
+  stats
+Suggests:
+  utils
 License: Artistic-2.0
 Encoding: UTF-8
 LazyData: true
