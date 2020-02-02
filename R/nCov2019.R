@@ -31,15 +31,15 @@ print.nCov2019 = function(x, ...) {
   name = d[[1]]
   if (missing(i)) {
     res <- cbind(name=name, d[[3]])
-    res <- res[1:nrow(res),j, drop=F]
-    return(res)
-  } 
-  
-  if (is.character(i)) {
-    i <- which(name == i)
+  } else if (i == 'global') {
+    res <- cbind(name = object$areaTree[[1]], object$areaTree[[3]])
+  } else {
+    if (is.character(i)) {
+      i <- which(name == i)
+    }
+    stats <- d[i, 2][[1]]
+    res <- cbind(name=stats$name, stats$total)
   }
-  stats <- d[i, 2][[1]]
-  res <- cbind(name=stats$name, stats$total)
   res[1:nrow(res), j, drop=F]
 }
 
