@@ -12,9 +12,11 @@ get_nCov2019 <- function() {
   countries <- countriesurl[, c("English", "China")]
   countries$China <-gsub("；.*","",countries$China)
   
-  data$areaTree$name <- suppressWarnings(plyr::mapvalues(data$areaTree$name,
-                                        from=countries$China,
-                                        to=countries$English))
+  # data$areaTree$name <- suppressWarnings(plyr::mapvalues(data$areaTree$name,
+  #                                       from=countries$China,
+  #                                       to=countries$English))
+  
+  data$areaTree <- transform(data$areaTree, name = countries$English[match(name, countries$China)])
   
   structure(data, class = 'nCov2019')
 }
