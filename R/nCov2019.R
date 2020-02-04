@@ -8,15 +8,19 @@
 get_nCov2019 <- function() {
   data <- jsonlite::fromJSON(.get_json())
   
+  # change countries to English
   countriesurl <- jsonlite::fromJSON('https://gist.githubusercontent.com/jacobbubu/060d84c2bdf005d412db/raw/845c78f55e49fee89814bdc599355069f07b7ee6/countries.json')
-  countries <- countriesurl[, c("English", "China")]
-  countries$China <-gsub("；.*","",countries$China)
-  
-  # data$areaTree$name <- suppressWarnings(plyr::mapvalues(data$areaTree$name,
-  #                                       from=countries$China,
-  #                                       to=countries$English))
-  
+  countries <- countriesurl[, c('English', 'China')]
+  countries$China <-gsub('；.*','',countries$China)
   data$areaTree <- transform(data$areaTree, name = countries$English[match(name, countries$China)])
+  
+  # change provinces to English
+  prov_cities <- jsonlite::fromJSON('https://raw.githubusercontent.com/tungpatrick/nCov2019_prov_city_json/master/provinces.json')
+  data$areaTree[[1,2]] <- transform(data$areaTree[[1,2]], 
+                                    name = prov_cities$province_name_en[match(name, prov_cities$province_name_zh)])
+  
+  # change cities to English
+  
   
   structure(data, class = 'nCov2019')
 }
