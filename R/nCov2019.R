@@ -6,8 +6,17 @@
 #' @importFrom jsonlite fromJSON
 #' @author Guangchuang Yu
 get_nCov2019 <- function() {
-  structure(jsonlite::fromJSON(.get_json()),
-            class = 'nCov2019')
+  data <- jsonlite::fromJSON(.get_json())
+  
+  countriesurl <- jsonlite::fromJSON('https://gist.githubusercontent.com/jacobbubu/060d84c2bdf005d412db/raw/845c78f55e49fee89814bdc599355069f07b7ee6/countries.json')
+  countries <- countriesurl[, c("English", "China")]
+  countries$China <-gsub("；.*","",countries$China)
+  
+  data$areaTree$name <- plyr::mapvalues(data$areaTree$name,
+                                        from=countries$China,
+                                        to=countries$English)
+  
+  structure(data, class = 'nCov2019')
 }
 
 ##' @method print nCov2019
@@ -85,16 +94,6 @@ extract_province <- function(object, i, by) {
   x <- sub("^\\d+\\(", "", x)
   x <- sub("\\)$", "", x)
   y <- jsonlite::fromJSON(x)
-  
-  data <- jsonlite::fromJSON(y$data)
-  
-  countriesurl <- jsonlite::fromJSON('https://gist.githubusercontent.com/jacobbubu/060d84c2bdf005d412db/raw/845c78f55e49fee89814bdc599355069f07b7ee6/countries.json')
-  countries <- countriesurl[, c("English", "China")]
-  countries$China <-gsub("；.*","",countries$China)
-
-  data$areaTree$name <- plyr::mapvalues(y$data$areaTree$name,
-                                          from=countries$China,
-                                          to=countries$English)
-  return(jsonlite::toJSON(data))
+  return(y$data)
 }
 
