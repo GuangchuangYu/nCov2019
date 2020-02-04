@@ -5,27 +5,29 @@
 #' @export
 #' @importFrom jsonlite fromJSON
 #' @author Guangchuang Yu
-get_nCov2019 <- function() {
+get_nCov2019 <- function(lang = 'zh') {
   data <- jsonlite::fromJSON(.get_json())
   
-  # change countries to English
-  countriesurl <- jsonlite::fromJSON('https://gist.githubusercontent.com/jacobbubu/060d84c2bdf005d412db/raw/845c78f55e49fee89814bdc599355069f07b7ee6/countries.json')
-  countries <- countriesurl[, c('English', 'China')]
-  countries$China <-gsub('；.*','',countries$China)
-  data$areaTree <- transform(data$areaTree, name = countries$English[match(name, countries$China)])
-  
-  # change provinces to English
-  prov_cities <- jsonlite::fromJSON('https://raw.githubusercontent.com/tungpatrick/nCov2019_prov_city_json/master/provinces.json')
-  data$areaTree[[1,2]] <- transform(data$areaTree[[1,2]], 
-                                    name = prov_cities$province_name_en[match(name, prov_cities$province_name_zh)])
-  
-  # change cities to English
-  for (i in c(1:nrow(data$areaTree[[1,2]]))) {
-    prov_name <- data$areaTree[[1,2]]$name[i]
-    temp_cities <- dplyr::filter(prov_cities, province_name_en==prov_name)$cities[[1]]
+  if (lang == 'en') {
+    # change countries to English
+    countriesurl <- jsonlite::fromJSON('https://gist.githubusercontent.com/jacobbubu/060d84c2bdf005d412db/raw/845c78f55e49fee89814bdc599355069f07b7ee6/countries.json')
+    countries <- countriesurl[, c('English', 'China')]
+    countries$China <-gsub('；.*','',countries$China)
+    data$areaTree <- transform(data$areaTree, name = countries$English[match(name, countries$China)])
     
-    data$areaTree[[1,2]][[i,2]] <- transform(data$areaTree[[1,2]][[i,2]], 
-                                          name = temp_cities$city_name_en[match(name, temp_cities$city_name_zh)])
+    # change provinces to English
+    prov_cities <- jsonlite::fromJSON('https://raw.githubusercontent.com/tungpatrick/nCov2019_prov_city_json/master/provinces.json')
+    data$areaTree[[1,2]] <- transform(data$areaTree[[1,2]], 
+                                      name = prov_cities$province_name_en[match(name, prov_cities$province_name_zh)])
+    
+    # change cities to English
+    for (i in c(1:nrow(data$areaTree[[1,2]]))) {
+      prov_name <- data$areaTree[[1,2]]$name[i]
+      temp_cities <- dplyr::filter(prov_cities, province_name_en==prov_name)$cities[[1]]
+      
+      data$areaTree[[1,2]][[i,2]] <- transform(data$areaTree[[1,2]][[i,2]], 
+                                               name = temp_cities$city_name_en[match(name, temp_cities$city_name_zh)])
+    }
   }
   
   structure(data, class = 'nCov2019')
