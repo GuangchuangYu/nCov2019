@@ -20,11 +20,11 @@ get_nCov2019 <- function() {
                                     name = prov_cities$province_name_en[match(name, prov_cities$province_name_zh)])
   
   # change cities to English
-  for (i in c(1:nrow(x$areaTree[[1,2]]))) {
-    prov_name <- x$areaTree[[1,2]]$name[i]
+  for (i in c(1:nrow(data$areaTree[[1,2]]))) {
+    prov_name <- data$areaTree[[1,2]]$name[i]
     temp_cities <- dplyr::filter(prov_cities, province_name_en==prov_name)$cities[[1]]
     
-    x$areaTree[[1,2]][[i,2]] <- transform(x$areaTree[[1,2]][[i,2]], 
+    data$areaTree[[1,2]][[i,2]] <- transform(data$areaTree[[1,2]][[i,2]], 
                                           name = temp_cities$city_name_en[match(name, temp_cities$city_name_zh)])
   }
   
