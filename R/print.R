@@ -9,6 +9,6 @@ print.nCov2019 <- function(x, ...) {
 ##' @export
 print.nCov2019History <- function(x, ...) {
   cat("nCov2019 historical data", 
-      "\nlast update:", time(x), "\n")  
+      "\nlast update:", as.character(time(x)), "\n")  
 }
 
