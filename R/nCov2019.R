@@ -17,15 +17,15 @@ get_nCov2019 <- function(lang = 'zh') {
     
     # change provinces to English
     prov_cities <- jsonlite::fromJSON('https://raw.githubusercontent.com/tungpatrick/nCov2019_prov_city_json/master/provinces_and_cities.json')
-    data$areaTree[[1,2]] <- transform(data$areaTree[[1,2]], 
+    data$areaTree[[1,4]] <- transform(data$areaTree[[1,4]], 
                                       name = prov_cities$province_name_en[match(name, prov_cities$province_name_zh)])
     
     # change cities to English
-    for (i in c(1:nrow(data$areaTree[[1,2]]))) {
-      prov_name <- data$areaTree[[1,2]]$name[i]
+    for (i in c(1:nrow(data$areaTree[[1,4]]))) {
+      prov_name <- data$areaTree[[1,4]]$name[i]
       temp_cities <- dplyr::filter(prov_cities, province_name_en==prov_name)$cities[[1]]
       
-      data$areaTree[[1,2]][[i,2]] <- transform(data$areaTree[[1,2]][[i,2]], 
+      data$areaTree[[1,4]][[i,4]] <- transform(data$areaTree[[1,4]][[i,4]], 
                                                name = temp_cities$city_name_en[match(name, temp_cities$city_name_zh)])
     }
   }
@@ -59,7 +59,7 @@ open.nCov2019 <- function(con, ...) {
 ##' @export
 `[.nCov2019` <- function(object, i, j, by="total", ...) {
   by <- match.arg(by, c("total", "today"))
-  d <- object$areaTree[1,2][[1]]
+  d <- object$areaTree[1,4][[1]]
   name = d[[1]]
   if (missing(i)) {
     res <- cbind(name=name, d[[by]])
