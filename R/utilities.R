@@ -29,12 +29,12 @@ extract_province <- function(object, i, by) {
     return(res)
   } 
   
-  d <- object$areaTree[1,2][[1]]
+  d <- object$areaTree[1,"children"][[1]]
   name = d[[1]]
   if (is.character(i)) {
     i <- which(name == i)
   }
-  stats <- d[i, 2][[1]]
+  stats <- d[i, "children"][[1]]
   cbind(name=stats$name, stats[[by]])
 }
 

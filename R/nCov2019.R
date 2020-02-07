@@ -28,6 +28,7 @@ get_nCov2019 <- function(lang = 'zh') {
     }
   }
 
+  data$lang <- lang
   structure(data, class = 'nCov2019')
 }
 

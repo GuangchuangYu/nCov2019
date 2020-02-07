@@ -1,7 +1,7 @@
 ## Query information of Wuhan coronavirus infected stats
 
 + `get_nCov2019()` to query online latest information
-+ `load_nCov2019()` to get historical data (updated at 2020/02/04)
++ `load_nCov2019()` to get historical data (updated at 2020/02/06)
 
 see the following documents for more details:
 

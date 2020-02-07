@@ -8,7 +8,14 @@
   if (is.numeric(i)) {
     i <- unique(obj$province)[i]
   }
-  obj[obj$province %in% i & obj$province != obj$city, j, drop=FALSE]
+
+  load(system.file("ncovEnv.rda", package="nCov2019"))
+  ncovEnv <- get("ncovEnv")
+  special_city <- get("special_city", envir = ncovEnv)
+
+  ii <- obj$province %in% i & (obj$province != obj$city | obj$province %in% special_city)
+
+  obj[ii, j, drop=FALSE]
 }
 
 

@@ -1,16 +1,24 @@
 x <- read.csv("nCov2019-data.csv", stringsAsFactors = F)
 names(x)
+head(x, 2)
+
 colnames(x)[1:6] <- c("province", "city", "time", 
                       "cum_confirm", "cum_heal", "cum_dead")
 colnames(x)[9:11] <- c("confirm", "dead", "heal")
 
-x$time = as.Date(sub("(\\d+)\\D+(\\d+)\\D+", "\\1-\\2", 
-                   x$time), "%m-%d")
-x$province <- sub("\\s*", "", x$province)
+#x$time = as.Date(sub("(\\d+)\\D+(\\d+)\\D+", "\\1-\\2", 
+#                   x$time), "%m-%d")
+x$time <- as.Date(x$time, "%Y/%m/%d")
+head(x$time)
+
+x$province <- gsub("\\s+", "", x$province)
+which(grepl("\\s+", x$province))
+head(x$province)
+#x$province <- sub("\\s*$", "", x$province)
 object <- structure(list(data = x,
                          time = x$time[1]
                          ), class = "nCov2019History")
-saveRDS(object, file="nCov2019History.rds")
+saveRDS(object, file="nCov2019/inst/nCov2019History.rds")
 object
 
 
