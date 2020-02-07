@@ -49,6 +49,5 @@ load_nCov2019 <- function(lang = 'zh') {
     data$data = transform(data$data, province = prov_cities$province_name_en[match(province, prov_cities$province_name_zh)])
   }
   
-  data$lang <- lang
-  structure(data, class = 'nCov2019Hist')
+  return data
 }
