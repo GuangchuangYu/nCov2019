@@ -14,7 +14,7 @@ get_nCov2019 <- function(lang = 'zh') {
     data$areaTree$name <- nn[as.character(data$areaTree$name)]
 
     # change provinces to English
-    prov_cities <- jsonlite::fromJSON('https://raw.githubusercontent.com/tungpatrick/nCov2019_prov_city_json/master/provinces_and_cities.json')
+    prov_cities <- jsonlite::fromJSON(system.file('provinces_and_cities.json', package="nCov2019"))
     data$areaTree[[1,"children"]] <- transform(data$areaTree[[1,"children"]],
                                       name = prov_cities$province_name_en[match(name, prov_cities$province_name_zh)])
 
