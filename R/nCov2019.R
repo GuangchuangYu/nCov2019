@@ -17,15 +17,15 @@ get_nCov2019 <- function(lang = 'zh') {
 
     # change provinces to English
     prov_cities <- jsonlite::fromJSON('https://raw.githubusercontent.com/tungpatrick/nCov2019_prov_city_json/master/provinces_and_cities.json')
-    data$areaTree[[1,4]] <- transform(data$areaTree[[1,4]],
+    data$areaTree[[1,"children"]] <- transform(data$areaTree[[1,"children"]],
                                       name = prov_cities$province_name_en[match(name, prov_cities$province_name_zh)])
 
     # change cities to English
-    for (i in c(1:nrow(data$areaTree[[1,4]]))) {
-      prov_name <- data$areaTree[[1,4]]$name[i]
+    for (i in c(1:nrow(data$areaTree[[1,"children"]]))) {
+      prov_name <- data$areaTree[[1,"children"]]$name[i]
       temp_cities <- dplyr::filter(prov_cities, province_name_en==prov_name)$cities[[1]]
 
-      data$areaTree[[1,4]][[i,4]] <- transform(data$areaTree[[1,4]][[i,4]],
+      data$areaTree[[1,"children"]][[i,"children"]] <- transform(data$areaTree[[1,"children"]][[i,"children"]],
                                                name = temp_cities$city_name_en[match(name, temp_cities$city_name_zh)])
     }
   }
