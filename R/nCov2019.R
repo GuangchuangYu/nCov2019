@@ -43,8 +43,8 @@ load_nCov2019 <- function(lang = 'zh') {
   
   #prov_cities <- jsonlite::fromJSON(system.file('provinces_and_cities.json', package="nCov2019"))
   
-  if (lang == 'en') {
+  #if (lang == 'en') {
     # change provinces to English
-    data$data = transform(data$data, province = prov_cities$province_name_en[match(province, prov_cities$province_name_zh)])
-  }
+  #  data$data = transform(data$data, province = prov_cities$province_name_en[match(province, prov_cities$province_name_zh)])
+  #}
 }
