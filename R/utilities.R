@@ -34,7 +34,7 @@ extract_province <- function(object, i, by) {
   if (is.character(i)) {
     i <- which(name == i)
   }
-  stats <- d[i, 2][[1]]
+  stats <- d[i, "children"][[1]]
   cbind(name=stats$name, stats[[by]])
 }
 
