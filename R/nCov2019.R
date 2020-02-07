@@ -39,7 +39,7 @@ get_nCov2019 <- function(lang = 'zh') {
 #' @export
 #' @author Guangchuang Yu
 load_nCov2019 <- function(lang = 'zh') {
-  data <- readRDS(system.file("nCov2019History.rds", package="nCov2019"))
+  readRDS(system.file("nCov2019History.rds", package="nCov2019"))
   
   prov_cities <- jsonlite::fromJSON(system.file('provinces_and_cities.json', package="nCov2019"))
   
@@ -47,6 +47,4 @@ load_nCov2019 <- function(lang = 'zh') {
     # change provinces to English
     data$data = transform(data$data, province = prov_cities$province_name_en[match(province, prov_cities$province_name_zh)])
   }
-  
-  return data
 }
