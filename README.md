@@ -5,6 +5,7 @@
 
 see the following documents for more details:
 
-+ <https://mp.weixin.qq.com/s/_0D8ENb-4lGm4UV16Ok28A>
-+ <https://mp.weixin.qq.com/s/lrQWGKj-mReWrxfi_4Sw9A>
++ [usages of online latest information](https://mp.weixin.qq.com/s/_0D8ENb-4lGm4UV16Ok28A)
++ [usages of historical data](https://mp.weixin.qq.com/s/lrQWGKj-mReWrxfi_4Sw9A)
++ [present data on map](https://mp.weixin.qq.com/s/bPXdOGFzFK5dWLTEOEJB3g)
 
