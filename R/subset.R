@@ -16,7 +16,7 @@
 ##' @export
 `[.nCov2019` <- function(object, i, j, by="total", ...) {
   by <- match.arg(by, c("total", "today"))
-  d <- object$areaTree[1,2][[1]]
+  d <- object$areaTree[1, "children"][[1]]
   name = d[[1]]
   if (missing(i)) {
     res <- cbind(name=name, d[[by]])
