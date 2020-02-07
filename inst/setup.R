@@ -28,8 +28,13 @@ setup_city <- function(map) {
     return(map)
 }
 
+special_city <- c("上海", "北京", "天津",
+                  "澳门", "重庆", "香港")
+
+
 ncovEnv = new.env()
 assign("setup_chinamap", setup_chinamap, envir = ncovEnv)
 assign("setup_city", setup_city, envir = ncovEnv)
+assign("special_city", special_city, envir = ncovEnv)
 
 save(ncovEnv, file="ncovEnv.rda")
