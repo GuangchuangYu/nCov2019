@@ -10,10 +10,9 @@ get_nCov2019 <- function(lang = 'zh') {
 
   if (lang == 'en') {
     # change countries to English
-    countriesurl <- jsonlite::fromJSON('https://gist.githubusercontent.com/jacobbubu/060d84c2bdf005d412db/raw/845c78f55e49fee89814bdc599355069f07b7ee6/countries.json')
-    countries <- countriesurl[, c('English', 'China')]
-    countries$China <-gsub('；.*','',countries$China)
-    data$areaTree <- transform(data$areaTree, name = countries$English[match(name, countries$China)])
+    nn <- readRDS(system.file("country_translate.rds", package="nCov2019"))
+    d <- data$areaTree
+    d$name <- nn[as.character(d$name)]
 
     # change provinces to English
     prov_cities <- jsonlite::fromJSON('https://raw.githubusercontent.com/tungpatrick/nCov2019_prov_city_json/master/provinces_and_cities.json')
