@@ -53,7 +53,7 @@ load_nCov2019 <- function(lang = 'zh') {
       temp_cities <- dplyr::filter(prov_cities, province_name_en==i)$cities[[1]]
       new_data <- rbind(new_data, transform(data[i, ], city = temp_cities$city_name_en[match(city, temp_cities$city_name_zh)]))
     }
-    data <- dplyr::arrange(new_data, desc(time))
+    data$data <- dplyr::arrange(new_data, desc(time))
   }
   
   return(data)
