@@ -9,15 +9,19 @@
 ##' @importFrom ggplot2 geom_sf_text
 plot_city <- function(x, region, chinamap, 
                     continuous_scale=TRUE, label=TRUE, date, palette = "Reds") {
-    load(system.file("ncovEnv.rda", package="nCov2019"))
-    ncovEnv <- get("ncovEnv")
-    setup_city <- get("setup_city", envir = ncovEnv)
+    map <- tibble::as_tibble(chinamap)
 
-    map <- setup_city(chinamap)
+    if (x$lang == "zh") {                    
+        load(system.file("ncovEnv.rda", package="nCov2019"))
+        ncovEnv <- get("ncovEnv")
+        setup_city <- get("setup_city", envir = ncovEnv)
+
+        map$NAME <- setup_city(map$NAME)
+    }
     map <- do.call('rbind', lapply(region, function(r) {
         stats <- get_city_data(x, r, date)
         code <- sub("(\\d{2}).*", "\\1", 
-                  map$ADMINCODE[map$NAME == stats[1,1]])
+                  map$ADMINCODE[which(map$NAME == stats[1,1])])
       
         map[grep(paste0("^", code), map$ADMINCODE),]
     }))
@@ -50,8 +54,10 @@ plot_city <- function(x, region, chinamap,
 ##' @importFrom ggplot2 coord_equal
 plot_world <- function(x, continuous_scale=TRUE, palette = "Reds") {
     d <- x['global', ]
-    nn <- readRDS(system.file("country_translate.rds", package="nCov2019"))
-    d$name <- nn[as.character(d$name)]
+    if (x$lang == "zh") {
+        nn <- readRDS(system.file("country_translate.rds", package="nCov2019"))
+        d$name <- nn[as.character(d$name)]
+    }
     world <- map_data('world')
     world <- world[world$region != "Antarctica", ]
     w <- merge(world, d, by.x='region', by.y='name', all.x=T)
@@ -120,10 +126,14 @@ layer_chinamap <- function(x, chinamap, continuous_scale = TRUE,
         stop("object not supported...")
     }
 
-    load(system.file("ncovEnv.rda", package="nCov2019"))
-    ncovEnv <- get("ncovEnv")
-    setup_chinamap <- get("setup_chinamap", envir = ncovEnv)
-    cn <- setup_chinamap(chinamap)
+    cn <- chinamap
+
+    if (x$lang == "zh") {
+        load(system.file("ncovEnv.rda", package="nCov2019"))
+        ncovEnv <- get("ncovEnv")
+        setup_province <- get("setup_province", envir = ncovEnv)
+        cn$province <- setup_province(cn$province)
+    }
 
     cn2 <- merge(cn, df, by.x='province', by.y='name', all.x=TRUE)
     cn2 <- cn2[order(cn2$order),]
@@ -167,6 +177,9 @@ plot.nCov2019 <- function(x, region="world", chinamap,
         p <- plot_china(x, chinamap, continuous_scale, palette = palette, ...)
         if (label) {
             prov.df <- readRDS(system.file("prov_location.rds", package="nCov2019"))
+            if (x$lang == "en") {
+                prov.df$name <- trans_province(prov.df$name)
+            }
             p <- p + geom_text(aes_(~long, ~lat, label=~name), data=prov.df)
         }
         return(p)

@@ -4,7 +4,10 @@
 \alias{load_nCov2019}
 \title{load_nCov2019}
 \usage{
-load_nCov2019()
+load_nCov2019(lang = "zh")
+}
+\arguments{
+\item{lang}{one of 'zh' and 'en', for setting language of province and city names}
 }
 \value{
 nCov2019History object

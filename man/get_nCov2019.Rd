@@ -4,7 +4,10 @@
 \alias{get_nCov2019}
 \title{get_nCov2019}
 \usage{
-get_nCov2019()
+get_nCov2019(lang = "zh")
+}
+\arguments{
+\item{lang}{one of 'zh' and 'en', for setting language of province and city names}
 }
 \value{
 nCov2019 object

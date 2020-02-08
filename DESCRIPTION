@@ -1,7 +1,10 @@
 Package: nCov2019
 Title: Stats of the '2019-nCov' Cases
 Version: 0.0.6
-Authors@R: person("Guangchuang", "Yu", email = "guangchuangyu@gmail.com", role = c("aut", "cre"))
+Authors@R: c(
+          person("Guangchuang", "Yu", email = "guangchuangyu@gmail.com", role = c("aut", "cre")),
+          person("Patrick", "Tung", email = "tung_patrick@yahoo.com", role = "ctb")
+          )
 Description: Download statistical number of the Wuhan 2019-nCov cases. 
 Depends: R (>= 3.5.0)
 Imports: 
