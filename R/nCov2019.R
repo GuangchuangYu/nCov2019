@@ -10,13 +10,11 @@ get_nCov2019 <- function(lang = 'zh') {
 
   if (lang == 'en') {
     # change countries to English
-    countriesurl <- jsonlite::fromJSON('https://gist.githubusercontent.com/jacobbubu/060d84c2bdf005d412db/raw/845c78f55e49fee89814bdc599355069f07b7ee6/countries.json')
-    countries <- countriesurl[, c('English', 'China')]
-    countries$China <-gsub('；.*','',countries$China)
-    data$areaTree <- transform(data$areaTree, name = countries$English[match(name, countries$China)])
+    nn <- readRDS(system.file("country_translate.rds", package="nCov2019"))
+    data$areaTree$name <- nn[as.character(data$areaTree$name)]
 
     # change provinces to English
-    prov_cities <- jsonlite::fromJSON('https://raw.githubusercontent.com/tungpatrick/nCov2019_prov_city_json/master/provinces_and_cities.json')
+    prov_cities <- jsonlite::fromJSON(system.file('provinces_and_cities.json', package="nCov2019"))
     data$areaTree[[1,"children"]] <- transform(data$areaTree[[1,"children"]],
                                       name = prov_cities$province_name_en[match(name, prov_cities$province_name_zh)])
 
@@ -40,6 +38,23 @@ get_nCov2019 <- function(lang = 'zh') {
 #' @return nCov2019History object
 #' @export
 #' @author Guangchuang Yu
-load_nCov2019 <- function() {
-  readRDS(system.file("nCov2019History.rds", package="nCov2019"))
+load_nCov2019 <- function(lang = 'zh') {
+  data <- readRDS(system.file("nCov2019History.rds", package="nCov2019"))
+  
+  prov_cities <- jsonlite::fromJSON(system.file('provinces_and_cities.json', package="nCov2019"))
+  
+  if (lang == 'en') {
+    # change provinces to English
+    data$data = transform(data$data, province = prov_cities$province_name_en[match(province, prov_cities$province_name_zh)])
+    
+    # change cities to English
+    new_data <- c()
+    for (i in unique(data$data$province)){
+      temp_cities <- dplyr::filter(prov_cities, province_name_en==i)$cities[[1]]
+      new_data <- rbind(new_data, transform(data[i, ], city = temp_cities$city_name_en[match(city, temp_cities$city_name_zh)]))
+    }
+    data$data <- dplyr::arrange(new_data, desc(time))
+  }
+  
+  return(data)
 }
