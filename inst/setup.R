@@ -21,6 +21,7 @@ setup_city <- function(city) {
     city <- sub("布依族","", city)
     city <- gsub(".族","", city)
     city <- sub("自治","", city)
+    city <- sub("自治州","", city)
     city[city == '神农架林区'] = '神农架'
     city[city == '甘孜州'] = '甘孜'
     city[city == '凉山州'] = '凉山'
