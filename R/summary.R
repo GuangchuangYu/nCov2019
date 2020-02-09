@@ -19,5 +19,7 @@ summary.nCov2019History <- function(object, province, ...) {
     province <- unique(obj$province)[province]
   }
   res <- obj[obj$city %in% province, ]
+  # res <- group_by(res, time) %>% transform(cum_confirm = max(cum_confirm))
+  res <- res[!duplicated(res$time),]
   res[,names(res) != 'city']
 }
