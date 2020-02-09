@@ -19,7 +19,11 @@ summary.nCov2019History <- function(object, province, ...) {
     province <- unique(obj$province)[province]
   }
   res <- obj[obj$city %in% province, ]
+  
+  ## there is Jilin province and Jilin city, may caused some problems.
+  ##
   # res <- group_by(res, time) %>% transform(cum_confirm = max(cum_confirm))
   res <- res[!duplicated(res$time),]
+  
   res[,names(res) != 'city']
 }
