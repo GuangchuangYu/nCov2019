@@ -127,12 +127,14 @@ layer_chinamap <- function(x, chinamap, continuous_scale = TRUE,
     }
 
     cn <- chinamap
+    
+    load(system.file("ncovEnv.rda", package="nCov2019"))
+    ncovEnv <- get("ncovEnv")
+    setup_province <- get("setup_province", envir = ncovEnv)
 
-    if (x$lang == "zh") {
-        load(system.file("ncovEnv.rda", package="nCov2019"))
-        ncovEnv <- get("ncovEnv")
-        setup_province <- get("setup_province", envir = ncovEnv)
+    if (x$lang == "en") {
         cn$province <- setup_province(cn$province)
+        cn$province <- trans_province(cn$province)
     }
 
     cn2 <- merge(cn, df, by.x='province', by.y='name', all.x=TRUE)
