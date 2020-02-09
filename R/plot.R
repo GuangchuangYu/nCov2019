@@ -8,7 +8,8 @@
 ##' @importFrom ggplot2 geom_sf
 ##' @importFrom ggplot2 geom_sf_text
 plot_city <- function(x, region, chinamap, 
-                    continuous_scale=TRUE, label=TRUE, date, palette = "Reds") {
+                    continuous_scale=TRUE, label=TRUE, date, palette = "Reds",
+                    font.size = 3.8, font.family = "") {
     map <- tibble::as_tibble(chinamap)
 
     if (x$lang == "zh") {                    
@@ -45,7 +46,7 @@ plot_city <- function(x, region, chinamap,
         p <- p + geom_sf(aes_(fill=~confirm2)) +
             fill_scale_discrete(palette)
     }       
-    if (label) p <- p + geom_sf_text(aes_(label=~NAME))
+    if (label) p <- p + geom_sf_text(aes_(label=~NAME), size=font.size, family=font.family)
     return(p)
 }    
 
@@ -162,7 +163,8 @@ layer_chinamap <- function(x, chinamap, continuous_scale = TRUE,
 ##' @method plot nCov2019
 ##' @export
 plot.nCov2019 <- function(x, region="world", chinamap, 
-                        continuous_scale = TRUE, label = TRUE, palette = "Reds", ...) {
+                        continuous_scale = TRUE, label = TRUE, 
+                        font.size = 3.8, font.family = "", palette = "Reds", ...) {
     if ("world" %in% region) {
         p <- plot_world(x, continuous_scale = continuous_scale, palette = palette)
         if (missing(chinamap)) {
@@ -180,7 +182,7 @@ plot.nCov2019 <- function(x, region="world", chinamap,
             if (x$lang == "en") {
                 prov.df$name <- trans_province(prov.df$name)
             }
-            p <- p + geom_text(aes_(~long, ~lat, label=~name), data=prov.df)
+            p <- p + geom_text(aes_(~long, ~lat, label=~name), data=prov.df, size=font.size, family=font.family)
         }
         return(p)
     }

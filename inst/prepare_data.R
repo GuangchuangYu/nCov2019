@@ -18,7 +18,7 @@ head(x$province)
 object <- structure(list(data = x,
                          time = x$time[1]
                          ), class = "nCov2019History")
-saveRDS(object, file="nCov2019/inst/nCov2019History.rds")
+saveRDS(object, file="nCov2019History.rds")
 object
 
 

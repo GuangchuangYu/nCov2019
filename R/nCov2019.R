@@ -38,8 +38,11 @@ get_nCov2019 <- function(lang = 'zh') {
 #' @author Guangchuang Yu
 load_nCov2019 <- function(lang = 'zh') {
   lang <- match.arg(lang, c("zh", "en"))
-  
-  data <- readRDS(system.file("nCov2019History.rds", package="nCov2019"))
+  rds <- tempfile(pattern=".rds")
+  utils::download.file('https://gitee.com/GuangchuangYu/nCov2019-data/raw/master/nCov2019History.rds',
+                destfile = rds, quiet = TRUE)
+  data <- readRDS(rds)
+  ## data <- readRDS(system.file("nCov2019History.rds", package="nCov2019"))
   
   prov_cities <- jsonlite::fromJSON(system.file('provinces_and_cities.json', package="nCov2019"))
   
