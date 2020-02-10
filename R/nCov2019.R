@@ -34,12 +34,13 @@ get_nCov2019 <- function(lang = 'zh') {
 #' @title load_nCov2019
 #' @param lang one of 'zh' and 'en', for setting language of province and city names
 #' @return nCov2019History object
+#' @importFrom downloader download
 #' @export
 #' @author Guangchuang Yu
 load_nCov2019 <- function(lang = 'zh') {
   lang <- match.arg(lang, c("zh", "en"))
   rds <- tempfile(pattern=".rds")
-  utils::download.file('https://gitee.com/GuangchuangYu/nCov2019-data/raw/master/nCov2019History.rds',
+  downloader::download('https://gitee.com/GuangchuangYu/nCov2019-data/raw/master/nCov2019History.rds',
                 destfile = rds, quiet = TRUE)
   data <- readRDS(rds)
   ## data <- readRDS(system.file("nCov2019History.rds", package="nCov2019"))
