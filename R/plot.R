@@ -58,6 +58,7 @@ plot_world <- function(x, continuous_scale=TRUE, palette = "Reds") {
     if (x$lang == "zh") {
         nn <- readRDS(system.file("country_translate.rds", package="nCov2019"))
         d$name <- nn[as.character(d$name)]
+        d$name <- sub("United\\sStates.*", "USA", d$name)
     }
     world <- map_data('world')
     world <- world[world$region != "Antarctica", ]
