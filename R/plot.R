@@ -58,9 +58,9 @@ plot_world <- function(x, continuous_scale=TRUE, palette = "Reds") {
     if (x$lang == "zh") {
         nn <- readRDS(system.file("country_translate.rds", package="nCov2019"))
         d$name <- nn[as.character(d$name)]
+        d$name <- sub("United States USA", "USA", d$name)
     }
     world <- map_data('world')
-    world$region <- sub("USA", "United States USA", world$region)
     world <- world[world$region != "Antarctica", ]
     w <- merge(world, d, by.x='region', by.y='name', all.x=T)
 
