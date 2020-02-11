@@ -28,6 +28,7 @@ trans_province <- function(province, lang="zh") {
 ##' @param city city name
 ##' @param lang language of city name. if 'zh', translate to 'en' and if 'en', translate to 'zh'
 ##' @return translated city name
+##' @importFrom dplyr bind_rows
 ##' @export
 ##' @author Patrick Tung and Guangchuang Yu
 trans_city <- function(city, lang="zh") {
