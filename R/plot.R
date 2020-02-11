@@ -60,6 +60,7 @@ plot_world <- function(x, continuous_scale=TRUE, palette = "Reds") {
         d$name <- nn[as.character(d$name)]
     }
     world <- map_data('world')
+    world$region <- sub("USA", "United States USA", world$region)
     world <- world[world$region != "Antarctica", ]
     w <- merge(world, d, by.x='region', by.y='name', all.x=T)
 
