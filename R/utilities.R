@@ -12,12 +12,12 @@ get_city_data <- function(x, region, date) {
 
 extract_history <- function(x, province, date) {
   if (missing(province)) {
-    df <- summary(x)[, 1:3]
+    df <- summary(x)[, c('province','date','confirmed')]
   } else {
-    df <- x[province, 2:4]
+    df <- x[province, c('city','date','city_confirmed')]
   }  
   
-  df <- df[df$time == as.Date(date, "%Y-%m-%d"), c(1,3)]
+  df <- df[df$date == as.Date(date, "%Y-%m-%d"), c(1,3)]  
   names(df) <- c("name", "confirm")
   return(df)
 }  

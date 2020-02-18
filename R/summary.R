@@ -18,12 +18,11 @@ summary.nCov2019History <- function(object, province, ...) {
   if (is.numeric(province)) {
     province <- unique(obj$province)[province]
   }
-  res <- obj[obj$city %in% province, ]
+  res <- obj[obj$province %in% province,c('province','confirmed','date')]
   
   ## there is Jilin province and Jilin city, may caused some problems.
   ##
   # res <- group_by(res, time) %>% transform(cum_confirm = max(cum_confirm))
-  res <- res[!duplicated(res[,1:3]),]
-  
-  res[,names(res) != 'city']
+  unique(res)
+  #res[,names(res) != 'city']
 }
