@@ -59,6 +59,9 @@ plot_world <- function(x, continuous_scale=TRUE, palette = "Reds") {
         nn <- readRDS(system.file("country_translate.rds", package="nCov2019"))
         d$name <- nn[as.character(d$name)]
     }
+    TW <- d[which(d$name == 'China'),]
+    TW$name <- 'Taiwan'
+    d <- rbind(d,TW)
     d$name <- sub("United\\sStates.*", "USA", d$name)
     world <- map_data('world')
     world <- world[world$region != "Antarctica", ]
