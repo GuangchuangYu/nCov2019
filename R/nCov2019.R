@@ -40,7 +40,7 @@ get_nCov2019 <- function(lang = 'zh') {
 load_nCov2019 <- function(lang = 'zh') {
   lang <- match.arg(lang, c("zh", "en"))
   rds <- tempfile(pattern=".rds")
-  downloader::download('https://gitee.com/GuangchuangYu/nCov2019-data/raw/master/nCov2019History.rds',
+  downloader::download('https://gitee.com/timze/historicaldata/raw/master/historical_data.rds',
                 destfile = rds, quiet = TRUE)
   data <- readRDS(rds)
   ## data <- readRDS(system.file("nCov2019History.rds", package="nCov2019"))
@@ -51,6 +51,7 @@ load_nCov2019 <- function(lang = 'zh') {
     # change provinces to English
     data$data$province <- trans_province(data$data$province)
     data$data$city <- trans_city(data$data$city)
+    data$province$province <- trans_province(data$province$province)
   }
   data$lang <- lang
   return(data)

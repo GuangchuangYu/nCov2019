@@ -13,7 +13,7 @@
   ncovEnv <- get("ncovEnv")
   special_city <- get("special_city", envir = ncovEnv)
 
-  ii <- obj$province %in% i & (obj$province != obj$city | obj$province %in% special_city)
+  ii <- obj$province %in% i 
 
   obj[ii, j, drop=FALSE]
 }
