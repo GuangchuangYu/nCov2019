@@ -18,7 +18,7 @@ summary.nCov2019History <- function(object, province, ...) {
   if (is.numeric(province)) {
     province <- unique(obj$province)[province]
   }
-  res <- obj[obj$province %in% province,c('province','confirmed','date')]
+  res <- obj[obj$province %in% province,c('province','confirmed','time')]
   
   ## there is Jilin province and Jilin city, may caused some problems.
   ##

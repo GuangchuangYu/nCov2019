@@ -1,2 +1,3 @@
 #*.rds
 .Rhistory
+.DS_Store
