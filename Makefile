@@ -38,7 +38,7 @@ clean:
 	$(RM) -r $(PKGNAME).Rcheck/
 
 giteeinit:
-	git remote add gitee git@gitee.com:GuangchuangYu/ggtree.git;\
+	git remote add gitee git@gitee.com:GuangchuangYu/$(PKGNAME).git;\
 	git fetch --all
 
 update:
