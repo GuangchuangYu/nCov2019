@@ -11,7 +11,7 @@ summary.nCov2019 <- function(object, by = "total", ...) {
 ##' @method summary nCov2019History
 ##' @export
 summary.nCov2019History <- function(object, province, ...) {
-  obj <- object$data
+  obj <- object$province
   if (missing(province)) {
     province <- unique(obj$province)
   }
