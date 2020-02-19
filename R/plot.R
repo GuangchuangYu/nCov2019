@@ -60,14 +60,14 @@ plot_world <- function(x, continuous_scale=TRUE, palette = "Reds") {
         d$name <- nn[as.character(d$name)]
     }
     if ('Taiwan' %in% d$name) {
-        TW = d[which(d$name == 'Taiwan'),]$confirm
-        CN = d[which(d$name == 'China'),]$confirm
-        d[which(d$name == 'Taiwan'),]$confirm = TW + CN
-        d[which(d$name == 'China'),]$confirm  = TW + CN
+        TW <- d[which(d$name == 'Taiwan'), "confirm"]
+        CN <- d[which(d$name == 'China'), "confirm"]
+        d[which(d$name == 'Taiwan'), "confirm"] <- TW + CN
+        d[which(d$name == 'China'), "confirm"] <- TW + CN
     } else {
-    TW <- d[which(d$name == 'China'),]
-    TW$name <- 'Taiwan'
-    d <- rbind(d,TW)
+        TW <- d[which(d$name == 'China'),]
+        TW$name <- 'Taiwan'
+        d <- rbind(d,TW)
     }
     d$name <- sub("United\\sStates.*", "USA", d$name)
     world <- map_data('world')

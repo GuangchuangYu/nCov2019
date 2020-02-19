@@ -9,9 +9,9 @@
     i <- unique(obj$province)[i]
   }
 
-  load(system.file("ncovEnv.rda", package="nCov2019"))
-  ncovEnv <- get("ncovEnv")
-  special_city <- get("special_city", envir = ncovEnv)
+  ## load(system.file("ncovEnv.rda", package="nCov2019"))
+  ## ncovEnv <- get("ncovEnv")
+  ## special_city <- get("special_city", envir = ncovEnv)
 
   ii <- obj$province %in% i 
 
