@@ -51,6 +51,7 @@ load_nCov2019 <- function(lang = 'zh') {
     # change provinces to English
     data$data$province <- trans_province(data$data$province)
     data$data$city <- trans_city(data$data$city)
+    data$province$province <- trans_province(data$province$province)
   }
   data$lang <- lang
   return(data)
