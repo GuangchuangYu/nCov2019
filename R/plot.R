@@ -55,6 +55,7 @@ plot_city <- function(x, region, chinamap,
 ##' @importFrom ggplot2 coord_equal
 plot_world <- function(x, continuous_scale=TRUE, palette = "Reds") {
     d <- x['global', ]
+    tt <- sum(d$confirm)
     if (x$lang == "zh") {
         nn <- readRDS(system.file("country_translate.rds", package="nCov2019"))
         d$name <- nn[as.character(d$name)]
@@ -80,7 +81,7 @@ plot_world <- function(x, continuous_scale=TRUE, palette = "Reds") {
         theme_minimal(base_size = 14) +
         xlab(NULL) + ylab(NULL) +
         labs(title = '2019nCov', 
-            subtitle = paste('confirmed cases:', sum(d$confirm)),
+            subtitle = paste('confirmed cases:', tt),
             caption=paste("accessed date:", time(x)))
 
     if (continuous_scale) {

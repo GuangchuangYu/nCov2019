@@ -12,9 +12,9 @@ get_city_data <- function(x, region, date) {
 
 extract_history <- function(x, province, date) {
   if (missing(province)) {
-    df <- summary(x)[, c('province','time','confirmed')]
+    df <- summary(x)[, c('province','time','cum_confirm')]
   } else {
-    df <- x[province, c('city','time','city_confirmed')]
+    df <- x[province, c('city','time','cum_confirm')]
   }  
   
   df <- df[df$time == as.Date(date, "%Y-%m-%d"), c(1,3)]  
