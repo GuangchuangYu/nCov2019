@@ -55,6 +55,7 @@ extract_province <- function(object, i, by) {
   # add chinaDaylist and dailyHistory into data
   data$dailyHistory <- y2$dailyHistory
   data$chinaDayList <- y2$chinaDayList
+  data$chinaDayAddList <- y2$chinaDayAddList
   y$data = jsonlite::toJSON(data)
   return(y$data)  
 }
