@@ -84,6 +84,6 @@ cc = cc[-1, ]
 nn = cc[,3]
 names(nn) = cc[,2]
 head(nn)
-nn <- c(nn, '阿联酋' = "United Arab Emirates")
+nn <- c(nn, '阿联酋' = "United Arab Emirates", '钻石号邮轮'='Diamond Princess','日本本土'='Janpan','伊朗'='Iran')
 
 saveRDS(nn, file="country_translate.rds")
