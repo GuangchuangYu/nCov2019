@@ -39,11 +39,23 @@ extract_province <- function(object, i, by) {
 }
 
 .get_json <- function() {
-  url <- 'https://view.inews.qq.com/g2/getOnsInfo?name=disease_h5&callback=1580373566110'
+  # remove the Callback part in URL
+  url <- 'https://view.inews.qq.com/g2/getOnsInfo?name=disease_h5'
   x <- suppressWarnings(readLines(url, encoding="UTF-8"))
-  x <- sub("^\\d+\\(", "", x)
-  x <- sub("\\)$", "", x)
   y <- jsonlite::fromJSON(x)
+  # get the data
+  data = jsonlite::fromJSON(y$data)
+  
+  # get chinaDaylist info from url2
+  url2 <- 'https://view.inews.qq.com/g2/getOnsInfo?name=disease_other'
+  x2 <- suppressWarnings(readLines(url2, encoding="UTF-8"))
+  y2 = jsonlite::fromJSON(x2, flatten = TRUE)
+  y2 = jsonlite::fromJSON(y2$data,flatten = T)
+  
+  # add chinaDaylist and dailyHistory into data
+  data$dailyHistory <- y2$dailyHistory
+  data$chinaDayList <- y2$chinaDayList
+  y$data = jsonlite::toJSON(data)
   return(y$data)  
 }
 
