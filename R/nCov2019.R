@@ -8,7 +8,7 @@
 #' @author Guangchuang Yu
 get_nCov2019 <- function(lang = 'zh') {
   lang <- match.arg(lang, c("zh", "en"))
-  data <- jsonlite::fromJSON(.get_json())
+  data <- .get_qq_data()
 
   if (lang == 'en') {
     # change countries to English

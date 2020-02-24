@@ -38,7 +38,7 @@ extract_province <- function(object, i, by) {
   cbind(name=stats$name, stats[[by]])
 }
 
-.get_json <- function() {
+.get_qq_data <- function() {
   # remove the Callback part in URL
   url <- 'https://view.inews.qq.com/g2/getOnsInfo?name=disease_h5'
   x <- suppressWarnings(readLines(url, encoding="UTF-8"))
@@ -56,8 +56,7 @@ extract_province <- function(object, i, by) {
   data$dailyHistory <- y2$dailyHistory
   data$chinaDayList <- y2$chinaDayList
   data$chinaDayAddList <- y2$chinaDayAddList
-  y$data = jsonlite::toJSON(data)
-  return(y$data)  
+  return(data)  
 }
 
 ##' @importFrom ggplot2 scale_fill_gradient
