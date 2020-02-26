@@ -18,7 +18,9 @@ Imports:
   RColorBrewer,
   stats
 Suggests:
-  utils
+  utils,
+  maps,
+  sf
 License: Artistic-2.0
 Encoding: UTF-8
 LazyData: true
