@@ -60,6 +60,7 @@ extract_province <- function(object, i, by) {
 }
 
 ##' @importFrom ggplot2 scale_fill_gradient
+##' @importFrom RColorBrewer brewer.pal
 fill_scale_continuous <- function(palette = "Reds") {
     cols = RColorBrewer::brewer.pal(6, palette)
     breaks = c(1, 10, 100, 1000, 10000)

@@ -7,6 +7,7 @@
 ##' @importFrom ggplot2 coord_sf
 ##' @importFrom ggplot2 geom_sf
 ##' @importFrom ggplot2 geom_sf_text
+##' @importFrom tibble as_tibble
 plot_city <- function(x, region, chinamap, 
                     continuous_scale=TRUE, label=TRUE, date, palette = "Reds",
                     font.size = 3.8, font.family = "") {

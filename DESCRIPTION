@@ -14,10 +14,10 @@ Imports:
   ggplot2,
   jsonlite,
   methods,
-  stats
-Suggests:
   tibble,
   RColorBrewer,
+  stats
+Suggests:
   utils
 License: Artistic-2.0
 Encoding: UTF-8
