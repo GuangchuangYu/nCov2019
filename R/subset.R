@@ -5,6 +5,9 @@
   if (missing(i)) {
     return(obj[, j, drop=FALSE]) 
   }
+  if (i=='global'){
+    return(object$global) 
+  }
   if (is.numeric(i)) {
     i <- unique(obj$province)[i]
   }

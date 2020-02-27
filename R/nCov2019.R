@@ -54,6 +54,9 @@ load_nCov2019 <- function(lang = 'auto') {
     data$data$province <- trans_province(data$data$province)
     data$data$city <- trans_city(data$data$city)
     data$province$province <- trans_province(data$province$province)
+    # change countries to English
+    nn <- readRDS(system.file("country_translate.rds", package="nCov2019"))
+    data$global$country <-  nn[as.character(data$global$country)]
   }
   data$lang <- lang
   return(data)
