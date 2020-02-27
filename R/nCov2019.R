@@ -1,13 +1,14 @@
 #' download statistical numbers of the wuhan 2019-nCov
 #'
 #' @title get_nCov2019
-#' @param lang one of 'zh' and 'en', for setting language of province and city names
+#' @param lang one of 'zh' and 'en', for setting language of province and city names.
+#' If lang = "auto" (default), it will be set based on Sys.getlocale("LC_CTYPE")
 #' @return nCov2019 object
 #' @export
 #' @importFrom jsonlite fromJSON
 #' @author Guangchuang Yu
-get_nCov2019 <- function(lang = 'zh') {
-  lang <- match.arg(lang, c("zh", "en"))
+get_nCov2019 <- function(lang = 'auto') {
+  lang <- which_lang(lang)
   data <- .get_qq_data()
 
   if (lang == 'en') {
@@ -29,16 +30,17 @@ get_nCov2019 <- function(lang = 'zh') {
   structure(data, class = 'nCov2019')
 }
 
+         
 #' load historical data of wuhan 2019-Cov
 #'
 #' @title load_nCov2019
-#' @param lang one of 'zh' and 'en', for setting language of province and city names
+#' @inheritParams get_nCov2019
 #' @return nCov2019History object
 #' @importFrom downloader download
 #' @export
 #' @author Guangchuang Yu
-load_nCov2019 <- function(lang = 'zh') {
-  lang <- match.arg(lang, c("zh", "en"))
+load_nCov2019 <- function(lang = 'auto') {
+  lang <- which_lang(lang)
   rds <- tempfile(pattern=".rds")
   downloader::download('https://gitee.com/timze/historicaldata/raw/master/dxy_historical_data.rds',
                 destfile = rds, quiet = TRUE)

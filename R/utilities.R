@@ -81,3 +81,17 @@ fill_scale_discrete <- function(palette = "Reds") {
                         "1000-10000", ">10000"))
 }
 
+
+which_lang <- function(lang) {
+  lang <- match.arg(lang, c("auto","zh", "en"))
+  if (lang == "auto") {
+    locale <- Sys.getlocale('LC_CTYPE')
+    locale <- sub("^(\\w+)\\W.*", "\\1", locale)
+    if (tolower(locale) %in% c("chinese", "zh")) {
+      lang <- 'zh'
+    } else {
+      lang <- 'en'
+    }   
+  }
+  return(lang)
+}

@@ -1,6 +1,6 @@
 Package: nCov2019
 Title: Stats of the '2019-nCov' Cases
-Version: 0.0.9
+Version: 0.1.0
 Authors@R: c(
           person("Guangchuang", "Yu", email = "guangchuangyu@gmail.com", role = c("aut", "cre")),
           person("Tianzhi", "Wu", email = "wutimze@gmail.com", role = "ctb"),
@@ -21,6 +21,8 @@ Suggests:
   utils,
   maps,
   sf
+remotes:
+  GuangchuangYu/chinamap
 License: Artistic-2.0
 Encoding: UTF-8
 LazyData: true
