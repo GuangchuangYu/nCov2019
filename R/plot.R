@@ -112,7 +112,7 @@ plot_china <- function(x, chinamap, continuous_scale = TRUE, date, palette = "Re
     if (is(x, "nCov2019")) {
         total <- x$chinaTotal$confirm
     } else if (is(x, "nCov2019History")) {
-        total <- paste( sum(extract_history(x, date = date)$confirm), '[mainland China]')
+        total <- sum(extract_history(x, date = date)$confirm)
     } else {
         stop("object not supported...")
     }
