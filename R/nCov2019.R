@@ -39,11 +39,16 @@ get_nCov2019 <- function(lang = 'auto') {
 #' @importFrom downloader download
 #' @export
 #' @author Guangchuang Yu
-load_nCov2019 <- function(lang = 'auto') {
+load_nCov2019 <- function(lang = 'auto',source="github") {
   lang <- which_lang(lang)
+  source <- match.arg(source, c("github", "dxy"))
   rds <- tempfile(pattern=".rds")
-  downloader::download('https://gitee.com/timze/historicaldata/raw/master/dxy_historical_data.rds',
-                destfile = rds, quiet = TRUE)
+  if (source == 'dxy'){
+    url = 'https://gitee.com/timze/historicaldata/raw/master/dxy_origin_historical_data.rds'
+  } else { 
+    url = 'https://gitee.com/timze/historicaldata/raw/master/dxy_historical_data.rds'
+  }
+  downloader::download(url,destfile = rds, quiet = TRUE)
   data <- readRDS(rds)
   ## data <- readRDS(system.file("nCov2019History.rds", package="nCov2019"))
   
@@ -53,10 +58,11 @@ load_nCov2019 <- function(lang = 'auto') {
     # change provinces to English
     data$data$province <- trans_province(data$data$province)
     data$data$city <- trans_city(data$data$city)
-    data$province$province <- trans_province(data$province$province)
-    # change countries to English
+    # change countries to English 
+    if (source == 'github'){
     nn <- readRDS(system.file("country_translate.rds", package="nCov2019"))
     data$global$country <-  nn[as.character(data$global$country)]
+    }
   }
   data$lang <- lang
   return(data)
