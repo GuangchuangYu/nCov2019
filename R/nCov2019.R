@@ -35,11 +35,12 @@ get_nCov2019 <- function(lang = 'auto') {
 #'
 #' @title load_nCov2019
 #' @inheritParams get_nCov2019
+#' @param source historical data source, one of 'github' or 'dxy'
 #' @return nCov2019History object
 #' @importFrom downloader download
 #' @export
 #' @author Guangchuang Yu
-load_nCov2019 <- function(lang = 'auto',source="github") {
+load_nCov2019 <- function(lang = 'auto', source="github") {
   lang <- which_lang(lang)
   source <- match.arg(source, c("github", "dxy"))
   rds <- tempfile(pattern=".rds")
