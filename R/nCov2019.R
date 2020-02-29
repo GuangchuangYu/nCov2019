@@ -56,12 +56,10 @@ load_nCov2019 <- function(lang = 'auto', source="github") {
   prov_cities <- jsonlite::fromJSON(system.file('provinces_and_cities.json', package="nCov2019"))
   
   if (lang == 'en') {
-    # change provinces and city columns to English; for x$data
+    # change provinces to English
     data$data$province <- trans_province(data$data$province)
     data$data$city <- trans_city(data$data$city)
-    # change provinces to English; for x$province
-    data$province$province <- trans_province(data$province$province)
-    # change countries to English; for github source only 
+    # change countries to English 
     if (source == 'github'){
     nn <- readRDS(system.file("country_translate.rds", package="nCov2019"))
     data$global$country <-  nn[as.character(data$global$country)]
