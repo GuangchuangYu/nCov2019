@@ -16,7 +16,7 @@ Imports:
   methods,
   tibble,
   RColorBrewer,
-  stats,
+  stats
 Suggests:
   utils,
   maps,
