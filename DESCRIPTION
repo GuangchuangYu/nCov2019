@@ -9,18 +9,33 @@ Authors@R: c(
 Description: Download statistical number of the Wuhan 2019-nCov cases. 
 Depends: R (>= 3.6.0)
 Imports: 
-  downloader,
-  dplyr,
-  ggplot2,
-  jsonlite,
-  methods,
-  tibble,
-  RColorBrewer,
-  stats
+    downloader,
+    dplyr,
+    ggplot2,
+    jsonlite,
+    methods,
+    tibble,
+    RColorBrewer,
+    stats,
+    plotly,
+    shiny
 Suggests:
-  utils,
-  maps,
-  sf
+    utils,
+    maps,
+    sf,
+    forcats,
+    forecast,
+    ggrepel,
+    lubridate,
+    pinyin,
+    shinyBS,
+    sp,
+    tidyr,
+    graphics,
+    curl,
+    mapproj,
+    chinamap,
+    remotes
 remotes:
   GuangchuangYu/chinamap
 License: Artistic-2.0

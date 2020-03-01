@@ -1,3 +1,5 @@
 README.md
 .Rhistory
 Makefile
+^.*\.Rproj$
+^\.Rproj\.user$
