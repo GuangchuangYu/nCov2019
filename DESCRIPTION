@@ -17,25 +17,12 @@ Imports:
     tibble,
     RColorBrewer,
     stats,
-    plotly,
-    shiny
-Suggests:
-    utils,
-    maps,
-    sf,
-    forcats,
-    forecast,
-    ggrepel,
-    lubridate,
-    pinyin,
-    shinyBS,
-    sp,
-    tidyr,
-    graphics,
-    curl,
-    mapproj,
-    chinamap,
+    shiny,
     remotes
+Suggests:
+  utils,
+  maps,
+  sf
 remotes:
   GuangchuangYu/chinamap
 License: Artistic-2.0

@@ -4,14 +4,12 @@
 \alias{open_dashboard}
 \title{Shiny app}
 \usage{
-open_dashboard(lang = "auto", remote = FALSE, install_it = FALSE)
+open_dashboard(lang = "auto", remote = FALSE)
 }
 \arguments{
 \item{lang}{Your languate, it should be one of "auto", "zh" or "en"}
 
 \item{remote}{If TRUE, open the online version}
-
-\item{install_it}{If TRUE, the function will install packages needed}
 }
 \description{
 a shiny app
