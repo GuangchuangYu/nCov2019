@@ -57,9 +57,9 @@ open_dashboard <- function(lang="auto", remote=FALSE) {
 
             if(button == 'Y'){
                 cn_city_map.rds <- tempfile(pattern=".rds")
-                url <- 'https://gitee.com/timze/historicaldata/raw/master/cn_city_map.rds'
+                url <- 'http://q6k78o1u4.bkt.clouddn.com/cn_city_map.rds'
                 downloader::download(url, destfile = cn_city_map.rds, quiet = TRUE)
-                shijie <- readRDS('cn_city_map.rds')
+                shijie <- readRDS(cn_city_map.rds)
             }
         } else {
             shijie <- readRDS('cn_city_map.rds')
