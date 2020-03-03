@@ -236,7 +236,7 @@ plot.nCov2019 <- function(x, region="world", chinamap = NULL,
 plot.nCov2019History <- function(x, region="world", chinamap = NULL, 
                                  continuous_scale = TRUE, label = TRUE, 
                                  font.size = 3.8, font.family = "", palette = "Reds",
-                                 from = NULL, to = NULL, width = 600, height = 600, ...) {
+                                 from = NULL, to = NULL, width = 600, height = 600, filename = "nCov2019.gif", ...) {
     if (is.null(from) || is.null(to)) {
         p <- plot.nCov2019(x = x,
                            region = region,
@@ -278,8 +278,9 @@ plot.nCov2019History <- function(x, region="world", chinamap = NULL,
     grDevices::dev.off()
 
     animation <- magick::image_animate(img, fps = 2)
-    message("A gif, nCov2019.gif, was generated in current directory\n")
-    magick::image_write(animation, "nCov2019.gif")
+    msg <- paste0("A gif, ", filename, ", was generated in current directory\n")
+    message(msg)
+    magick::image_write(animation, filename)
     invisible(animation)
 }
 
