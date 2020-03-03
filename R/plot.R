@@ -224,7 +224,7 @@ plot.nCov2019 <- function(x, region="world", chinamap = NULL,
     }
 
     if ("china" %in% region) {
-        p <- plot_china(x, chinamap, continuous_scale, palette = palette, ...)
+        p <- plot_china(x, chinamap, continuous_scale, palette = palette, title = title, ...)
         if (label) {
             prov.df <- readRDS(system.file("prov_location.rds", package="nCov2019"))
             if (x$lang == "en") {
