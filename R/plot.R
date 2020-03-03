@@ -261,7 +261,7 @@ plot.nCov2019History <- function(x, region="world", chinamap = NULL,
                            label = label,
                            font.size = font.size,
                            font.family = font.family,
-                           palette = palette, date = date)
+                           palette = palette, date = date, ...)
     })
 
     leg <- cowplot::get_legend(out[[length(out)]])
