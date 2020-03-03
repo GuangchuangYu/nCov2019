@@ -1,6 +1,6 @@
 Package: nCov2019
 Title: Stats of the '2019-nCov' Cases
-Version: 0.2.0
+Version: 0.3.0
 Authors@R: c(
           person("Guangchuang", "Yu", email = "guangchuangyu@gmail.com", role = c("aut", "cre")),
           person("Tianzhi", "Wu", email = "wutimze@gmail.com", role = "ctb"),
@@ -20,10 +20,13 @@ Imports:
   RColorBrewer,
   stats
 Suggests:
-  utils,
+  cowplot,
+  grDevices,
   maps,
+  magick,
   shiny,
-  remotes
+  remotes,
+  utils
 remotes:
   GuangchuangYu/chinamap
 License: Artistic-2.0

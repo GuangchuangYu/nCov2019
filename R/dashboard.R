@@ -64,7 +64,6 @@ open_dashboard <- function(lang="auto", remote=FALSE) {
                 url <- 'http://q6k78o1u4.bkt.clouddn.com/cn_city_map.rds'
                 downloader::download(url, destfile = rds, quiet = FALSE)
                 shijie <- readRDS(rds)
-                saveRDS(shijie,cn_city_map,compress='xz')
             }
         } else {
             shijie <- readRDS(rds)

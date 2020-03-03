@@ -10,7 +10,7 @@
 ##' @importFrom tibble as_tibble
 plot_city <- function(x, region, chinamap, 
                     continuous_scale=TRUE, label=TRUE, date, palette = "Reds",
-                    font.size = 3.8, font.family = "") {
+                    font.size = 3.8, font.family = "", title) {
     map <- tibble::as_tibble(chinamap)
 
     if (x$lang == "zh") {                    
@@ -22,8 +22,10 @@ plot_city <- function(x, region, chinamap,
     }
     map <- do.call('rbind', lapply(region, function(r) {
         stats <- get_city_data(x, r, date)
+        citis <- stats$NAME
+        citis <- citis[citis %in% map$NAME]
         code <- sub("(\\d{2}).*", "\\1", 
-                  map$ADMINCODE[which(map$NAME == stats[1,1])])
+                  map$ADMINCODE[which(map$NAME == citis[1])])
       
         map[grep(paste0("^", code), map$ADMINCODE),]
     }))
@@ -33,7 +35,7 @@ plot_city <- function(x, region, chinamap,
 
     p <- ggplot(map2, aes_(geometry=~geometry)) + 
         theme_minimal() + xlab(NULL) + ylab(NULL) +
-        labs(title = '2019nCov', 
+        labs(title = title, 
             subtitle = paste('confirmed cases:', sum(stats$confirm)),
             caption=paste("accessed date:", time(x))) +
         coord_sf()
@@ -54,9 +56,29 @@ plot_city <- function(x, region, chinamap,
 
 ##' @importFrom ggplot2 map_data
 ##' @importFrom ggplot2 coord_equal
-plot_world <- function(x, continuous_scale=TRUE, palette = "Reds") {
+plot_world <- function(x, region = "world", continuous_scale=TRUE, palette = "Reds", date, title) {
+    if (!missing(date)) {
+        tt <- date
+    } else {
+        tt <- time(x)
+    }
+
     d <- x['global', ]
-    tt <- sum(d$confirm)
+    if (is(x, "nCov2019History")) {
+        d <- subset(d, time == tt)
+    }
+
+    names(d) <- sub("cum_", "", names(d))
+    nn <- names(d)
+    names(d)[nn == "country"] <- "name"
+
+    if (region == "world") {
+        tt <- sum(d$confirm)                
+    } else {
+        tt <- sum(d$confirm[d$name %in% region])        
+    }
+
+
     if (x$lang == "zh") {
         nn <- readRDS(system.file("country_translate.rds", package="nCov2019"))
         d$name <- nn[as.character(d$name)]
@@ -75,7 +97,8 @@ plot_world <- function(x, continuous_scale=TRUE, palette = "Reds") {
     d$name <- sub("Republic\\sof\\sKorea", "South Korea", d$name)
     d$name <- sub("United\\sKingdom.*", "UK", d$name)
     d$name <- sub("Republika\\sSeverna\\sMakedonija", "Macedonia", d$name)
-    world <- map_data('world')
+    if (region == "world") region <- "."
+    world <- map_data('world', region = region)
     world <- world[world$region != "Antarctica", ]
     w <- merge(world, d, by.x='region', by.y='name', all.x=T)
 
@@ -84,15 +107,22 @@ plot_world <- function(x, continuous_scale=TRUE, palette = "Reds") {
         coord_equal() +
         theme_minimal(base_size = 14) +
         xlab(NULL) + ylab(NULL) +
-        labs(title = '2019nCov', 
+        labs(title = title, 
             subtitle = paste('confirmed cases:', tt),
             caption=paste("accessed date:", time(x)))
 
     if (continuous_scale) {
-        p1 <- p +  
-            geom_map(aes_(~long, ~lat, map_id = ~region, group=~group, fill=~confirm), 
-                    map=w, data=w, colour='grey') + 
-            fill_scale_continuous(palette)
+        if (length(unique(w$confirm)) == 1) {
+            col <- RColorBrewer::brewer.pal(3, palette)[3]
+            p1 <- p +  
+                geom_map(aes_(~long, ~lat, map_id = ~region, group=~group), 
+                         map=w, data=w, colour='grey', fill = col)
+        } else {
+            p1 <- p +  
+                geom_map(aes_(~long, ~lat, map_id = ~region, group=~group, fill=~confirm), 
+                         map=w, data=w, colour='grey')  +
+                fill_scale_continuous(palette)
+        }
     } else {
         w$confirm2 = cut(w$confirm, discrete_breaks,
                  include.lowest = T, right=F)
@@ -105,7 +135,7 @@ plot_world <- function(x, continuous_scale=TRUE, palette = "Reds") {
 }
 
 ##' @importFrom ggplot2 coord_map
-plot_china <- function(x, chinamap, continuous_scale = TRUE, date, palette = "Reds") {
+plot_china <- function(x, chinamap, continuous_scale = TRUE, date, palette = "Reds", title) {
   if (!missing(date)) {
       tt <- date
   } else {
@@ -123,7 +153,7 @@ plot_china <- function(x, chinamap, continuous_scale = TRUE, date, palette = "Re
   p <- ggplot() + coord_map() +
     theme_minimal() +
     xlab(NULL) + ylab(NULL) +
-    labs(title = '2019nCov', 
+    labs(title = title, 
        subtitle = paste('confirmed cases:', total),
        caption=paste("accessed date:", tt))
 
@@ -178,15 +208,17 @@ layer_chinamap <- function(x, chinamap, continuous_scale = TRUE,
 ##' @importFrom ggplot2 geom_text
 ##' @method plot nCov2019
 ##' @export
-plot.nCov2019 <- function(x, region="world", chinamap, 
+plot.nCov2019 <- function(x, region="world", chinamap = NULL, 
                         continuous_scale = TRUE, label = TRUE, 
-                        font.size = 3.8, font.family = "", palette = "Reds", ...) {
-    if ("world" %in% region) {
-        p <- plot_world(x, continuous_scale = continuous_scale, palette = palette)
-        if (missing(chinamap)) {
+                        font.size = 3.8, font.family = "", palette = "Reds", title = "COVID-19", ...) {
+    if ("world" %in% region || is.null(chinamap)) {
+        p <- plot_world(x, region = region, continuous_scale = continuous_scale,
+                        palette = palette, title = title, ...)
+        if (is.null(chinamap)) {
             return(p)
         } else {
-            p <- p + layer_chinamap(x, chinamap, continuous_scale, palette = palette, add_scale=FALSE)
+            p <- p + layer_chinamap(x, chinamap, continuous_scale,
+                                    palette = palette, add_scale=FALSE, title = title, ...)
         }
         return(p)
     }
@@ -198,18 +230,74 @@ plot.nCov2019 <- function(x, region="world", chinamap,
             if (x$lang == "en") {
                 prov.df$name <- trans_province(prov.df$name)
             }
-            p <- p + geom_text(aes_(~long, ~lat, label=~name), data=prov.df, size=font.size, family=font.family)
+            p <- p + geom_text(aes_(~long, ~lat, label=~name),
+                               data=prov.df, size=font.size, family=font.family)
         }
         return(p)
     }
 
     plot_city(x, region = region, chinamap = chinamap, 
             continuous_scale = continuous_scale,
-            label = label, palette = palette, ...)
+            label = label, palette = palette, title = title, ...)
 }
 
 ##' @method plot nCov2019History
+## @param from start date to plot
+## @param to end date to plot. Both from and to should be specify, otherwise they will be ignored.
+## If both from and to are specify, an animation will be created.
+## @param width width of the plot, only works for animation
+## @param height height of the plot, only works for animation
 ##' @export
-plot.nCov2019History <- plot.nCov2019
+plot.nCov2019History <- function(x, region="world", chinamap = NULL, 
+                                 continuous_scale = TRUE, label = TRUE, 
+                                 font.size = 3.8, font.family = "", palette = "Reds",
+                                 from = NULL, to = NULL, width = 600, height = 600, filename = "nCov2019.gif", ...) {
+    if (is.null(from) || is.null(to)) {
+        p <- plot.nCov2019(x = x,
+                           region = region,
+                           chinamap,
+                           continuous_scale = continuous_scale,
+                           label = label,
+                           font.size = font.size,
+                           font.family = font.family,
+                           palette = palette, ...)
+        return(p)
+    }
+
+    from <- as.Date(from)
+    to <- as.Date(to)
+    d <- seq(from, to, by = 1)
+
+    out <- lapply(d, function(date){
+        p <- plot.nCov2019(x = x,
+                           region = region,
+                           chinamap,
+                           continuous_scale = continuous_scale,
+                           label = label,
+                           font.size = font.size,
+                           font.family = font.family,
+                           palette = palette, date = date, ...)
+    })
+
+    leg <- cowplot::get_legend(out[[length(out)]])
+    out <- lapply(out, function(g) {
+        ## ggplotify::as.ggplot(g + ggplot2::theme(legend.position="none")) + 
+        ##     ggimage::geom_subview(subview = leg, x=.9, y=.2)
+        cowplot::plot_grid(g + ggplot2::theme(legend.position="none"),
+                           leg, rel_widths = c(1, .3))
+    })
+
+
+    img <- magick::image_graph(600, 600, res = 96)
+    invisible(lapply(out, function(p) suppressWarnings(print(p))))
+    grDevices::dev.off()
+
+    animation <- magick::image_animate(img, fps = 2)
+    msg <- paste0("A gif, ", filename, ", was generated in current directory\n")
+    message(msg)
+    magick::image_write(animation, filename)
+    invisible(animation)
+}
+
 
 
