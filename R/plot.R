@@ -56,7 +56,7 @@ plot_city <- function(x, region, chinamap,
 
 ##' @importFrom ggplot2 map_data
 ##' @importFrom ggplot2 coord_equal
-plot_world <- function(x, continuous_scale=TRUE, palette = "Reds", date, title) {
+plot_world <- function(x, region = "world", continuous_scale=TRUE, palette = "Reds", date, title) {
     if (!missing(date)) {
         tt <- date
     } else {
@@ -72,8 +72,12 @@ plot_world <- function(x, continuous_scale=TRUE, palette = "Reds", date, title) 
     nn <- names(d)
     names(d)[nn == "country"] <- "name"
 
-    tt <- sum(d$confirm)        
-    
+    if (region == "world") {
+        tt <- sum(d$confirm)                
+    } else {
+        tt <- sum(d$confirm[d$name %in% region])        
+    }
+
 
     if (x$lang == "zh") {
         nn <- readRDS(system.file("country_translate.rds", package="nCov2019"))
@@ -93,7 +97,8 @@ plot_world <- function(x, continuous_scale=TRUE, palette = "Reds", date, title) 
     d$name <- sub("Republic\\sof\\sKorea", "South Korea", d$name)
     d$name <- sub("United\\sKingdom.*", "UK", d$name)
     d$name <- sub("Republika\\sSeverna\\sMakedonija", "Macedonia", d$name)
-    world <- map_data('world')
+    if (region == "world") region <- "."
+    world <- map_data('world', region = region)
     world <- world[world$region != "Antarctica", ]
     w <- merge(world, d, by.x='region', by.y='name', all.x=T)
 
@@ -107,10 +112,17 @@ plot_world <- function(x, continuous_scale=TRUE, palette = "Reds", date, title) 
             caption=paste("accessed date:", time(x)))
 
     if (continuous_scale) {
-        p1 <- p +  
-            geom_map(aes_(~long, ~lat, map_id = ~region, group=~group, fill=~confirm), 
-                    map=w, data=w, colour='grey') + 
-            fill_scale_continuous(palette)
+        if (length(unique(w$confirm)) == 1) {
+            col <- RColorBrewer::brewer.pal(3, palette)[3]
+            p1 <- p +  
+                geom_map(aes_(~long, ~lat, map_id = ~region, group=~group), 
+                         map=w, data=w, colour='grey', fill = col)
+        } else {
+            p1 <- p +  
+                geom_map(aes_(~long, ~lat, map_id = ~region, group=~group, fill=~confirm), 
+                         map=w, data=w, colour='grey')  +
+                fill_scale_continuous(palette)
+        }
     } else {
         w$confirm2 = cut(w$confirm, discrete_breaks,
                  include.lowest = T, right=F)
@@ -199,12 +211,14 @@ layer_chinamap <- function(x, chinamap, continuous_scale = TRUE,
 plot.nCov2019 <- function(x, region="world", chinamap = NULL, 
                         continuous_scale = TRUE, label = TRUE, 
                         font.size = 3.8, font.family = "", palette = "Reds", title = "COVID-19", ...) {
-    if ("world" %in% region) {
-        p <- plot_world(x, continuous_scale = continuous_scale, palette = palette, ...)
+    if ("world" %in% region || is.null(chinamap)) {
+        p <- plot_world(x, region = region, continuous_scale = continuous_scale,
+                        palette = palette, title = title, ...)
         if (is.null(chinamap)) {
             return(p)
         } else {
-            p <- p + layer_chinamap(x, chinamap, continuous_scale, palette = palette, add_scale=FALSE, ...)
+            p <- p + layer_chinamap(x, chinamap, continuous_scale,
+                                    palette = palette, add_scale=FALSE, title = title, ...)
         }
         return(p)
     }
@@ -216,14 +230,15 @@ plot.nCov2019 <- function(x, region="world", chinamap = NULL,
             if (x$lang == "en") {
                 prov.df$name <- trans_province(prov.df$name)
             }
-            p <- p + geom_text(aes_(~long, ~lat, label=~name), data=prov.df, size=font.size, family=font.family)
+            p <- p + geom_text(aes_(~long, ~lat, label=~name),
+                               data=prov.df, size=font.size, family=font.family)
         }
         return(p)
     }
 
     plot_city(x, region = region, chinamap = chinamap, 
             continuous_scale = continuous_scale,
-            label = label, palette = palette, ...)
+            label = label, palette = palette, title = title, ...)
 }
 
 ##' @method plot nCov2019History
