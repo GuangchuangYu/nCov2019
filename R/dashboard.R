@@ -47,8 +47,9 @@ open_dashboard <- function(lang="auto", remote=FALSE) {
                 }
             }
          }
-               
-        if (!file.exists('cn_city_map.rds')) {
+        fpath = system.file(package="nCov2019")
+        cn_city_map <- file.path(system.file(package="nCov2019"), "cn_city_map.rds")
+        if (!file.exists(cn_city_map)) {
             messages <- "cn_city_map.rds is needed to draw city maps for province,
                 this may take a few minutes, download it? (Y/N): "
             ## button <- tcltk::tkmessageBox(title='Message', message=messages, type='yesno')
@@ -56,13 +57,14 @@ open_dashboard <- function(lang="auto", remote=FALSE) {
             button <- toupper(readline(prompt = messages))
 
             if(button == 'Y'){
-                cn_city_map.rds <- tempfile(pattern=".rds")
-                url <- 'https://gitee.com/timze/historicaldata/raw/master/cn_city_map.rds'
-                downloader::download(url, destfile = cn_city_map.rds, quiet = TRUE)
-                shijie <- readRDS('cn_city_map.rds')
+                rds <- tempfile(pattern=".rds")
+                url <- 'http://q6k78o1u4.bkt.clouddn.com/cn_city_map.rds'
+                downloader::download(url, destfile = rds, quiet = FALSE)
+                shijie <- readRDS(rds)
+                saveRDS(shijie,cn_city_map,compress='xz')
             }
         } else {
-            shijie <- readRDS('cn_city_map.rds')
+            shijie <- readRDS(cn_city_map)
         }
         
     # run shinyApp
