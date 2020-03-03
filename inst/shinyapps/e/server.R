@@ -176,6 +176,77 @@ function(input, output, session) {
         layout( width = plotWidth)
       
     } ) 
+
+    
+    #各个城市死亡率  -------------------------------------------
+    output$deathRatesCitiesCountries <- renderPlotly({
+      d = x$data %>% 
+        arrange( desc(time, city))  %>%
+        filter(!duplicated(city)) %>% 
+        filter(province != city ) %>%
+        filter (city != "监狱系统") %>%
+       # filter(cum_dead > 2)  %>%
+        filter(cum_confirm > 200) %>%
+        mutate(rate = 100*cum_dead/cum_confirm) %>%
+        arrange(desc(province), city) 
+
+      d <- rbind(d, d[1,]) # move Hunan to the end
+      d <- d[-1, ]
+        
+      
+      if(isEnglish) d$province <- py2( d$province )  # translate into Pinyin      
+      if(isEnglish) 
+      d$city <- py3( d$city )
+      
+      d <- d %>% 
+        mutate(name = paste(d$province, d$city) )  %>%
+        mutate(name = factor(name, levels= rev(name)) )
+      
+      p <- ggplot(d, aes(x=name, y=rate, color = province)) +
+      geom_segment( aes(xend=name, yend=0)) +
+      geom_point( size=4, aes( color=province) ) +
+      coord_flip() +
+      theme_bw() +
+      xlab("") +
+      ylab(z("死亡率(%)")) + 
+      theme(legend.position = "none")
+      
+
+      ggplotly(p, tooltip = c("y", "x")) %>% 
+        layout( width = plotWidth)
+      
+    } ) 
+    
+    #世界各国死亡率，现在的数据 -------------------------------------------
+    output$WorldDeathRate <- renderPlotly({
+      d <- y['global',] %>%
+        filter(!is.na(name)) %>%
+        mutate( confirm =as.numeric(confirm) ) %>%
+        #mutate (name = z2( name ) ) %>%
+        mutate( name = fct_reorder(name, confirm)) %>% 
+        filter( confirm > 200) %>%
+        mutate(deadRate = as.numeric(deadRate))
+      
+      p <- ggplot(d, aes(x=name, y=deadRate)) +
+        geom_segment( aes(xend=name, yend=0)) +
+        geom_point( size=4, color = "orange" ) +
+        coord_flip() +
+        theme_bw() +
+        ylab(z("死亡率(%)")) + 
+        xlab("")
+        theme(legend.position = "none")
+      
+      
+      ggplotly(p, tooltip = c("y", "x")) %>% 
+        layout( width = plotWidth)
+      
+      
+
+      
+      
+    } ) 
+    
+        
     
     #世界各国分布图，现在的数据 -------------------------------------------
     output$realTimeCityConfirmedWorld <- renderPlot({
