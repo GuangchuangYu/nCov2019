@@ -1,4 +1,5 @@
 ##' @title Shiny app
+##' @rdname dashboard
 ##' @description a shiny app
 ##' @param lang Your languate, it should be one of "auto", "zh" or "en"
 ##' @param remote If TRUE, open the online version
@@ -68,7 +69,9 @@ open_dashboard <- function(lang="auto", remote=FALSE) {
         } else {
             shijie <- readRDS(rds)
         }
-        
+
+        options(nCov2019_dashboard = TRUE)
+
     # run shinyApp
     
         if(lang == 'zh'){
@@ -81,6 +84,9 @@ open_dashboard <- function(lang="auto", remote=FALSE) {
     }
 }
 
+##' @rdname dashboard
+##' @export
+dashboard <- open_dashboard
 
 is.installed <- function(packages) {
     vapply(packages, function(pkg) {

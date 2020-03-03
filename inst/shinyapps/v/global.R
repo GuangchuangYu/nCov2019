@@ -217,6 +217,11 @@ finc <- function(x) {
     return( as.character(x) )
   } 
 }
+
+
+shiny_local <- getOption('nCov2019_dashboard')
+if(is.null(shiny_local)) shiny_local <- FALSE
+
 #  Below come from #https://shiny.rstudio.com/gallery/unicode-characters.html
 # for displaying Chinese characters
 # Cairo包的PNG设备似乎无法显示中文字符，强制使用R自身的png()设备
@@ -224,9 +229,10 @@ options(shiny.usecairo = FALSE)
 
 # 请忽略以下代码，它只是为了解决ShinyApps上没有中文字体的问题
 font_home <- function(path = '') file.path('~', '.fonts', path)
-if (Sys.info()[['sysname']] == 'Linux' &&
-      system('locate wqy-zenhei.ttc') != 0 &&
-      !file.exists(font_home('wqy-zenhei.ttc'))) {
+if (!shiny_local &&
+    Sys.info()[['sysname']] == 'Linux' &&
+    system('locate wqy-zenhei.ttc') != 0 &&
+    !file.exists(font_home('wqy-zenhei.ttc'))) {
   if (!file.exists('wqy-zenhei.ttc'))
     curl::curl_download(
       'https://github.com/rstudio/shiny-examples/releases/download/v0.10.1/wqy-zenhei.ttc',

@@ -2,9 +2,12 @@
 % Please edit documentation in R/dashboard.R
 \name{open_dashboard}
 \alias{open_dashboard}
+\alias{dashboard}
 \title{Shiny app}
 \usage{
 open_dashboard(lang = "auto", remote = FALSE)
+
+dashboard(lang = "auto", remote = FALSE)
 }
 \arguments{
 \item{lang}{Your languate, it should be one of "auto", "zh" or "en"}
