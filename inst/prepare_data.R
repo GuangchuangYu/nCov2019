@@ -72,24 +72,10 @@ saveRDS(prov.df, file = "prov_location.rds")
 
 ####################### country data
 
-require(rvest)
-
-url <- 'http://www.fltacn.com/article_392.html'
-
-n = url %>%
-  xml2::read_html()
-
-cc = html_nodes(n, 'table')[[1]] %>% html_table()
-cc = cc[-1, ]
-nn = cc[,3]
-names(nn) = cc[,2]
-head(nn)
-nn <- c(nn, '阿联酋' = "United Arab Emirates", 
-'钻石号邮轮'='Diamond Princess',
-'日本本土'='Japan',
-'伊朗'='Iran',
-'伊拉克' =  'Iraq',
-'阿尔及利亚' = 'Algeria',
-'北马其顿' = 'Republika Severna Makedonija')
-
+country_zh_en = read.csv('country_zh_en.csv',stringsAsFactors = F)
+nn = gsub(" $", "", country_zh_en[,2])
+names(nn) = gsub(" $", "", country_zh_en[,1])
+nn['阿联酋']
+nn <- c(nn, '钻石号邮轮'='Diamond Princess',
+        '日本本土'='Japan')
 saveRDS(nn, file="country_translate.rds")
