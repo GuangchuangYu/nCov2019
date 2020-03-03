@@ -14,6 +14,11 @@ School of Basic Medical Sciences, Southern Medical University
 <https://guangchuangyu.github.io>
 
 
+
+If you use `nCov2019` in published research, please cite the following paper:
+
+Tianzhi Wu, Xijin Ge<sup>\*</sup>, Guangchuang Yu<sup>\*</sup>. [An R package and a website with real-time data on the COVID-19 coronavirus outbreak](https://www.medrxiv.org/content/10.1101/2020.02.25.20027433v1). **medRxiv**, 2020.02.25.20027433. doi: <https://doi.org/10.1101/2020.02.25.20027433> 
+
 ## :book: Documents
 
 + [An R Package to Explore the Novel Coronavirus](https://towardsdatascience.com/an-r-package-to-explore-the-novel-coronavirus-590055738ad6)

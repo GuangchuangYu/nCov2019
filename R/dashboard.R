@@ -1,4 +1,5 @@
 ##' @title Shiny app
+##' @rdname dashboard
 ##' @description a shiny app
 ##' @param lang Your languate, it should be one of "auto", "zh" or "en"
 ##' @param remote If TRUE, open the online version
@@ -47,9 +48,11 @@ open_dashboard <- function(lang="auto", remote=FALSE) {
                 }
             }
          }
-        fpath = system.file(package="nCov2019")
-        cn_city_map <- file.path(system.file(package="nCov2019"), "cn_city_map.rds")
-        if (!file.exists(cn_city_map)) {
+        ## fpath = system.file(package="nCov2019")
+        ## cn_city_map <- file.path(system.file(package="nCov2019"), "cn_city_map.rds")
+
+        rds <- 'cn_city_map.rds'
+        if (!file.exists(rds)) {
             messages <- "cn_city_map.rds is needed to draw city maps for province,
                 this may take a few minutes, download it? (Y/N): "
             ## button <- tcltk::tkmessageBox(title='Message', message=messages, type='yesno')
@@ -57,16 +60,18 @@ open_dashboard <- function(lang="auto", remote=FALSE) {
             button <- toupper(readline(prompt = messages))
 
             if(button == 'Y'){
-                rds <- tempfile(pattern=".rds")
+                ## rds <- tempfile(pattern=".rds")
                 url <- 'http://q6k78o1u4.bkt.clouddn.com/cn_city_map.rds'
                 downloader::download(url, destfile = rds, quiet = FALSE)
                 shijie <- readRDS(rds)
                 saveRDS(shijie,cn_city_map,compress='xz')
             }
         } else {
-            shijie <- readRDS(cn_city_map)
+            shijie <- readRDS(rds)
         }
-        
+
+        options(nCov2019_dashboard = TRUE)
+
     # run shinyApp
     
         if(lang == 'zh'){
@@ -79,6 +84,9 @@ open_dashboard <- function(lang="auto", remote=FALSE) {
     }
 }
 
+##' @rdname dashboard
+##' @export
+dashboard <- open_dashboard
 
 is.installed <- function(packages) {
     vapply(packages, function(pkg) {
