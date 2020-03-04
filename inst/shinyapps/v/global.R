@@ -8,6 +8,12 @@
 # install.packages(c("sp","mapproj","maps","sf"))
 # install.packages("pinyin")
 
+get_city_map <- function() {
+    if (!exists("nCov2019Env", envir = .GlobalEnv)) return(NULL)
+    nCov2019Env <- get("nCov2019Env", envir = .GlobalEnv)
+    get("shijie", envir = nCov2019Env)
+}
+
 
 plotWidth = 800
 
