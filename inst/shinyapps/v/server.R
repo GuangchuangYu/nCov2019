@@ -772,7 +772,8 @@ function(input, output, session) {
         # 英语版或直辖市不画地图
        # if(isEnglish | input$selectProvince0 %in% specialProvinces) { 
       #if(isEnglish | !exists("shijie", envir=e1)) {
-      if(isEnglish | !is.null(shijie)) {       
+      #if(isEnglish | !is.null(shijie)) {  
+      if(isEnglish | !exists("shijie")) {       
           return(NULL)
           } else {
             #shijie <- get("shijie",envir=e1)          
