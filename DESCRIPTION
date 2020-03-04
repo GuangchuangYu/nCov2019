@@ -26,7 +26,11 @@ Suggests:
   magick,
   shiny,
   remotes,
-  utils
+  utils,
+  BiocStyle, 
+  knitr, 
+  rmarkdown
+VignetteBuilder: knitr
 remotes:
   GuangchuangYu/chinamap
 License: Artistic-2.0
