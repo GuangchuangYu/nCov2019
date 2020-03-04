@@ -164,7 +164,7 @@ plot_china <- function(x, chinamap, continuous_scale = TRUE, date, palette = "Re
 
 ##' @importFrom ggplot2 geom_map
 layer_chinamap <- function(x, chinamap, continuous_scale = TRUE, 
-                    add_scale=TRUE, date, palette = "Reds") {
+                    add_scale=TRUE, date, palette = "Reds", title) {
     if (is(x, "nCov2019")) {
         df <- x[]
     } else if (is(x, "nCov2019History")) {
