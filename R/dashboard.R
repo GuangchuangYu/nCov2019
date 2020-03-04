@@ -63,11 +63,17 @@ open_dashboard <- function(lang="auto", remote=FALSE) {
                 ## rds <- tempfile(pattern=".rds")
                 url <- 'http://q6k78o1u4.bkt.clouddn.com/cn_city_map.rds'
                 downloader::download(url, destfile = rds, quiet = FALSE)
-                shijie <- readRDS(rds)
             }
-        } else {
-            shijie <- readRDS(rds)
+        } 
+
+        shijie <- readRDS(rds)
+        pos <- 1
+        envir <- as.environment(pos)
+        if (!exists("nCov2019Env", envir = .GlobalEnv)) {
+            assign("nCov2019Env", new.env(), envir = envir)
         }
+        nCov2019Env <- get("nCov2019Env", envir = .GlobalEnv)
+        assign("shijie", shijie, envir = nCov2019Env)
 
         options(nCov2019_dashboard = TRUE)
 
