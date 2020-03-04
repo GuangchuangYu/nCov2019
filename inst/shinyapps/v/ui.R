@@ -38,6 +38,8 @@ ui <- fluidPage(
     ,plotOutput("confirmedByProvincesHistorical")    
     , br()
     ,plotlyOutput("deathRatesCities")
+    ,br()
+    ,plotlyOutput("deathRatesCitiesCountries")
 
   
 
@@ -48,7 +50,7 @@ ui <- fluidPage(
     
     ,tabPanel(z("地图")
               ,h4(paste0( z(paste0(gsub("-.*","", gsub(" .*|2020-","",y$lastUpdateTime)), "月")),
-                      gsub(".*-","", gsub(" .*|2020-","",y$lastUpdateTime)), z("日")), z("(稍等几秒钟，地图下载)。"))
+                      gsub(".*-","", gsub(" .*|2020-","",y$lastUpdateTime)), z("日"), z("请稍等几秒钟，地图加载")))
               ,plotOutput("ChinaMap")
 
               
@@ -83,6 +85,8 @@ ui <- fluidPage(
               ,br()
               ,plotlyOutput("historicalWorld")
               ,br()
+              ,plotlyOutput("WorldDeathRate")
+              ,br()              
               ,plotOutput("worldMap")            
               
               )#tab2 --------------------------------------------------
@@ -92,7 +96,13 @@ ui <- fluidPage(
                              min = 1, max = 7,
                              value = 10)
               ,h5(z("简单的算法进行的预测,程序没有认真检查，仅供参考。用了R的forecast 软件包里的exponential smoothing 和forecast函数。") )
-              ,h5(z("先直接用全国的确诊总数的时间序列："))
+             ,selectInput("selectCountry", NULL, choices = unique(contriesPrediction$country))
+             ,plotOutput("forecastConfirmedChangeWorld")
+             ,br(),br()
+             
+             ,h4(z("中国详细预测"))
+              
+             ,h5(z("先直接用全国的确诊总数的时间序列："))             
              ,plotOutput("forecastConfirmedRaw")
              ,br()   
              ,br() 
@@ -109,8 +119,6 @@ ui <- fluidPage(
              ,h5(z("把全国的死亡累计数先换算成了每天比前一天增加的百分比，去除了前面10天不稳定的数据,再预测：") )
              ,plotOutput("forecastDeadChange")
              ,br(),br()
-             ,selectInput("selectCountry", NULL, choices = unique(contriesPrediction$country))
-             ,plotOutput("forecastConfirmedChangeWorld")
              
 
     ) #tab2 --------------------------------------------------
@@ -133,7 +141,7 @@ ui <- fluidPage(
          a("余光创教授",  href="http://portal.smu.edu.cn/jcyxy/info/1084/2203.htm"),
         "(微信公众号biobabble）写了一个功能强大的下载实时数据的软件包：",
         a("nCov2019。", href="https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&mid=2247488621&idx=1&sn=727f8bdec2801ddc0315b9fedaa40acc&scene=21"),
-        "实时数据来自腾讯， 每天更新。历史数据从【新一线城市研究所×8点健闻】。好像不是每天都更新。")
+        "实时数据来自腾讯API,历史数据整合自丁香园，",a("Github",href="https://github.com/canghailan/Wuhan-2019-nCoV"),"以及中国国家卫生健康委员会。")
     ,h5("有意见或建议可以给我发"
         ,a("邮件",href="mailto:xijin.ge@sdstate.edu?Subject=疫情网站" ),"。 ",
         "我做生物信息学方面的研究，用计算的方法探索生命的奥秘 (",

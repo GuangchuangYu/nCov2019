@@ -173,8 +173,8 @@ tem2 <- xgithub$global %>%
   pull(country)
 
 contriesPrediction <- xgithub$global %>%
-  filter(country !='中国') %>%
-  filter(country !='China') %>%
+  #filter(country !='中国') %>%
+  #filter(country !='China') %>%
   filter(  country %in%  names(tem)[tem > 20]    ) %>% # only keep contries with 20 more data points.
   filter(  country %in%  tem2   ) %>%  # at least 20 cases
   filter (time > as.Date("2020-2-1")) %>%
@@ -357,7 +357,7 @@ myDic = matrix( c(
   "更新", "Updated",
   "北京时间", "Beijing time",
   "所有的图对数坐标 log10", "log10 scale for all plots",
-  "(稍等几秒钟，地图下载)。", "Downloading map......",
+  "请稍等几秒钟，地图加载", "Loading map......",
   "选择预测天数", "Choose how many days to forecast",
   "简单的算法进行的预测,程序没有认真检查，仅供参考。用了R的forecast 软件包里的exponential smoothing 和forecast函数。",
        "We used a simple time series data forecasting model provided by the forecast package in R and the exponential smoothing method. We did not do rigrious testing of the models.",
@@ -405,6 +405,8 @@ myDic = matrix( c(
   "死亡人数"  ,"Deaths",
   "各主要城市确诊数", "Confirmed cases in affected cities",
   "天后确诊 ", "days later confirmed cases in ",
+  "死亡率(%)","Gross Death Rate (%)",
+  "中国详细预测", "Detailed forecast on Chinese cases",
   
   "last", "last"
 ),nrow=2)
