@@ -766,12 +766,14 @@ function(input, output, session) {
              palette='Blues')
 
     }, height = 800, width = 800)   
+
+    shijie <- get_city_map()
     
     #省地图---------------------------------------------------
     output$provinceMap <- renderPlot ({
         # 英语版或直辖市不画地图
-       # if(isEnglish | input$selectProvince0 %in% specialProvinces) { 
-      if(isEnglish | !exists("shijie")) { 
+        ## if(isEnglish | input$selectProvince0 %in% specialProvinces) {
+      if(isEnglish || !is.null(shijie)) { 
           return(NULL)
           } else {  
             plot(y, region = input$selectProvince0, 
