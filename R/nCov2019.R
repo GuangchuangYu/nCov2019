@@ -50,8 +50,15 @@ load_nCov2019 <- function(lang = 'auto', source="github") {
   url = ifelse(source == 'dxy',url1,
                ifelse(source == 'cnnhc', url2, 
                url3))
-  downloader::download(url,destfile = rds, quiet = TRUE)
-  data <- readRDS(rds)
+  data = tryCatch({
+    downloader::download(url, destfile = rds, quiet = TRUE)
+    readRDS(rds)
+  }, error   = function(e) { 
+    message("Historical data downloaded failed. \
+    You will use locally stored data. \
+    To get the latest data, please check your network connection or try again later.")
+    readRDS(system.file("nCov2019History_3_3.rds", package="nCov2019"))[[source]]
+  })
   ## data <- readRDS(system.file("nCov2019History.rds", package="nCov2019"))
   
   prov_cities <- jsonlite::fromJSON(system.file('provinces_and_cities.json', package="nCov2019"))

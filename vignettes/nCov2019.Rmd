@@ -1,20 +1,19 @@
 ---
-title: "Vignettes of R package nCov2019"
+title: "nCov2019 for studying COVID-19 coronavirus outbreak"
 author:
-- name: Tianzhi Wu
-- name: Erqiang Hu
-- name: Patrick Tung
-- name: Xijin Ge
-- name: Guangchuang Yu
+- name: Tianzhi Wu, Erqiang Hu, Patrick Tung, Xijin Ge, Guangchuang Yu
     
-date: "`r format(Sys.time(), '%Y-%m-%d')`"
+date: "`r Sys.Date()`"
 output:
-  BiocStyle::html_document
+  prettydoc::html_pretty:
+    toc: true
+    theme: cayman
+    highlight: github
+  pdf_document:
+    toc: true
 package: nCov2019
-abstract: |
-  To provide convenient access to epidemiological data on the coronavirus outbreak, we developed an R package, nCov2019 (https://github.com/GuangchuangYu/nCov2019). Besides detailed real-time statistics, it also includes historical data in China, down to the city-level. We also developed a website (http://www.bcloud.org/e/) with interactive plots and simple time-series forecasts. These analytics tools could be useful in informing the public and studying how this and similar viruses spread in populous countries.
 vignette: |
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{nCov2019 introduction}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -26,16 +25,16 @@ opts_knit$set(progress=FALSE, verbose=FALSE)
 opts_chunk$set(comment=NA, warning=FALSE, message=FALSE) 
 ```
 
- 
+
+To provide convenient access to epidemiological data on the coronavirus outbreak, we developed an R package, nCov2019 (https://github.com/GuangchuangYu/nCov2019). Besides detailed real-time statistics, it also includes historical data in China, down to the city-level. We also developed a website (http://www.bcloud.org/e/) with interactive plots and simple time-series forecasts. These analytics tools could be useful in informing the public and studying how this and similar viruses spread in populous countries.
 
 # Installation
 
 To start off, users could utilize the ‘remotes’ package to install it directly from GitHub by running the following in R:
 
-```{R,eval=FALSE, warning=FALSE, include=TRUE}
-require('remotes')
+```{r,eval=FALSE, warning=FALSE, include=TRUE}
+library('remotes')
 remotes::install_github("GuangchuangYu/nCov2019", dependencies = TRUE)
-
 ```
 
 
@@ -46,7 +45,7 @@ To query the latest data, you can load it in with `get_nCov2019()`. By default, 
 
 Since most of confirmed cases concentrated in China, researchers may more concern about the details in China. So, print the object `x`, you could get the total number of confirmed cases in China. 
 
-```{R}
+```{r}
 library('nCov2019')
 x <- get_nCov2019(lang = 'en')
 x 
@@ -56,7 +55,7 @@ x
 
 And then you could use `summary(x)`  to get recent Chinese data.
 
-```{R}
+```{r}
 head(summary(x))
 ```
 
@@ -66,7 +65,7 @@ head(summary(x))
 
 While no region is specified, `x[]` will return the provincial level outbreak statistics in China.
 
-```{R}
+```{r}
 head(x[]) 
 
 ```
@@ -75,7 +74,7 @@ head(x[])
 
 To obtain a more granular scale data, you only need to specify the province name. For example, to obtain data in Hubei Province.
 
-```{R}
+```{r}
 head(x['Hubei'])
 
 ```
@@ -86,7 +85,7 @@ head(x['Hubei'])
 
 In addition, by using the argument `by = 'today'`, the number of newly added cases will be return.
 
-```{R}
+```{r}
 head(x['Hubei', by = 'today'])
 
 ```
@@ -95,7 +94,7 @@ head(x['Hubei', by = 'today'])
 
 Getting global data is also easy, by using `x['global']`, the data frame for the global landscape view of each country will be returned. 
 
-```{R}
+```{r}
 head(x['global'])
 
 ```
@@ -104,8 +103,8 @@ head(x['global'])
 
 If you wanted to visualize the cumulative summary data, an example plot could be the following:
 
-```{R,fig.width=6.69, fig.height=4.45}
-require(ggplot2)
+```{r,fig.width=6.69, fig.height=4.45}
+library(ggplot2)
 
 ggplot(summary(x), 
        aes(as.Date(date, "%m.%d"), as.numeric(confirm))) +
@@ -121,7 +120,7 @@ ggplot(summary(x),
 
 And the bar-plot of the latest confirmed diagnosis in Anhui province could be plotted as follow:
 
-```{R,fig.width=6.69, fig.height=4.45}
+```{r,fig.width=6.69, fig.height=4.45}
 library(ggplot2)
 d = x['Anhui', ] # you can replace Anhui with any province
 d = d[order(d$confirm), ]
@@ -139,7 +138,7 @@ ggplot(d, aes(name, as.numeric(confirm))) +
 
 The method for accessing historical data is basically the same as getting the latest data, but entry function is `load_nCov2019()`. 
 
-```{R}
+```{r}
 library('nCov2019')
 y <- load_nCov2019(lang = 'en')
 y  # this will return update time of historical data
@@ -151,7 +150,7 @@ For the historical data, currently, we maintain three historical data,  one of w
 
 The second one is obtained from an Chinese website Dingxiangyuan and user could access it by using  `load_nCov2019(source = 'dxy')`. And the last one is obtained from the National Health Commission of Chinese, user could get it by using argument `source = 'cnnhc'`. The forms of these data are basically the same, but the default data source has more comprehensive global historical information and also contains older historical data. Users can compare and switch data from different sources.
 
-```{R,fig.width=6.69, fig.height=4.45}
+```{r,fig.width=6.69, fig.height=4.45}
 # compare the total confirmed cases in china between data sources
 library(nCov2019)
 library(ggplot2)
@@ -176,7 +175,7 @@ ggplot(subset(df, time >= '2020-01-11'),
 
 Then you can use `summary(y)` to get historical data at the provincial level in China:
 
-```{R}
+```{r}
 head(summary(y))
 
 ```
@@ -185,7 +184,7 @@ head(summary(y))
 
 To get historical data for all cities in China, you can use `y[]` as follow:
 
-```{R}
+```{r}
 head(y[]) 
 
 ```
@@ -194,7 +193,7 @@ head(y[])
 
 You can also specify a province name to get the corresponding historical data, for example, extracting historical data from Anhui Province:
 
-```{R}
+```{r}
 head(y['Anhui'])
 
 ```
@@ -203,7 +202,7 @@ head(y['Anhui'])
 
 Similarly, you can get global historical data by specifying the `'global'` parameter. 
 
-```{R}
+```{r}
 y <- load_nCov2019(lang = 'en', source='github')
 head(y['global'])
 
@@ -218,10 +217,10 @@ Here are some visualization examples with the historical data.
 
 1. Draw a curve reflecting the number of deaths, confirms, and cures in China.
 
-```{R,fig.width=6.69, fig.height=4.45}
-require('tidyr')
-require('ggrepel')
-require('ggplot2')
+```{r,fig.width=6.69, fig.height=4.45}
+library('tidyr')
+library('ggrepel')
+library('ggplot2')
 y <- load_nCov2019(lang = 'en')
 d <- subset(y['global'], country == 'China')
 d <- gather(d, curve, count, -time, -country)
@@ -241,9 +240,9 @@ ggplot(d, aes(time, count, color = curve)) +
 
 2. Outbreak Trend Curves of Countries Around the World (except China).
 
-```{R,fig.width=6.69, fig.height=4.45}
-require('ggrepel')
-require('ggplot2')
+```{r,fig.width=6.69, fig.height=4.45}
+library('ggrepel')
+library('ggplot2')
 y <- load_nCov2019(lang = 'en')
 d <- subset(y['global'], country != "China")
 ggplot(d, aes(time, as.numeric(cum_confirm), 
@@ -264,7 +263,7 @@ ggplot(d, aes(time, as.numeric(cum_confirm),
 
 3. Growth curve of confirms in Anhui Province, China.
 
-```{R,fig.width=6.69, fig.height=4.45}
+```{r,fig.width=6.69, fig.height=4.45}
 y <- load_nCov2019(lang = 'en')
 d <- y['Anhui']
 ggplot(d, aes(time, as.numeric(cum_confirm), 
@@ -282,7 +281,7 @@ ggplot(d, aes(time, as.numeric(cum_confirm),
 
 4. A heatmap of epidemic situation around the world in the last 7 days.
 
-```{R,fig.width=12, fig.height=9}
+```{r,fig.width=12, fig.height=9}
 library(ggplot2)
 y <- load_nCov2019(lang = 'en')
 d <- y['global']
@@ -305,8 +304,8 @@ ggplot(d, aes(time, country)) +
 
 We provide a built-in and convenient geographic map visualization function with nCov2019 package. Getting a plot of the world map is really simple. Just in a few lines as follow:
 
-```{R,fig.width=12, fig.height=8}
-require('maps')
+```{r,fig.width=12, fig.height=8}
+library('maps')
 x = get_nCov2019(lang = 'en')
 plot(x)
 ```
@@ -316,11 +315,11 @@ plot(x)
 
 Combined with chinamap R package, you can draw more detailed maps in China. For example, we can slightly modify the code above to better display China region.
 
-```{R,eval=FALSE, warning=FALSE, include=TRUE}
+```{r,eval=FALSE, warning=FALSE, include=TRUE}
 remotes::install_github("GuangchuangYu/chinamap")
 ```
 
-```{R,fig.width=12, fig.height=8}
+```{r,fig.width=12, fig.height=8}
 library(chinamap)
 x = get_nCov2019(lang = 'en')
 cn = get_map_china()
@@ -344,7 +343,7 @@ With the argument region , User could plot the map focus on specific country. Fo
 
 To get a closer look at what the situation is in China, please add the argument  `region = 'china'`  and `chinamap` as follow:
 
-```{R,fig.width=12, fig.height=8}
+```{r,fig.width=12, fig.height=8}
 x <- get_nCov2019(lang = 'en')
 cn = get_map_china()
 cn$province <- trans_province(cn$province)
@@ -354,7 +353,7 @@ plot(x, region = 'china', chinamap = cn,
 ```
 
 More color palettes can be found here: [palettes](https://www.r-graph-gallery.com/38-rcolorbrewers-palettes.html)
-```{R echo=FALSE, fig.height=8}
+```{r echo=FALSE, fig.height=8}
 library(RColorBrewer)
 par(mar=c(3,4,2,2))
 display.brewer.all()
@@ -362,25 +361,26 @@ display.brewer.all()
 
 Plotting data on selected geographical region is also supported if the GIS file was available. we have provided the city maps in China. User cloud downdoad it from [here]('http://q6k78o1u4.bkt.clouddn.com/cn_city_map.rds'). Also, when the user runs `dashboard(remote=FALSE)` the first time, the map rds file `cn_city_map.rds` will be downloaded in current working directory, it has contained the whole city maps in China. 
 
-```{R,fig.width=12, fig.height=8}
-require('sf')
+```{r,fig.width=12, fig.height=8}
 x = get_nCov2019(lang = 'en')
+
 # If the user want to use their GIS file, 
 # it could be loads is as:
 # m = sf::st_read("PATH/TO_GIS_file.shp")
 
-rds <- tempfile(pattern=".rds")
+rds <- tempfile(fileext = ".rds")
 url <- 'http://q6k78o1u4.bkt.clouddn.com/cn_city_map.rds'
 downloader::download(url, destfile = rds, quiet = FALSE)
 m <- readRDS(rds)
 m$NAME <- trans_city(m$NAME)
+
 plot(x, region = 'Hubei', chinamap = m)
 ```
 
 
 Also, you can plot a map on specific date:
 
-```{R,fig.width=12, fig.height=8}
+```{r,fig.width=12, fig.height=8}
 y <- load_nCov2019(lang = 'en')
 cn = get_map_china()
 
@@ -395,8 +395,8 @@ A more informative application is to draw dynamic geographic maps at multiple ti
 
 The complete codes for plotting historical maps of world, China, and provinces in China are as follows:
 
-```{R,eval=FALSE, warning=FALSE, include=TRUE}
-require(nCov2019)
+```{r,eval=FALSE, warning=FALSE, include=TRUE}
+library(nCov2019)
 from = "2020-02-18"
 to = "2020-03-02"
 y <- load_nCov2019(lang = 'en')
@@ -407,7 +407,7 @@ plot(y, from = from, to = to)
 
 # To generate a historical map of China
 # and save as "china.gif": 
-require(chinamap)
+library(chinamap)
 cn = get_map_china()
 cn$province <- trans_province(cn$province)
 plot(y, region="china", chinamap=cn, 
@@ -433,6 +433,6 @@ Sometimes users want to know the situation directly without taking time to code.
 
 # Session Info
 
-```{R}
+```{r}
 sessionInfo()
 ```
