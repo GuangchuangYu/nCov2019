@@ -806,7 +806,7 @@ function(input, output, session) {
         # issues with Chinese characters solved
         # http://kevinushey.github.io/blog/2018/02/21/string-encoding-and-r/
         con <- file(file, open = "w+", encoding = "native.enc")
-        df <- x["global"]
+        df <- xgithub["global"]
         df$time <- as.character(format(df$time))
         writeLines( paste( colnames(df), collapse = "\t"), con = con, useBytes = TRUE)
         for(i in 1:nrow( df) )
