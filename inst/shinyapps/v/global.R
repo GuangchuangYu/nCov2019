@@ -130,6 +130,7 @@ todayTotal <- do.call(rbind, Map(data.frame, total=y$chinaTotal,add=y$chinaAdd))
 colnames(todayTotal) <- c("总数","增加")
 #rownames(todayTotal) <- c("确诊","疑似","死亡","痊愈","New Confirmed","NewSever")
 rownames(todayTotal) <- c("确诊","痊愈","死亡","nowConfirm","疑似","nowSevere", "importedCase")
+
 # Use data from Tencent for historical China data
 #ChinaHistory <- summary(y) %>%
 #  mutate(time = as.Date( gsub("\\.","-",paste0("2020-",date) )) )
