@@ -15,6 +15,8 @@ get_nCov2019 <- function(lang = 'auto') {
     # change countries to English
     nn <- readRDS(system.file("country_translate.rds", package="nCov2019"))
     data$areaTree$name <- nn[as.character(data$areaTree$name)]
+    # change global countries name to English
+    data$global$name <- nn[as.character(data$global$name)]
 
     # change provinces to English
     prov_cities <- jsonlite::fromJSON(system.file('provinces_and_cities.json', package="nCov2019"))
