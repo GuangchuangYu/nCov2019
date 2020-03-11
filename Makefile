@@ -51,15 +51,17 @@ push:
 	git push gitee master;\
 	git push origin master
 
-deploy:
-	cd vignettes;\
-	Rscript -e "rmarkdown::render('nCov2019.Rmd')";\
-	mv nCov2019.html ../.. ;\
-	cd ..;\
+deploy: gh
 	git checkout gh-pages;\
-	mv ../nCov2019.html index.html;\
 	git add .;\
 	git commit -m 'update vignette';\
 	git push -u origin gh-pages;\
 	git checkout master
 
+gh:
+	cd vignettes;\
+	Rscript -e "rmarkdown::render('nCov2019.Rmd')";\
+	mv nCov2019.html ../.. ;\
+	cd ..;\
+	git checkout gh-pages;\
+	mv ../nCov2019.html index.html
