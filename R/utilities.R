@@ -59,10 +59,9 @@ extract_province <- function(object, i, by) {
   data$chinaDayAddList <- y2$chinaDayAddList
 
   # get China data 
-  name <- data$areaTree[1]
-  i <- which(name == '中国')
+  name <- data$areaTree[1]$name
   df <- data$areaTree$total
-  CN <- cbind(name=name, df)[i,]
+  CN <- cbind(name=name, df)[1,]
 
   # get oversea data
   tmp <- y2$foreignList
