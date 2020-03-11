@@ -24,20 +24,20 @@ isEnglish <- TRUE else isEnglish <- FALSE
 #-----------------------------------------------
 if(isEnglish)
   myURL = "http://www.bcloud.org/v/"  else
-    myURL = "http://www.bcloud.org/e/" 
+    myURL = "http://www.bcloud.org/e/"
 
 library(pinyin)
 mypy <- pydic(method = "toneless",dic = 'pinyin2') # 载入默认字典
   #py("武汉", sep = "", dic = mypy) # 转换
 
-py1 <- function (ChineseName) 
+py1 <- function (ChineseName)
   # Translate Chinese names into English based on the pinyin package
   # The capitalize function is based the capitalize function in Hmsic package
   # ""武汉"" --> "Wuhan"
 {
-  if(!isEnglish) { 
-    return(ChineseName) 
-    } else {  
+  if(!isEnglish) {
+    return(ChineseName)
+    } else {
   string <- as.character( py(ChineseName, sep = "", dic = mypy) )
   capped <- grep("^[A-Z]", string, invert = TRUE)
   substr(string[capped], 1, 1) <- toupper(substr(string[capped], 1, 1))
@@ -45,18 +45,18 @@ py1 <- function (ChineseName)
   }
 }
 
-py2 <- function (ChineseNames) 
+py2 <- function (ChineseNames)
   # Translate a vector of Chinese strings into English
   #  c("武汉", "上海") --> c("Wuhan", "Shanghai")
 {
-  if(!isEnglish) { 
-    return(ChineseNames) 
+  if(!isEnglish) {
+    return(ChineseNames)
   } else {
     unlist( lapply(as.character( ChineseNames ), py1) )
   }
 }
 
-py3 <- function (ChineseName) 
+py3 <- function (ChineseName)
   # Translate Chinese names into English based on the pinyin package
   # The capitalize function is based the capitalize function in Hmsic package
   # ""武汉"" --> "Wuhan"
@@ -75,22 +75,22 @@ options(warn=-1) #suppress warnings
 # Data see: https://mp.weixin.qq.com/s/lrQWGKj-mReWrxfi_4Sw9A
 library(nCov2019)
 library(dplyr)
-library(tidyr) # for gather function 
-if(isEnglish) { 
+library(tidyr) # for gather function
+if(isEnglish) {
   try( y <- get_nCov2019(lang="en"), silent = TRUE)  # load real time data from Tencent
   x <- load_nCov2019(lang="en", source = "dxy") #load historical data
-  xgithub <- load_nCov2019(lang="en", source = "github") #load historical data 
+  xgithub <- load_nCov2019(lang="en", source = "github") #load historical data
 } else {
   try( y <- get_nCov2019(lang="zh"), silent = TRUE)  # load real time data from Tencent
   x <- load_nCov2019(lang="zh", source = "dxy") #load historical data
   xgithub <- load_nCov2019(lang="zh", source = "github") #load historical data
   }
-x$data <- x$data %>% 
+x$data <- x$data %>%
   filter( time > as.Date("2020-1-10")) %>%
   filter( !(cum_confirm == 0 & cum_dead == 0 & cum_heal == 0) )
 
-#x$global <- x$global %>% 
-#  filter( time > as.Date("2020-1-10")) 
+#x$global <- x$global %>%
+#  filter( time > as.Date("2020-1-10"))
 
 # correct an erorr in data "四川 " "四川"
 x$data$province <- gsub(" ", "", x$data$province)
@@ -98,22 +98,22 @@ x$data$province <- gsub(" ", "", x$data$province)
 x$data$city <- gsub(" ", "", x$data$city)
 
 #Get a list of sorted provinces
-provinceNames <- x$data %>% 
+provinceNames <- x$data %>%
   arrange(province, desc(cum_confirm) ) %>%
   group_by(province) %>%
   filter(row_number() ==1) %>%
-  arrange(desc(cum_confirm)) %>% 
+  arrange(desc(cum_confirm)) %>%
   pull(province)
 
 #provinceNames <- c(entireCountry, provinceNames)
 
 # Get a list of cities sorted by cases
-cityNames <- x$data %>% 
+cityNames <- x$data %>%
   filter(province != city) %>%
   arrange(city, desc(cum_confirm) ) %>%
   group_by(city) %>%
   filter(row_number() ==1) %>%
-  arrange(desc(cum_confirm)) %>% 
+  arrange(desc(cum_confirm)) %>%
   pull(city)
 
 #Beijing, ...
@@ -123,13 +123,14 @@ specialProvinces <- c("北京", "上海", "重庆", "天津", "西藏")
 cityNames = c(cityNames, provinceNames)
 
 cityNamesList <- setNames(cityNames, cityNames)
-if(isEnglish) 
+if(isEnglish)
   cityNamesList <- setNames(cityNames, py2( cityNames) )
 
 #Today's totals
 todayTotal <- do.call(rbind, Map(data.frame, total=y$chinaTotal,add=y$chinaAdd))
 colnames(todayTotal) <- c("总数","增加")
-rownames(todayTotal) <- c("确诊","疑似","死亡","痊愈","New Confirmed","NewSever")
+#rownames(todayTotal) <- c("确诊","疑似","死亡","痊愈","New Confirmed","NewSever")
+rownames(todayTotal) <- c("确诊","痊愈","死亡","nowConfirm","疑似","nowSevere", "importedCase")
 
 # Use data from Tencent for historical China data
 #ChinaHistory <- summary(y) %>%
@@ -140,7 +141,7 @@ ChinaHistory <- x$data %>%
                group_by(time) %>%
                summarise( confirm = sum(cum_confirm, na.rm = TRUE), # missing values in some cities
                            dead = sum(cum_dead, na.rm = TRUE),
-                           heal = sum(cum_heal,  na.rm = TRUE)) 
+                           heal = sum(cum_heal,  na.rm = TRUE))
 
 #ChinaHistory <- x$global %>%
 #  filter(country == z('中国')) %>%
@@ -150,22 +151,22 @@ ChinaHistory <- x$data %>%
 z <- function (ChineseName) {
   # translate chinese Names and menu items to English
   # it Uses a dictionary above
-  if(!isEnglish) { 
-    return(ChineseName) 
+  if(!isEnglish) {
+    return(ChineseName)
   } else {
     translated <- myDic2[ChineseName]
-    if(is.na(translated)) 
+    if(is.na(translated))
       return( ChineseName ) else
         return(translated)
   }
 }
 
-z2 <- function (ChineseNames) 
+z2 <- function (ChineseNames)
   # Translate a vector of Chinese strings into English
   #  c("武汉", "上海") --> c("Wuhan", "Shanghai")
 {
-  if(!isEnglish) { 
-    return(ChineseNames) 
+  if(!isEnglish) {
+    return(ChineseNames)
   } else {
     unlist( lapply(as.character( ChineseNames ), z) )
   }
@@ -174,7 +175,7 @@ z2 <- function (ChineseNames)
 tem <- table(xgithub$global$country)
 tem2 <- xgithub$global %>%
   group_by(country) %>%
-  summarise(max = max(cum_confirm)) %>% 
+  summarise(max = max(cum_confirm)) %>%
   arrange(desc(max)) %>%
   filter(max > 30) %>%
   pull(country)
@@ -190,16 +191,16 @@ contriesPrediction <- xgithub$global %>%
 
 # missing data imput using the mean of n neighboring data points on both sides
 # if n = 1, then two neighbors, if n=2 then 2 neighbors on both sides
-meanImput <- function (x, n = 2) { 
+meanImput <- function (x, n = 2) {
   ix <- is.na(x)
   x2 <- x
   for( ixx in which(ix)) {
     start <- ixx-n;
-    if(start < 1) 
+    if(start < 1)
       start <- 1;
     end <- ixx + n;
-    if(start > length(x)) 
-      start <- length(x);  
+    if(start > length(x))
+      start <- length(x);
     x2[ixx] <- mean( x[ start:end], na.rm = T  ) }
   return( x2 )
 }
@@ -222,7 +223,7 @@ finc <- function(x) {
     return( paste0("+",x) )
   } else{
     return( as.character(x) )
-  } 
+  }
 }
 #  Below come from #https://shiny.rstudio.com/gallery/unicode-characters.html
 # for displaying Chinese characters
@@ -257,7 +258,7 @@ if (.Platform$OS.type == "windows") {
 }
 
 
-myDic = matrix( c( 
+myDic = matrix( c(
   #---------------------Countries
   "中国", "China",
   "日本", "Japan",
@@ -284,7 +285,7 @@ myDic = matrix( c(
   "柬埔寨", "cambodia",
   "尼泊尔", "Nepal",
   "芬兰"  , "Finland",
-  
+
   #---------------------Provinces
   "湖北", "Hubei",
   "广东", "Guangdong",
@@ -320,27 +321,27 @@ myDic = matrix( c(
   "青海", "Qinghai",
   "澳门", "Macau",
   "西藏", "Tibet",
-  
+
   #---------------------Menu items
 
-  
+
   "疫情统计和预测", "Coronavirus COVID-19 outbreak statistics and forecast",
-  
+
   "全国", "China",
   "地图", "Map",
   "省", "Provinces",
   "市", "Cities",
   "世界", "World",
   "预测", "Forecast",
-  
+
   "确诊", "Confirmed",
   "死亡", "Death",
   "痊愈", "Discharged",
-  
+
   "全国确诊:", "China total confirmed: ",
   ",   疑似:",  ",   suspected:",
   ",   死亡:",  ",   death:",
-  ",   痊愈:", ",   discharaged:", 
+  ",   痊愈:", ",   discharaged:",
   "一天之内数字会有多次更新。", "Updated serveral times a day. May not be final count for the day.",
   "01月", "Jan.",
   "02月", "Feb.",
@@ -351,9 +352,9 @@ myDic = matrix( c(
   "07月", "July",
   "08月", "August",
   "09月", "Sept.",
-  "10月", "Oct.",  
-  "11月", "Nov.", 
-  "12月", "Dec.", 
+  "10月", "Oct.",
+  "11月", "Nov.",
+  "12月", "Dec.",
   "日", " ",
   "更新", "Updated",
   "北京时间", "Beijing time",
@@ -363,18 +364,18 @@ myDic = matrix( c(
   "简单的算法进行的预测,程序没有认真检查，仅供参考。用了R的forecast 软件包里的exponential smoothing 和forecast函数。",
        "We used a simple time series data forecasting model provided by the forecast package in R and the exponential smoothing method. We did not do rigrious testing of the models.",
 
-  "先直接用全国的确诊总数的时间序列：", 
+  "先直接用全国的确诊总数的时间序列：",
        "First we used the time series of the total confirmed cases in China to forecast:",
-  
+
   "把全国的确诊总数先换算成了每天比前一天增加的百分比，
                  去除了前面10天不稳定的数据, 再预测：",
   "We transformed the data into daily increased percentage, and run the forecast:",
-  
+
   "直接用全国的死亡累计数预测：", "Forecasting the total deathes in China directly:",
-  
+
   "把全国的死亡累计数先换算成了每天比前一天增加的百分比，去除了前面10天不稳定的数据,再预测：",
      "Forecasting the daily percent increase:",
-  
+
   "各市", "Cities",
   "确诊 (死亡)", "Confirmed (dead)",
   "腾迅", " from Tencent",
@@ -394,7 +395,7 @@ myDic = matrix( c(
   "全国死亡人数", "Total deathes in China",
   "天后全国死亡累计", " days later total deathes in China will be ",
   "全国各省", "Confirmed cases across provinces",
-  "英语","中文", 
+  "英语","中文",
   "数据", "Data",
   "中国数据下载", "Download Data for China",
   "世界数据下载", "Download Data for the World",
@@ -408,7 +409,7 @@ myDic = matrix( c(
   "天后确诊 ", "days later confirmed cases in ",
   "死亡率(%)","Gross Death Rate (%)",
   "中国详细预测", "Detailed forecast on Chinese cases",
-  
+
   "last", "last"
 ),nrow=2)
 # make a vector value is English, Name is chinese
@@ -418,22 +419,22 @@ names(myDic2) <- myDic[1,]
 z <- function (ChineseName) {
   # translate chinese Names and menu items to English
   # it Uses a dictionary above
-  if(!isEnglish) { 
-    return(ChineseName) 
+  if(!isEnglish) {
+    return(ChineseName)
   } else {
     translated <- myDic2[ChineseName]
-    if(is.na(translated)) 
+    if(is.na(translated))
       return( ChineseName ) else
         return(translated)
   }
 }
 
-z2 <- function (ChineseNames) 
+z2 <- function (ChineseNames)
   # Translate a vector of Chinese strings into English
   #  c("武汉", "上海") --> c("Wuhan", "Shanghai")
 {
-  if(!isEnglish) { 
-    return(ChineseNames) 
+  if(!isEnglish) {
+    return(ChineseNames)
   } else {
     unlist( lapply(as.character( ChineseNames ), z) )
   }

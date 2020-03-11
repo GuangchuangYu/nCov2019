@@ -25,7 +25,8 @@ extract_history <- function(x, province, date) {
 
 extract_province <- function(object, i, by) {
   if (i == 'global') {
-    res <- cbind(name = object$areaTree[[1]], object$areaTree[[by]])
+    #res <- cbind(name = object$areaTree[[1]], object$areaTree[[by]])
+    res = object$global
     return(res)
   } 
   
@@ -56,6 +57,21 @@ extract_province <- function(object, i, by) {
   data$dailyHistory <- y2$dailyHistory
   data$chinaDayList <- y2$chinaDayList
   data$chinaDayAddList <- y2$chinaDayAddList
+
+  # get China data 
+  name <- data$areaTree[1]$name
+  df <- data$areaTree$total
+  CN <- cbind(name=name, df)[1,]
+
+  # get oversea data
+  tmp <- y2$foreignList
+  df <- tmp[c('name','confirm','suspect','dead','heal')]
+  df$deadRate <- round(df$dead*100/df$confirm,2)
+  df$healRate <- round(df$heal*100/df$confirm,2)
+  df$showRate <- 'FALSE'
+  df$showHeal <- 'FALSE'
+
+  data$global = rbind(CN, df)
   return(data)  
 }
 

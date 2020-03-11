@@ -73,9 +73,9 @@ plot_world <- function(x, region = "world", continuous_scale=TRUE, palette = "Re
     names(d)[nn == "country"] <- "name"
 
     if (region == "world") {
-        tt <- sum(d$confirm)                
+        total <- sum(d$confirm)                
     } else {
-        tt <- sum(d$confirm[d$name %in% region])        
+        total <- sum(d$confirm[d$name %in% region])        
     }
 
 
@@ -108,8 +108,8 @@ plot_world <- function(x, region = "world", continuous_scale=TRUE, palette = "Re
         theme_minimal(base_size = 14) +
         xlab(NULL) + ylab(NULL) +
         labs(title = title, 
-            subtitle = paste('confirmed cases:', tt),
-            caption=paste("accessed date:", time(x)))
+            subtitle = paste('confirmed cases:', total),
+            caption=paste("accessed date:", tt))
 
     if (continuous_scale) {
         if (length(unique(w$confirm)) == 1) {
