@@ -26,7 +26,7 @@ Get the development version from github:
 
 ``` r
 ## install.packages("remotes")
-remotes::install_github("GuangchuangYu/treeio")
+remotes::install_github("GuangchuangYu/nCov2019")
 ```
 
 
