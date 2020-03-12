@@ -118,3 +118,15 @@ which_lang <- function(lang) {
     # nCov2019Env <- get("nCov2019Env", envir = .GlobalEnv)
     # get("shijie", envir = nCov2019Env)
 # }
+
+# check network connection
+# return 200 if URL is avaliable 
+check_network <- function(url) {
+  status = tryCatch({
+    httr::HEAD(url)$status
+  }, error= function(e) { 
+    message(e)
+    FALSE
+  })
+  status
+}

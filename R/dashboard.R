@@ -62,7 +62,13 @@ open_dashboard <- function(lang="auto", remote=FALSE) {
             if(button == 'Y'){
                 ## rds <- tempfile(pattern=".rds")
                 url <- 'http://q6k78o1u4.bkt.clouddn.com/cn_city_map.rds'
+                if(check_network(url) == 200){
                 downloader::download(url, destfile = rds, quiet = FALSE)
+                } else {
+                    # using github url
+                    url <- 'https://raw.githubusercontent.com/GuangchuangYu/map_data/master/cn_city_map.rds'
+                    downloader::download(url, destfile = rds, quiet = FALSE)
+                }
             }
         } 
 
