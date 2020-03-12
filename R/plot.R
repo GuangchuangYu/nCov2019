@@ -33,22 +33,28 @@ plot_city <- function(x, region, chinamap,
     stats <- get_city_data(x, region, date)
     map2 <- dplyr::left_join(map, stats, by='NAME')
 
-    p <- ggplot(map2, aes_(geometry=~geometry)) + 
-        theme_minimal() + xlab(NULL) + ylab(NULL) +
-        labs(title = title, 
-            subtitle = paste('confirmed cases:', sum(stats$confirm)),
-            caption=paste("accessed date:", time(x))) +
-        coord_sf()
+    if (!continuous_scale) {
+        map2$confirm2 <- cut(map2$confirm, discrete_breaks,
+                             include.lowest = T, right=F)
+    }
 
     if (continuous_scale) {
-        p <- p + geom_sf(aes_(fill=~confirm)) +
+        p <- ggplot(map2) +
+            geom_sf(aes_(geometry=~geometry, fill=~confirm)) +
             fill_scale_continuous(palette)
     } else {
-        map2$confirm2 <- cut(map2$confirm2, discrete_breaks,
-                        include.lowest = T, right=F)
-        p <- p + geom_sf(aes_(fill=~confirm2)) +
+        p <- ggplot(map2) +
+            geom_sf(aes_(geometry=~geometry, fill=~confirm2)) +
             fill_scale_discrete(palette)
-    }       
+    }
+
+    p <-p + 
+        theme_minimal() + xlab(NULL) + ylab(NULL) +
+        labs(title = title, 
+             subtitle = paste('confirmed cases:', sum(stats$confirm)),
+             caption=paste("accessed date:", time(x))) +
+        coord_sf()
+
     if (label) p <- p + geom_sf_text(aes_(label=~NAME), size=font.size, family=font.family)
     return(p)
 }    
