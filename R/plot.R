@@ -39,12 +39,12 @@ plot_city <- function(x, region, chinamap,
     }
 
     if (continuous_scale) {
-        p <- ggplot(map2) +
-            geom_sf(aes_(geometry=~geometry, fill=~confirm)) +
+        p <- ggplot(map2, aes_(geometry=~geometry)) +
+            geom_sf(aes_(fill=~confirm)) +
             fill_scale_continuous(palette)
     } else {
-        p <- ggplot(map2) +
-            geom_sf(aes_(geometry=~geometry, fill=~confirm2)) +
+        p <- ggplot(map2, aes_(geometry=~geometry)) +
+            geom_sf(aes_(fill=~confirm2)) +
             fill_scale_discrete(palette)
     }
 
