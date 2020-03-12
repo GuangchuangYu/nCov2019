@@ -386,8 +386,7 @@ p <- ggplot(dd, aes(days_since_100, confirm, color = country)) +
                   bg.color = "white") +
   labs(x = "Number of days since 100th case", y = "", 
        subtitle = "Total number of cases")
-
-p + annotate(geom="text", label="Cases of Diamond Princess\nwas splited from Japan", x = 30, y = 400)
+print(p)
 ```
 
 # Geographic map visualization
