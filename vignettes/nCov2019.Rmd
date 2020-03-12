@@ -200,45 +200,13 @@ head(y['Anhui'])
 
 
 
-Similarly, you can get global historical data by specifying the `'global'` parameter. 
+Similarly, you can get global historical data by specifying the `'global'` parameter.
 
-
-```{r globalwindrose, fig.width=20, fig.height=15}
-require(nCov2019)
+```{r}
 y <- load_nCov2019(lang = 'en', source='github')
-d = y['global']
-
-
-require(dplyr)
-dd <- filter(d, time == time(y)) %>% 
-    arrange(desc(cum_confirm)) 
-
-dd = dd[1:40, ]
-dd$country = factor(dd$country, levels=dd$country)
-
-dd$angle = 1:40 * 360/40
-require(ggplot2)
-ggplot(dd, aes(country, cum_confirm, fill=cum_confirm)) + 
-    geom_col(width=1, color='grey90') + 
-    geom_col(aes(y=I(5)), width=1, fill='grey90', alpha = .2) +       
-    geom_col(aes(y=I(3)), width=1, fill='grey90', alpha = .2) +    
-    geom_col(aes(y=I(2)), width=1, fill = "white") +
-    scale_y_log10() + 
-    scale_fill_gradientn(colors=c("darkgreen", "green", "orange", "firebrick","red"), trans="log") + 
-    geom_text(aes(label=paste(country, cum_confirm, sep="\n"), 
-                  y = cum_confirm *.8, angle=angle), 
-            data=function(d) d[d$cum_confirm > 100,], 
-            size=3, color = "white", fontface="bold", vjust=1)  + 
-    geom_text(aes(label=paste0(cum_confirm, " cases ", country), 
-                  y = max(cum_confirm) * 2, angle=angle+90), 
-            data=function(d) d[d$cum_confirm < 100,], 
-            size=3, vjust=0) + 
-    coord_polar(direction=-1) + 
-    theme_void() + 
-    theme(legend.position="none") +
-    ggtitle("COVID19 global trend", time(y))
+d <- y['global']
+tail(d)
 ```
-
 
 **NOTE: The global historical data is not available from source `'dxy'`.**
 
@@ -331,6 +299,97 @@ ggplot(d, aes(time, country)) +
   scale_x_date(date_labels = "%Y-%m-%d") + theme_minimal()
 ```
 
+5. Windrose plot of global confirm cases 
+
+
+```{r globalwindrose, fig.width=20, fig.height=15}
+require(nCov2019)
+y <- load_nCov2019(lang = 'en', source='github')
+d = y['global']
+
+
+require(dplyr)
+dd <- filter(d, time == time(y)) %>% 
+    arrange(desc(cum_confirm)) 
+
+dd = dd[1:40, ]
+dd$country = factor(dd$country, levels=dd$country)
+
+dd$angle = 1:40 * 360/40
+require(ggplot2)
+ggplot(dd, aes(country, cum_confirm, fill=cum_confirm)) + 
+    geom_col(width=1, color='grey90') + 
+    geom_col(aes(y=I(5)), width=1, fill='grey90', alpha = .2) +       
+    geom_col(aes(y=I(3)), width=1, fill='grey90', alpha = .2) +    
+    geom_col(aes(y=I(2)), width=1, fill = "white") +
+    scale_y_log10() + 
+    scale_fill_gradientn(colors=c("darkgreen", "green", "orange", "firebrick","red"), trans="log") + 
+    geom_text(aes(label=paste(country, cum_confirm, sep="\n"), 
+                  y = cum_confirm *.8, angle=angle), 
+            data=function(d) d[d$cum_confirm > 100,], 
+            size=3, color = "white", fontface="bold", vjust=1)  + 
+    geom_text(aes(label=paste0(cum_confirm, " cases ", country), 
+                  y = max(cum_confirm) * 2, angle=angle+90), 
+            data=function(d) d[d$cum_confirm < 100,], 
+            size=3, vjust=0) + 
+    coord_polar(direction=-1) + 
+    theme_void() + 
+    theme(legend.position="none") +
+    ggtitle("COVID19 global trend", time(y))
+```
+
+6. Outbreak trend since 100th cases
+
+```{r globalTrend, fig.width=9, fig.height=6.5}
+require(dplyr)
+require(ggplot2)
+require(shadowtext)
+
+conflict_prefer("filter", "dplyr")
+
+
+require(nCov2019)
+
+d <- load_nCov2019()
+dd <- d['global'] %>% 
+  as_tibble %>%
+  rename(confirm=cum_confirm) %>%
+  filter(confirm > 100) %>%
+  group_by(country) %>%
+  mutate(days_since_100 = as.numeric(time - min(time))) %>%
+  ungroup 
+  
+
+  
+
+breaks=c(100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100000)
+
+
+p <- ggplot(dd, aes(days_since_100, confirm, color = country)) +
+  geom_smooth(method='lm', aes(group=1),
+              data = . %>% filter(!country %in% c("China", "Japan", "Singapore")), 
+              color='grey10', linetype='dashed') +
+  geom_line(size = 0.8) +
+  geom_point(pch = 21, size = 1) +
+  scale_y_log10(expand = expansion(add = c(0,0.1)), 
+                breaks = breaks, labels = breaks) +
+  scale_x_continuous(expand = expansion(add = c(0,1))) +
+  theme_minimal(base_size = 14) +
+  theme(
+    panel.grid.minor = element_blank(),
+    legend.position = "none",
+    plot.margin = margin(3,15,3,3,"mm")
+  ) +
+  coord_cartesian(clip = "off") +
+  geom_shadowtext(aes(label = paste0(" ",country)), hjust=0, vjust = 0, 
+                  data = . %>% group_by(country) %>% top_n(1, days_since_100), 
+                  bg.color = "white") +
+  labs(x = "Number of days since 100th case", y = "", 
+       subtitle = "Total number of cases")
+
+p + annotate(geom="text", label="Cases of Diamond Princess\nwas splited from Japan", x = 30, y = 400)
+```
+
 # Geographic map visualization
 
 We provide a built-in and convenient geographic map visualization function with nCov2019 package. Getting a plot of the world map is really simple. Just in a few lines as follow:
@@ -392,9 +451,7 @@ display.brewer.all()
 
 Plotting data on selected geographical region is also supported if the GIS file was available. we have provided the city maps in China. User cloud downdoad it from [here]('http://q6k78o1u4.bkt.clouddn.com/cn_city_map.rds'). Also, when the user runs `dashboard(remote=FALSE)` the first time, the map rds file `cn_city_map.rds` will be downloaded in current working directory, it has contained the whole city maps in China. 
 
-```{r,fig.width=12, fig.height=8}
-x = get_nCov2019(lang = 'en')
-
+```r
 # If the user want to use their GIS file, 
 # it could be loads is as:
 # m = sf::st_read("PATH/TO_GIS_file.shp")
@@ -403,6 +460,22 @@ rds <- tempfile(fileext = ".rds")
 url <- 'http://q6k78o1u4.bkt.clouddn.com/cn_city_map.rds'
 downloader::download(url, destfile = rds, quiet = FALSE)
 m <- readRDS(rds)
+```
+
+```{r echo=FALSE}
+rds = "cn_city_map.rds"
+if (!file.exists(rds)) {
+   rds <- tempfile(fileext = ".rds") 
+   url <- 'http://q6k78o1u4.bkt.clouddn.com/cn_city_map.rds'
+   downloader::download(url, destfile = rds, quiet = FALSE)
+}
+
+m <- readRDS(rds)
+```
+
+```{r,fig.width=12, fig.height=8}
+x = get_nCov2019(lang = 'en')
+
 m$NAME <- trans_city(m$NAME)
 
 plot(x, region = 'Hubei', chinamap = m)
