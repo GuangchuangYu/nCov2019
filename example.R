@@ -92,5 +92,5 @@ require(cowplot)
 pp <- plot_grid(p2, p3, ncol=1, labels=c("B", "C"), 
     rel_heights=c(.7, 1)) 
 g <- plot_grid(p1, pp, ncol=2, rel_widths=c(1.2, 1), labels=c("A", "")) 
-ggsave(g, filename = "nCov2019.png", width=16, height=11)
+ggsave(g, filename = "nCov2019.jpg", width=16, height=11)
 

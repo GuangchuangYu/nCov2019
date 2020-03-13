@@ -33,7 +33,7 @@ remotes::install_github("GuangchuangYu/nCov2019")
 
 Run the script [example.R](example.R) in R using `source("example.R")`, will produce the following figure:
 
-![](https://raw.githubusercontent.com/GuangchuangYu/nCov2019/master/nCov2019.png)
+![](nCov2019.jpg)
 
 ## :book: Documents
 
