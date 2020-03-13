@@ -29,6 +29,11 @@ Get the development version from github:
 remotes::install_github("GuangchuangYu/nCov2019")
 ```
 
+## :art: Example
+
+Run the script [example.R](example.R) in R using `source("example.R")`, will produce the following figure:
+
+![](nCov2019.png)
 
 ## :book: Documents
 

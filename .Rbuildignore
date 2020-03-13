@@ -3,3 +3,5 @@ README.md
 Makefile
 ^.*\.Rproj$
 ^\.Rproj\.user$
+example.R
+nCov2019.png

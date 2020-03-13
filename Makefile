@@ -6,6 +6,10 @@ all: rd check clean
 
 alldocs: rd readme
 
+figure:
+	Rscript -e 'source("example.R")'
+
+	
 rd:
 	Rscript -e 'library(methods); devtools::document()'
 # Rscript -e 'roxygen2::roxygenise(".")'
