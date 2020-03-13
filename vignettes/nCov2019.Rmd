@@ -103,10 +103,22 @@ head(x['global'])
 
 If you wanted to visualize the cumulative summary data, an example plot could be the following:
 
+```r
+d <- summary(x)
+```
+
+```{r echo =F}
+#tencent duplicated 3.11, the second one should be 3.12
+## should be fixed in future.
+
+d <- summary(x) 
+d <- d[d$date < '03.11', ]
+```
+
 ```{r,fig.width=6.69, fig.height=4.45}
 library(ggplot2)
 
-ggplot(summary(x), 
+ggplot(d, 
        aes(as.Date(date, "%m.%d"), as.numeric(confirm))) +
   geom_col(fill = 'firebrick') + 
   theme_minimal(base_size = 14) +
@@ -280,7 +292,7 @@ ggplot(d, aes(time, as.numeric(cum_confirm),
 
 4. A heatmap of epidemic situation around the world in the last 7 days.
 
-```{r,fig.width=12, fig.height=9}
+```{r,fig.width=6, fig.height=12}
 library(ggplot2)
 y <- load_nCov2019(lang = 'en')
 d <- y['global']
@@ -368,7 +380,7 @@ d <- load_nCov2019()
 dd <- d['global'] %>% 
   as_tibble %>%
   rename(confirm=cum_confirm) %>%
-  filter(confirm > 100) %>%
+  filter(confirm > 100 & country != "China") %>%
   group_by(country) %>%
   mutate(days_since_100 = as.numeric(time - min(time))) %>%
   ungroup 
@@ -381,7 +393,7 @@ breaks=c(100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100000)
 
 p <- ggplot(dd, aes(days_since_100, confirm, color = country)) +
   geom_smooth(method='lm', aes(group=1),
-              data = . %>% filter(!country %in% c("China", "Japan", "Singapore")), 
+              data = . %>% filter(!country %in% c("Japan", "Singapore")), 
               color='grey10', linetype='dashed') +
   geom_line(size = 0.8) +
   geom_point(pch = 21, size = 1) +
