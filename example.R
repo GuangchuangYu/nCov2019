@@ -5,13 +5,26 @@ d = y['global']
 
 
 require(dplyr)
-dd <- filter(d, time == time(y)) %>% 
+require(shadowtext)
+
+dd <- filter(d, time == time(y) & country != "China") %>% 
     arrange(desc(cum_confirm)) 
 
 dd = dd[1:40, ]
 dd$country = factor(dd$country, levels=dd$country)
-
+cols <- rev(RColorBrewer::brewer.pal(10, "RdYlGn"))
 dd$angle = 1:40 * 360/40
+
+i = dd$angle >= 180 & dd$cum_confirm > 100
+dd$angle[i] = dd$angle[i] + 180
+j = dd$angle < 180 & dd$cum_confirm < 1000
+dd$angle[j] = dd$angle[j] - 90
+dd$vjust = 1
+dd$vjust[i] = 0
+dd$vjust[j] = 0.5
+dd$y = dd$cum_confirm *.8
+dd$y[j] = dd$y[j] * .7
+
 require(ggplot2)
 p <- ggplot(dd, aes(country, cum_confirm, fill=cum_confirm)) + 
     geom_col(width=1, color='grey90') + 
@@ -19,20 +32,23 @@ p <- ggplot(dd, aes(country, cum_confirm, fill=cum_confirm)) +
     geom_col(aes(y=I(3)), width=1, fill='grey90', alpha = .2) +    
     geom_col(aes(y=I(2)), width=1, fill = "white") +
     scale_y_log10() + 
-    scale_fill_gradientn(colors=c("darkgreen", "green", "orange", "firebrick","red"), trans="log") + 
-    geom_text(aes(label=paste(country, cum_confirm, sep="\n"), 
-                  y = cum_confirm *.8, angle=angle), 
+    scale_fill_gradientn(colors=cols, trans="log") + 
+    geom_shadowtext(aes(label=paste(country, cum_confirm, sep="\n"), 
+                  y = y, angle=angle, 
+                  vjust=vjust), 
             data=function(d) d[d$cum_confirm > 100,], 
-            size=3, color = "white", fontface="bold", vjust=1)  + 
-    geom_text(aes(label=paste0(cum_confirm, " cases ", country), 
-                  y = max(cum_confirm) * 2, angle=angle+90), 
+            size=3, colour = "white", bg.colour="grey20", 
+            fontface="bold")  + 
+    geom_text(aes(label=paste0(cum_confirm, ", ", country), 
+                  y = max(cum_confirm) * 2,  
+                  angle=angle+90), 
             data=function(d) d[d$cum_confirm < 100,], 
-            size=3, vjust=0) + 
+            size=3, vjust=1) + 
     coord_polar(direction=-1) + 
     theme_void() + 
     theme(legend.position="none") 
 
-p1 = ggplotify::as.ggplot(p, scale=1.45, vjust=-.15, hjust=.02)
+p1 = ggplotify::as.ggplot(p, scale=1.4, vjust=-.15, hjust=.02)
 
 require(dplyr)
 require(ggplot2)
@@ -47,8 +63,6 @@ dd <- d['global'] %>%
   group_by(country) %>%
   mutate(days_since_100 = as.numeric(time - min(time))) %>%
   ungroup 
-  
-
   
 
 breaks=c(100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100000)
