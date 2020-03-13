@@ -40,10 +40,15 @@ remotes::install_github("GuangchuangYu/nCov2019")
 + [nCov2019：历史数据实现自动更新](https://mp.weixin.qq.com/s/wTqeSVWZCH3YP8YzAj20EQ)
 
 
-## :sparkling\_heart: Shiny Apps that use `nCov2019`
+## :chart\_with\_upwards\_trend: Shiny Apps that use `nCov2019`
 
 + [Coronavirus Tracking dashboard](https://coronavirus.john-coene.com/)
 + [Novel Coronavirus Pneumonia (NCP-2019) Dashboard](https://github.com/gaospecial/NCPdashboard)
 + [Coronavirus COVID-19 outbreak statistics and forecast](http://www.bcloud.org/e/)
 + [新冠状病毒统计和预测](http://www.bcloud.org/v/)
 + [新冠肺炎疫情分析平台](http://14.215.135.56:3838/COVID-19-public/)
+
+## :sparkling\_heart: Collected in resource list
+
++ [Open-Source-COVID-19](https://weileizeng.github.io/Open-Source-COVID-19/)
++ [Top 7 R resources on COVID-19 Coronavirus](https://www.statsandr.com/blog/top-r-resources-on-covid-19-coronavirus/)

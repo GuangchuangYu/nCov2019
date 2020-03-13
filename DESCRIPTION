@@ -21,6 +21,7 @@ Imports:
   stats
 Suggests:
   cowplot,
+  ggplotify,
   grDevices,
   maps,
   magick,

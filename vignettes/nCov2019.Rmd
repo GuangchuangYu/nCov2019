@@ -302,7 +302,7 @@ ggplot(d, aes(time, country)) +
 5. Windrose plot of global confirm cases 
 
 
-```{r globalwindrose, fig.width=20, fig.height=15}
+```{r}
 require(nCov2019)
 y <- load_nCov2019(lang = 'en', source='github')
 d = y['global']
@@ -317,7 +317,7 @@ dd$country = factor(dd$country, levels=dd$country)
 
 dd$angle = 1:40 * 360/40
 require(ggplot2)
-ggplot(dd, aes(country, cum_confirm, fill=cum_confirm)) + 
+p <- ggplot(dd, aes(country, cum_confirm, fill=cum_confirm)) + 
     geom_col(width=1, color='grey90') + 
     geom_col(aes(y=I(5)), width=1, fill='grey90', alpha = .2) +       
     geom_col(aes(y=I(3)), width=1, fill='grey90', alpha = .2) +    
@@ -338,16 +338,30 @@ ggplot(dd, aes(country, cum_confirm, fill=cum_confirm)) +
     ggtitle("COVID19 global trend", time(y))
 ```
 
+
+```r
+print(p)
+```
+
+```{r globalwindrose, echo=FALSE, fig.width=8.4, fig.height=10.6}
+if (nCov2019:::is.installed("ggplotify")) {
+  ggplotify::as.ggplot(p, scale=1.45, vjust=-.15, hjust=.02)
+} else {
+  print(p)
+}
+```
+
 6. Outbreak trend since 100th cases
+
+```{r echo=FALSE}
+if (packageVersion("ggplot2") <= "3.3.0") 
+  expansion <- ggplot2::expand_scale
+```  
 
 ```{r globalTrend, fig.width=9, fig.height=6.5}
 require(dplyr)
 require(ggplot2)
 require(shadowtext)
-
-conflict_prefer("filter", "dplyr")
-
-
 require(nCov2019)
 
 d <- load_nCov2019()
