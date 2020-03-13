@@ -5,3 +5,4 @@ Makefile
 ^\.Rproj\.user$
 example.R
 nCov2019.png
+nCov2019.jpg
