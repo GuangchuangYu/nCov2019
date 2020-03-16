@@ -14,11 +14,11 @@
 
 2. [National Health Commission of the People’s Republic of China](http://www.nhc.gov.cn/xcs/yqtb/list_gzbd.shtml) 
 
-   - This data source contains province level data in China.
+    - This data source contains province level data in China.
 
 3. [DXY.cn. Pneumonia. 2020.](https://ncov.dxy.cn/ncovh5/view/pneumonia) 
 
-  -  We collect historical city level data in China from this source.
+    - We collect historical city level data in China from this source.
 
 
 For more details see our [vignette](https://guangchuangyu.github.io/nCov2019/), [Preprint](https://www.medrxiv.org/content/10.1101/2020.02.25.20027433v2), and [Shiny app](http://www.bcloud.org/e/).
