@@ -1,4 +1,4 @@
-# nCov2019: An R package with real-time data from four sources + an Shiny app
+# An R package with real-time data from 4 sources + an Shiny app
 
 ## Data Sources (updated daily)
 * API to [Tencent SARS-COV-2 website](https://news.qq.com/zt2020/page/feiyan.htm). Updated several times a day, the Tencent website relies on official data obtained from the Chinese provincial health agencies, China National Health Commission (CNHC), the World Health Organization (WHO), and public health agencies in other countries. 
@@ -6,11 +6,8 @@
 * [Dingxiangyuan](https://ncov.dxy.cn/ncovh5/view/pneumonia)  which has been continuously aggregating official data from provincial and city health agencies and the CNHC. 
 * [Wuhan-2019-nCoV GitHub repository](https://github.com/canghailan/Wuhan-2019-nCoV). It derives data from the [literature](https://doi.org/10.1016/S0140-6736(20)30183-5) for December 1, 2019, to January 10, 2020, after which it relies on the Chinese news aggregator Toutiao API. This GitHub repository includes historical data for Chinese cities as well as 43 countries. 
 
-+ `get_nCov2019()` to query online latest information
-+ `load_nCov2019()` to get historical data
-+ `summary` and `[` to access data
-+ `plot` to present data on map
-+ `dashboard(lang = 'en', remote = TRUE)` to open Shiny app dashboard
+For more details see our [vignette](https://guangchuangyu.github.io/nCov2019/), [Preprint](https://www.medrxiv.org/content/10.1101/2020.02.25.20027433v2), and [Shiny app](http://www.bcloud.org/e/).
+
 
 ## :writing\_hand: Authors
 
@@ -40,6 +37,12 @@ Get the development version from github:
 ## install.packages("remotes")
 remotes::install_github("GuangchuangYu/nCov2019")
 ```
+
++ `get_nCov2019()` to query online latest information
++ `load_nCov2019()` to get historical data
++ `summary` and `[` to access data
++ `plot` to present data on map
++ `dashboard(lang = 'en', remote = TRUE)` to open Shiny app dashboard
 
 ## :art: Example
 
