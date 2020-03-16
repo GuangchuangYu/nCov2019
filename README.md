@@ -1,5 +1,4 @@
-# An R package with real-time data from 4 sources + an Shiny app
-
+# nCov2019: An R package with real-time data, historical data and Shiny app
 ## Data Sources (updated daily)
 * API to [Tencent SARS-COV-2 website](https://news.qq.com/zt2020/page/feiyan.htm). Updated several times a day, the Tencent website relies on official data obtained from the Chinese provincial health agencies, China National Health Commission (CNHC), the World Health Organization (WHO), and public health agencies in other countries. 
 * CNHC, which is official historical statistics for the 34 Chinese provinces and special districts. 
