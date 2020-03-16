@@ -1,9 +1,16 @@
-# Query information of Wuhan coronavirus infected stats
+# nCov2019: An R package with real-time data from four sources + an Shiny app
+
+## Data Sources (updated daily)
+* API to [Tencent SARS-COV-2 website](https://news.qq.com/zt2020/page/feiyan.htm). Updated several times a day, the Tencent website relies on official data obtained from the Chinese provincial health agencies, China National Health Commission (CNHC), the World Health Organization (WHO), and public health agencies in other countries. 
+* CNHC, which is official historical statistics for the 34 Chinese provinces and special districts. 
+* [Dingxiangyuan](https://ncov.dxy.cn/ncovh5/view/pneumonia)  which has been continuously aggregating official data from provincial and city health agencies and the CNHC. 
+* [Wuhan-2019-nCoV GitHub repository](https://github.com/canghailan/Wuhan-2019-nCoV). It derives data from the [literature](https://doi.org/10.1016/S0140-6736(20)30183-5) for December 1, 2019, to January 10, 2020, after which it relies on the Chinese news aggregator Toutiao API. This GitHub repository includes historical data for Chinese cities as well as 43 countries. 
 
 + `get_nCov2019()` to query online latest information
 + `load_nCov2019()` to get historical data
 + `summary` and `[` to access data
 + `plot` to present data on map
++ `dashboard(lang = 'en', remote = TRUE)` to open Shiny app dashboard
 
 ## :writing\_hand: Authors
 
@@ -13,11 +20,16 @@ School of Basic Medical Sciences, Southern Medical University
 
 <https://guangchuangyu.github.io>
 
+Xijin Ge (Shiny app)
+
+Department of Mathematics and Statistics, South Dakota State University
+
+<https://www.sdstate.edu/directory/xijin-ge>
 
 
-If you use `nCov2019` in published research, please cite the following paper:
+If you use `nCov2019`, please cite the following preprint:
 
-Tianzhi Wu, Xijin Ge<sup>\*</sup>, Guangchuang Yu<sup>\*</sup>. [An R package and a website with real-time data on the COVID-19 coronavirus outbreak](https://www.medrxiv.org/content/10.1101/2020.02.25.20027433v1). **medRxiv**, 2020.02.25.20027433. doi: <https://doi.org/10.1101/2020.02.25.20027433> 
+Tianzhi Wu, Erqiang Hu, Xijin Ge<sup>\*</sup>, Guangchuang Yu<sup>\*</sup>. [An R package and a website with real-time data on the COVID-19 coronavirus outbreak](https://www.medrxiv.org/content/10.1101/2020.02.25.20027433v2). **medRxiv**, 2020.02.25.20027433. doi: <https://doi.org/10.1101/2020.02.25.20027433> 
 
 
 ## :arrow\_double\_down: Installation
