@@ -1,13 +1,25 @@
-# nCov2019: An R package for studying the COVID-19 coronavirus outbreak, with real-time data, historical data and Shiny app
+# nCov2019: An R package with real-time data, historical data and Shiny app
+## Data Sources
+Real-time data:   [Tencent SARS-COV-2 website](https://news.qq.com/zt2020/page/feiyan.htm). 
 
-## Data Sources (updated daily)
+We current integrate historical data from 3 public data source:
 
-* API to [Tencent SARS-COV-2 website](https://news.qq.com/zt2020/page/feiyan.htm). Updated several times a day, the Tencent website relies on official data obtained from the Chinese provincial health agencies, China National Health Commission (CNHC), the World Health Organization (WHO), and public health agencies in other countries. 
-* CNHC, which is official historical statistics for the 34 Chinese provinces and special districts. 
-* [Dingxiangyuan](https://ncov.dxy.cn/ncovh5/view/pneumonia)  which has been continuously aggregating official data from provincial and city health agencies and the CNHC. 
-* [Wuhan-2019-nCoV GitHub repository](https://github.com/canghailan/Wuhan-2019-nCoV). It derives data from the [literature](https://doi.org/10.1016/S0140-6736(20)30183-5) for December 1, 2019, to January 10, 2020, after which it relies on the Chinese news aggregator Toutiao API. This GitHub repository includes historical data for Chinese cities as well as 43 countries. 
+1. [Wuhan-2019-nCoV GitHub repository](https://github.com/canghailan/Wuhan-2019-nCoV).  
+
+   This data source contains detailed city level data in China, and country level data in worldwide.
+
+2. [National Health Commission of the People’s Republic of China](http://www.nhc.gov.cn/xcs/yqtb/list_gzbd.shtml) 
+
+   This data source contains province level data in China.
+
+3. [DXY.cn. Pneumonia. 2020.](https://ncov.dxy.cn/ncovh5/view/pneumonia) 
+
+   We collect historical city level data in China from this source.
+
 
 For more details see our [vignette](https://guangchuangyu.github.io/nCov2019/), [Preprint](https://www.medrxiv.org/content/10.1101/2020.02.25.20027433v2), and [Shiny app](http://www.bcloud.org/e/).
+
+
 
 
 ## :writing\_hand: Authors
