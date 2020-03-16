@@ -1,25 +1,27 @@
 # nCov2019: An R package with real-time data, historical data and Shiny app
-## Data Sources
-Real-time data:   [Tencent SARS-COV-2 website](https://news.qq.com/zt2020/page/feiyan.htm). 
 
-We current integrate historical data from 3 public data source:
+## :house: Data Sources
+
+#### Real-time data 
+
++ [Tencent SARS-COV-2 website](https://news.qq.com/zt2020/page/feiyan.htm). 
+
+#### Historical data (three public data sources):
 
 1. [Wuhan-2019-nCoV GitHub repository](https://github.com/canghailan/Wuhan-2019-nCoV).  
 
-   This data source contains detailed city level data in China, and country level data in worldwide.
+   - This data source contains detailed city level data in China, and country level data in worldwide.
 
 2. [National Health Commission of the People’s Republic of China](http://www.nhc.gov.cn/xcs/yqtb/list_gzbd.shtml) 
 
-   This data source contains province level data in China.
+   - This data source contains province level data in China.
 
 3. [DXY.cn. Pneumonia. 2020.](https://ncov.dxy.cn/ncovh5/view/pneumonia) 
 
-   We collect historical city level data in China from this source.
+  -  We collect historical city level data in China from this source.
 
 
 For more details see our [vignette](https://guangchuangyu.github.io/nCov2019/), [Preprint](https://www.medrxiv.org/content/10.1101/2020.02.25.20027433v2), and [Shiny app](http://www.bcloud.org/e/).
-
-
 
 
 ## :writing\_hand: Authors
@@ -67,6 +69,12 @@ Run the script [example.R](example.R) in R using `source("example.R")`, will pro
 + [各省市的疫情历史数据来了！](https://mp.weixin.qq.com/s/lrQWGKj-mReWrxfi_4Sw9A)
 + [一次搞定所有的疫情地图](https://mp.weixin.qq.com/s/iWyOvOoLDl2q9VCUEDY52A)
 + [nCov2019：历史数据实现自动更新](https://mp.weixin.qq.com/s/wTqeSVWZCH3YP8YzAj20EQ)
++ [nCov2019英文版，歪果仁也能用这次武汉疫情的数据了](https://mp.weixin.qq.com/s/u50yCKAGJfrcXgvHHhLbsA)
++ [新冠全球历史数据来了](https://mp.weixin.qq.com/s/tTmd7IJt9U9en62Hl1kBnw)
++ [当病毒R包nCov-2019遇上动图gganimate](https://mp.weixin.qq.com/s/54cAS4jOJEJw3_SvRJUjDg)
++ [爆款风玫瑰图：新冠肺炎全球疫情形势](https://mp.weixin.qq.com/s/ZIZr9zmxVIqjlAFQdK-t7A)
++ [螺旋的疫情图](https://mp.weixin.qq.com/s/lY1TpDqrMce5fB0_GsTlgA)
++ [欧洲很方，一不小心都要「意大利」了](https://mp.weixin.qq.com/s/m1FW20a7RJUhZ7MISkPrrg)
 
 
 ## :chart\_with\_upwards\_trend: Shiny Apps that use `nCov2019`
@@ -81,3 +89,4 @@ Run the script [example.R](example.R) in R using `source("example.R")`, will pro
 
 + [Open-Source-COVID-19](https://weileizeng.github.io/Open-Source-COVID-19/)
 + [Top 7 R resources on COVID-19 Coronavirus](https://www.statsandr.com/blog/top-r-resources-on-covid-19-coronavirus/)
+
