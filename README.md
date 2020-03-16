@@ -39,7 +39,7 @@ remotes::install_github("GuangchuangYu/nCov2019")
 + `load_nCov2019()` to get historical data
 + `summary` and `[` to access data
 + `plot` to present data on map
-+ `dashboard(lang = 'en', remote = TRUE)` to open Shiny app dashboard
++ `dashboard()` to open Shiny app dashboard
 
 ## :art: Example
 
