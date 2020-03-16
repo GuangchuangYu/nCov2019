@@ -15,7 +15,9 @@ dd$country = factor(dd$country, levels=dd$country)
 cols <- rev(RColorBrewer::brewer.pal(10, "RdYlGn"))
 dd$angle = 1:40 * 360/40
 
-i = dd$angle >= 180 & dd$cum_confirm > 100
+label_cut = 150
+
+i = dd$angle >= 180 & dd$cum_confirm > label_cut
 dd$angle[i] = dd$angle[i] + 180
 j = dd$angle < 180 & dd$cum_confirm < 1000
 dd$angle[j] = dd$angle[j] - 90
@@ -24,6 +26,8 @@ dd$vjust[i] = 0
 dd$vjust[j] = 0.5
 dd$y = dd$cum_confirm *.8
 dd$y[j] = dd$y[j] * .7
+
+
 
 require(ggplot2)
 p <- ggplot(dd, aes(country, cum_confirm, fill=cum_confirm)) + 
@@ -36,13 +40,13 @@ p <- ggplot(dd, aes(country, cum_confirm, fill=cum_confirm)) +
     geom_shadowtext(aes(label=paste(country, cum_confirm, sep="\n"), 
                   y = y, angle=angle, 
                   vjust=vjust), 
-            data=function(d) d[d$cum_confirm > 100,], 
-            size=3, colour = "white", bg.colour="grey20", 
+            data=function(d) d[d$cum_confirm > label_cut,], 
+            size=3, colour = "white", bg.colour="black", 
             fontface="bold")  + 
     geom_text(aes(label=paste0(cum_confirm, ", ", country), 
                   y = max(cum_confirm) * 2,  
                   angle=angle+90), 
-            data=function(d) d[d$cum_confirm < 100,], 
+            data=function(d) d[d$cum_confirm < label_cut,], 
             size=3, vjust=1) + 
     coord_polar(direction=-1) + 
     theme_void() + 
