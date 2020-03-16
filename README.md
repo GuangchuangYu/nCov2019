@@ -1,5 +1,7 @@
-# nCov2019: An R package with real-time data, historical data and Shiny app
+# nCov2019: An R package for studying the COVID-19 coronavirus outbreak, with real-time data, historical data and Shiny app
+
 ## Data Sources (updated daily)
+
 * API to [Tencent SARS-COV-2 website](https://news.qq.com/zt2020/page/feiyan.htm). Updated several times a day, the Tencent website relies on official data obtained from the Chinese provincial health agencies, China National Health Commission (CNHC), the World Health Organization (WHO), and public health agencies in other countries. 
 * CNHC, which is official historical statistics for the 34 Chinese provinces and special districts. 
 * [Dingxiangyuan](https://ncov.dxy.cn/ncovh5/view/pneumonia)  which has been continuously aggregating official data from provincial and city health agencies and the CNHC. 
@@ -10,22 +12,18 @@ For more details see our [vignette](https://guangchuangyu.github.io/nCov2019/), 
 
 ## :writing\_hand: Authors
 
-Guangchuang YU
-
-School of Basic Medical Sciences, Southern Medical University
-
-<https://guangchuangyu.github.io>
-
-Xijin Ge (Shiny app)
-
-Department of Mathematics and Statistics, South Dakota State University
-
-<https://www.sdstate.edu/directory/xijin-ge>
++ Guangchuang YU (package creator and maintainer)
+    - School of Basic Medical Sciences, Southern Medical University
+    - <https://guangchuangyu.github.io>
++ Xijin Ge (Shiny app)
+    - Department of Mathematics and Statistics, South Dakota State University
+    - <https://www.sdstate.edu/directory/xijin-ge>
++ Tianzhi Wu, Erqiang Hu and Patrick Tung (contributors)
 
 
 If you use `nCov2019`, please cite the following preprint:
 
-Tianzhi Wu, Erqiang Hu, Xijin Ge<sup>\*</sup>, Guangchuang Yu<sup>\*</sup>. [An R package and a website with real-time data on the COVID-19 coronavirus outbreak](https://www.medrxiv.org/content/10.1101/2020.02.25.20027433v2). **medRxiv**, 2020.02.25.20027433. doi: <https://doi.org/10.1101/2020.02.25.20027433> 
+Tianzhi Wu, Erqiang Hu, Xijin Ge<sup>\*</sup>, Guangchuang Yu<sup>\*</sup>. [Open-source analytics tools for studying the COVID-19 coronavirus outbreak](https://www.medrxiv.org/content/10.1101/2020.02.25.20027433v2). **medRxiv**, 2020.02.25.20027433. doi: <https://doi.org/10.1101/2020.02.25.20027433> 
 
 
 ## :arrow\_double\_down: Installation
