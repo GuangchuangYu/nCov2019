@@ -89,4 +89,5 @@ Run the script [example.R](example.R) in R using `source("example.R")`, will pro
 
 + [Open-Source-COVID-19](https://weileizeng.github.io/Open-Source-COVID-19/)
 + [Top 7 R resources on COVID-19 Coronavirus](https://www.statsandr.com/blog/top-r-resources-on-covid-19-coronavirus/)
++ [COVID-19 Corona Virus Decease ressources](http://covirusd.com/ressources/)
 
