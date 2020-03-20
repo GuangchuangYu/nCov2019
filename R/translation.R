@@ -9,6 +9,8 @@
 trans_province <- function(province, lang="zh") {
   lang <- match.arg(lang, c("zh", "en"))
   prov_cities <- jsonlite::fromJSON(system.file('provinces_and_cities.json', package="nCov2019"))
+  oversea <- read.csv(system.file('oversea_cityname_zh_en.csv', package="nCov2019"))
+  prov_cities <- rbind(prov_cities[,1:2],oversea)  
   if (lang == "zh") {
     load(system.file("ncovEnv.rda", package="nCov2019"))
     ncovEnv <- get("ncovEnv")
