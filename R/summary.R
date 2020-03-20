@@ -12,6 +12,14 @@ summary.nCov2019 <- function(object, by = "total", ...) {
 ##' @export
 summary.nCov2019History <- function(object, province, ...) {
   obj <- object$province
+  # get the country setting
+  country_option = getOption("nCov2019.country")
+  nn <- readRDS(system.file("country_translate.rds", package="nCov2019"))
+  # translate country setting to user language setting
+  if (object$lang == 'zh'){
+    country_option <- names(nn)[nn == country_option]
+    }
+  
   if (missing(province)) {
     province <- unique(obj$province)
   }
@@ -23,6 +31,6 @@ summary.nCov2019History <- function(object, province, ...) {
   ## there is Jilin province and Jilin city, may caused some problems.
   ##
   # res <- group_by(res, time) %>% transform(cum_confirm = max(cum_confirm))
-  unique(res)
+  subset(unique(res),country == country_option)
   #res[,names(res) != 'city']
 }
