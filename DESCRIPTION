@@ -28,7 +28,7 @@ Suggests:
   shiny,
   remotes,
   utils,
-  BiocStyle, 
+  prettydoc, 
   knitr, 
   rmarkdown
 VignetteBuilder: knitr
