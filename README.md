@@ -20,8 +20,21 @@
 
     - We collect historical city level data in China from this source.
 
+4. [今日头条](https://i.snssdk.com/ugc/hotboard_fe/hot_list/template/hot_list/forum_tab.html)
 
-For more details see our [vignette](https://guangchuangyu.github.io/nCov2019/), [Preprint](https://www.medrxiv.org/content/10.1101/2020.02.25.20027433v2), and [Shiny app](http://www.bcloud.org/e/).
+    - We collect historical province level data for oversea countries form this source. (Start from 2020-03-15)
+
+      The user can obtain the historical provincial data in  `China`, `South Korea`, `United States`, `Japan`, `Iran`, `Italy`, `Germany` and  `United Kingdom`  now.
+
+      For example, the below will return the historical data for Italy. 
+
+      ```r
+      library(nCov2019)
+      nCov2019_set_country(country = 'Italy') 
+      x['province'] # this will return Italy data only.
+      ```
+
+**For more details see our [vignette](https://guangchuangyu.github.io/nCov2019/), [Preprint](https://www.medrxiv.org/content/10.1101/2020.02.25.20027433v2), and [Shiny app](http://www.bcloud.org/e/).**
 
 
 ## :writing\_hand: Authors

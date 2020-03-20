@@ -156,7 +156,6 @@ y <- load_nCov2019(lang = 'en')
 y  # this will return update time of historical data
 ```
 
- 
 
 For the historical data, currently, we maintain three historical data,  one of which is collected and organized from GitHub repo, user will access it by default, or use `load_nCov2019(source = 'github')`  to get it. 
 
@@ -166,6 +165,7 @@ The second one is obtained from an Chinese website Dingxiangyuan and user could 
 # compare the total confirmed cases in china between data sources
 library(nCov2019)
 library(ggplot2)
+nCov2019_set_country('China')
 y = load_nCov2019(lang = 'en', source = 'github')
 dxy = load_nCov2019(lang = 'en', source = 'dxy')
 nhc = load_nCov2019(lang = 'en', source = 'cnnhc')
@@ -242,31 +242,35 @@ ggplot(d, aes(time, count, color = curve)) +
     data = d[d$time == time(y), ], hjust = 1) +
   theme(axis.text.x = element_text(angle = 15, hjust = 1)) +
   scale_x_date(date_labels = "%Y-%m-%d", 
-    limits = c(as.Date("2020-01-15"), as.Date("2020-03-05"))) +
+    limits = c(as.Date("2020-01-15"), as.Date("2020-03-20"))) +
   labs(title="Number of deaths, confirms, and cures in China") 
 ```
 
 
 
 
-2. Outbreak Trend Curves of Countries Around the World (except China).
+2. Outbreak Trend Curves of Top ten Countries Around the World (except China).
 
 ```{r,fig.width=6.69, fig.height=4.45}
 library('ggrepel')
 library('ggplot2')
 y <- load_nCov2019(lang = 'en')
-d <- subset(y['global'], country != "China")
-ggplot(d, aes(time, as.numeric(cum_confirm), 
+df <- y['global']
+d <- subset(df,country != 'China' & time == time(y))
+t10 <- d[order(d$cum_confirm,decreasing = T),]$country[1:10]
+df <- df[which(df$country %in% t10),]
+
+ggplot(df, aes(time, as.numeric(cum_confirm), 
     group = country, color = country)) +
   geom_point() + geom_line() +
   geom_label_repel(aes(label = country), 
-    data = d[d$time == time(y), ], hjust = 1) +
+    data = df[df$time == time(y), ], hjust = 1) +
   theme_bw() + theme(legend.position = 'none') +
   xlab(NULL) + ylab(NULL) + 
   scale_x_date(date_labels = "%Y-%m-%d",
-    limits = c(as.Date("2020-02-01"), as.Date("2020-03-04"))) +
+    limits = c(as.Date("2020-02-01"), as.Date("2020-03-19"))) +
   theme(axis.text.x = element_text(angle = 15, hjust = 1)) +
-  labs(title = "Outbreak Trend Curves of Countries Around the World \n (except China)")
+  labs(title = "Outbreak Trend Curves of Top 10 Countries Around the World \n (except China)")
 ```
 
 
@@ -301,7 +305,7 @@ min_time <- max_time - 7
 d <- na.omit(d[d$time >= min_time & d$time <= max_time,])
 dd <- d[d$time == max(d$time, na.rm = TRUE),]
 d$country <- factor(d$country, 
-  levels=dd$country[order(dd$cum_confirm)])
+  levels=unique(dd$country[order(dd$cum_confirm)]))
 breaks = c(10, 100, 1000, 10000)
 ggplot(d, aes(time, country)) + 
   geom_tile(aes(fill = cum_confirm), color = 'black') + 
@@ -310,6 +314,16 @@ ggplot(d, aes(time, country)) +
   xlab(NULL) + ylab(NULL) +
   scale_x_date(date_labels = "%Y-%m-%d") + theme_minimal()
 ```
+
+The user could get province level data beside China, we current have collected province level information in China, South Korea, United States, Japan, Iran, Italy, Germany and United Kingdom.
+To get the detail of any country of them, you only need to set the country env as follow:
+```{r}
+nCov2019_set_country('Italy') 
+y <- load_nCov2019(lang = 'en', source = 'github')
+head(y['province']) # This will return province data of Italy
+```
+
+
 
 5. Windrose plot of global confirm cases 
 
@@ -338,11 +352,11 @@ p <- ggplot(dd, aes(country, cum_confirm, fill=cum_confirm)) +
     scale_fill_gradientn(colors=c("darkgreen", "green", "orange", "firebrick","red"), trans="log") + 
     geom_text(aes(label=paste(country, cum_confirm, sep="\n"), 
                   y = cum_confirm *.8, angle=angle), 
-            data=function(d) d[d$cum_confirm > 100,], 
+            data=function(d) d[d$cum_confirm > 700,], 
             size=3, color = "white", fontface="bold", vjust=1)  + 
-    geom_text(aes(label=paste0(cum_confirm, " cases ", country), 
+     geom_text(aes(label=paste0(cum_confirm, " cases ", country), 
                   y = max(cum_confirm) * 2, angle=angle+90), 
-            data=function(d) d[d$cum_confirm < 100,], 
+            data=function(d) d[d$cum_confirm < 700,], 
             size=3, vjust=0) + 
     coord_polar(direction=-1) + 
     theme_void() + 
@@ -357,7 +371,7 @@ print(p)
 
 ```{r globalwindrose, echo=FALSE, fig.width=8.4, fig.height=10.6}
 if (nCov2019:::is.installed("ggplotify")) {
-  ggplotify::as.ggplot(p, scale=1.45, vjust=-.15, hjust=.02)
+  ggplotify::as.ggplot(p, scale=1)
 } else {
   print(p)
 }
@@ -510,12 +524,13 @@ plot(x, region = 'Hubei', chinamap = m)
 Also, you can plot a map on specific date:
 
 ```{r,fig.width=12, fig.height=8}
+nCov2019_set_country(country = 'China')
 y <- load_nCov2019(lang = 'en')
 cn = get_map_china()
 
 cn$province <- trans_province(cn$province) 
 plot(y, region = 'china', continuous_scale = FALSE,
-     chinamap = cn, date = '2020-02-01', font.size = 2)
+     chinamap = cn, date = '2020-03-01', font.size = 2)
 ```
 
 
@@ -559,6 +574,7 @@ plot(y, region="Hubei", chinamap=shijie, width = 600, height = 600, from=from, t
 Sometimes users want to know the situation directly without taking time to code. We provide a helpful Shiny dashboard, both online web and local version, users can choose between them according to needs. By using `dashboard(lang = 'en', remote = TRUE)` , an English website of online dashboard will be open, and `remote = FALSE` will run it on local machine. The online version is usually more convenient, because the first run of the local version needs to download map information file, which may take some time, depending on your Internet speed.
 
  ![](clip_image020.png)
+
 
 # Session Info
 

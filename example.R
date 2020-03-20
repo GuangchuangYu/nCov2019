@@ -15,7 +15,7 @@ dd$country = factor(dd$country, levels=dd$country)
 cols <- rev(RColorBrewer::brewer.pal(10, "RdYlGn"))
 dd$angle = 1:40 * 360/40
 
-label_cut = 150
+label_cut = 700
 
 i = dd$angle >= 180 & dd$cum_confirm > label_cut
 dd$angle[i] = dd$angle[i] + 180
@@ -52,7 +52,7 @@ p <- ggplot(dd, aes(country, cum_confirm, fill=cum_confirm)) +
     theme_void() + 
     theme(legend.position="none") 
 
-p1 = ggplotify::as.ggplot(p, scale=1.4, vjust=-.15, hjust=.02)
+p1 = ggplotify::as.ggplot(p, scale=1.2)
 
 require(dplyr)
 require(ggplot2)
