@@ -64,6 +64,7 @@ remotes::install_github("GuangchuangYu/nCov2019")
 
 + `get_nCov2019()` to query online latest information
 + `load_nCov2019()` to get historical data
++ `nCov2019_set_country()` to set  country options
 + `summary` and `[` to access data
 + `plot` to present data on map
 + `dashboard()` to open Shiny app dashboard
