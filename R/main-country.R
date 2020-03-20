@@ -1,6 +1,7 @@
+country_list <- c("China","South Korea","United States","Japan","Iran",
+                  "Italy","Germany","United Kingdom")
+
 nCov2019_set_country <- function(country = "China") {
-    country_list <- c("China","South Korea","United States","Japan","Iran",
-                      "Italy","Germany","United Kingdom")
     if (!country %in% country_list) {
         msg <- paste("only the following supported countries have detail information:\n",
                      paste(country_list, collapse=","), "\n",

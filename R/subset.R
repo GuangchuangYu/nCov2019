@@ -1,6 +1,6 @@
 ##' @method [ nCov2019History
 ##' @export
-`[.nCov2019History` <- function(object, i, j, ...) {
+`[.nCov2019History` <- function(object, i, j, quiet = TRUE, ...) {
   obj <- object$data
   # get the country setting
   country_option = getOption("nCov2019.country")
@@ -18,10 +18,14 @@
       obj = subset(obj[, j, drop=FALSE],country == country_option)
       return(obj) 
     } else {
-      msg <- paste("Only China have city level information now\n",
-                  "Please use x['province'] to access information at province level\n",
-                  "Or use x['global'] to access information at country level\n")
-      stop(msg)
+        if (!quiet) {
+            msg <- paste("Only China have city-level information.\n",
+                         paste0("Province-level information are available for specific countries \n\t(",
+                                paste0(country_list[country_list != "China"], collapse=","),")\n"),
+                         "You can also use x['global'] to access information at country-level\n")
+            message(msg)            
+        }
+        i <- "province"
     }
   }
   # return province data base on the country_option
