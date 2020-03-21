@@ -61,7 +61,7 @@ extract_province <- function(object, i, by) {
   # get China data 
   name <- data$areaTree[1]$name
   df <- data$areaTree$total
-  CN <- cbind(name=name, df)[1,]
+  CN <- cbind(name=name, df)[1,][,-2]
 
   # get oversea data
   tmp <- y2$foreignList
