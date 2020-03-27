@@ -1,4 +1,4 @@
-# nCov2019: An R package with real-time data, historical data and Shiny app
+# nCov2019: An R package with real-time data, historicall data and Shiny app
 
 ## :house: Data Sources
 
