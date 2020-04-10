@@ -1,4 +1,4 @@
-#' download statistical numbers of the wuhan 2019-nCov
+#' download statistical numbers of the COVID-2019
 #'
 #' @title get_nCov2019
 #' @param lang one of 'zh' and 'en', for setting language of province and city names.
@@ -33,7 +33,7 @@ get_nCov2019 <- function(lang = 'auto') {
 }
 
          
-#' load historical data of wuhan 2019-Cov
+#' load historical data of COVID-2019
 #'
 #' @title load_nCov2019
 #' @inheritParams get_nCov2019

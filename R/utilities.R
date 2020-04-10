@@ -57,20 +57,22 @@ extract_province <- function(object, i, by) {
   data$dailyHistory <- y2$dailyHistory
   data$chinaDayList <- y2$chinaDayList
   data$chinaDayAddList <- y2$chinaDayAddList
-
-  # get China data 
-  name <- data$areaTree[1]$name
-  df <- data$areaTree$total
-  CN <- cbind(name=name, df)[1,]
-
+  
   # get oversea data
-  tmp <- y2$foreignList
+  url3 <- 'https://view.inews.qq.com/g2/getOnsInfo?name=disease_foreign'
+  x3 <- suppressWarnings(readLines(url3, encoding="UTF-8"))
+  y3 = jsonlite::fromJSON(x3, flatten = TRUE)
+  y3 = jsonlite::fromJSON(y3$data,flatten = T)
+  tmp <- y3$foreignList
   df <- tmp[c('name','confirm','suspect','dead','heal')]
   df$deadRate <- round(df$dead*100/df$confirm,2)
   df$healRate <- round(df$heal*100/df$confirm,2)
   df$showRate <- 'FALSE'
   df$showHeal <- 'FALSE'
-
+  
+  # get China data 
+  name <- data$areaTree[1]$name
+  CN <- cbind(name=name, data$areaTree$total)[1,][,-2]
   data$global = rbind(CN, df)
   return(data)  
 }
