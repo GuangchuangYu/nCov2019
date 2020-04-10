@@ -23,6 +23,7 @@ plot_city <- function(x, region, chinamap,
     map <- do.call('rbind', lapply(region, function(r) {
         stats <- get_city_data(x, r, date)
         citis <- stats$NAME
+        citis <- citis[!is.na(citis)]
         citis <- citis[citis %in% map$NAME]
         code <- sub("(\\d{2}).*", "\\1", 
                   map$ADMINCODE[which(map$NAME == citis[1])])
