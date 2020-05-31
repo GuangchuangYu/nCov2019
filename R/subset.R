@@ -14,7 +14,7 @@
 
   # City level data only avalibale for China now 
   if (i == 'city') {
-    if (country_option == 'China') {
+    if (getOption("nCov2019.country") == 'China') {
       obj = subset(obj[, j, drop=FALSE],country == country_option)
       return(obj) 
     } else {
