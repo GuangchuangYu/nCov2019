@@ -61,7 +61,7 @@ open_dashboard <- function(lang="auto", remote=FALSE) {
 
             if(button == 'Y'){
                 ## rds <- tempfile(pattern=".rds")
-                url <- 'http://q6k78o1u4.bkt.clouddn.com/cn_city_map.rds'
+                url <- 'https://storage.live.com/items/FB3FF08624DEB0EA!50056'
                 if(check_network(url) == 200){
                 downloader::download(url, destfile = rds, quiet = FALSE)
                 } else {

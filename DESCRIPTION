@@ -1,6 +1,6 @@
 Package: nCov2019
 Title: Stats of the '2019-nCov' Cases
-Version: 0.3.5
+Version: 0.3.6
 Authors@R: c(
           person("Guangchuang", "Yu", email = "guangchuangyu@gmail.com", role = c("aut", "cre")),
           person("Tianzhi", "Wu", email = "wutimze@gmail.com", role = "ctb"),
