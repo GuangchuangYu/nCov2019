@@ -16,7 +16,7 @@ If lang = "auto" (default), it will be set based on Sys.getlocale("LC_CTYPE")}
 nCov2019History object
 }
 \description{
-load historical data of wuhan 2019-Cov
+load historical data of COVID-2019
 }
 \author{
 Guangchuang Yu

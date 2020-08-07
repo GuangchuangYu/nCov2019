@@ -14,7 +14,7 @@ If lang = "auto" (default), it will be set based on Sys.getlocale("LC_CTYPE")}
 nCov2019 object
 }
 \description{
-download statistical numbers of the wuhan 2019-nCov
+download statistical numbers of the COVID-2019
 }
 \author{
 Guangchuang Yu
