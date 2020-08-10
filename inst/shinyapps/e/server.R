@@ -26,7 +26,7 @@ function(input, output, session) {
     #各个省 确诊 历史数  -------------------------------------------    
     output$confirmedByProvincesHistorical <- renderPlot({
 
-            d2 <- xgithub$province %>%
+            d2 <- x$province %>%
               filter( province != "湖北") %>%
               filter( province != "Hubei") 
             
@@ -37,7 +37,7 @@ function(input, output, session) {
                 geom_text_repel(aes(label=province),  family="SimSun",data=d2[d2$time == time(x), ], hjust=1) +
                 theme_gray(base_size = 14) + theme(legend.position='none') +
                 xlab(NULL) + ylab(NULL) + 
-                ggtitle(paste( z(entireCountry),  z("湖北以外"),  xgithub$time ) )         
+                ggtitle(paste( z(entireCountry),  z("湖北以外"),  x$time ) )         
 
         if(input$logScale) 
             p <- p + scale_y_log10() 
@@ -48,7 +48,7 @@ function(input, output, session) {
     #省内各城市 确诊 历史数  -------------------------------------------    
     output$cities_in_proviences <- renderPlot({
 
-        d <- xgithub[input$selectProvince0, ]
+        d <- x[input$selectProvince0, ]
         if(isEnglish) d$city <- py2( d$city )  # translate into Pinyin
         p <- ggplot(d,
                aes(time, as.numeric(cum_confirm), group=city, color=city)) +
@@ -131,7 +131,7 @@ function(input, output, session) {
     
     #各个城市死亡率  -------------------------------------------
     output$deathRatesCities <- renderPlotly({
-      d = xgithub$data %>% 
+      d = x$data %>% 
         arrange( desc(time, city))  %>%
         filter(!duplicated(city)) %>% 
         filter(province != city ) %>%
@@ -180,7 +180,7 @@ function(input, output, session) {
     
     #各个城市死亡率  -------------------------------------------
     output$deathRatesCitiesCountries <- renderPlotly({
-      d = xgithub$data %>% 
+      d = x$data %>% 
         arrange( desc(time, city))  %>%
         filter(!duplicated(city)) %>% 
         filter(province != city ) %>%
@@ -289,15 +289,15 @@ function(input, output, session) {
     #世界细节 历史图 -------------------------------------------
     output$historicalWorld <- renderPlotly({
       
-      tem <- table(xgithub$global$country)
+      tem <- table(x$global$country)
       
-      tem2 <- xgithub$global %>%
+      tem2 <- x$global %>%
         group_by(country) %>%
         summarise(max = max(cum_confirm)) %>%
         filter(max > 20) %>%
         pull(country)
       
-      d <- xgithub$global %>%
+      d <- x$global %>%
         filter(country !=z('中国')) %>%
         filter(  country %in%  names(tem)[tem > 10]    ) %>% # only keep contries with 20 more data points.
         filter(  country %in%  tem2   ) %>%  # at least 20 cases
@@ -421,7 +421,7 @@ function(input, output, session) {
     
     #省 历史图 新增-------------------------------------------
     output$provienceHistoricalAdd <- renderPlotly({
-        d2 <- xgithub[input$selectProvince0, ]  %>% 
+        d2 <- x[input$selectProvince0, ]  %>% 
             mutate(cum_dead = as.integer(cum_dead)) %>%
             select( city, time, cum_confirm, cum_dead, cum_heal) %>%
             group_by(time) %>%
@@ -470,7 +470,7 @@ function(input, output, session) {
     
     #省 历史图  -------------------------------------------
     output$provienceHistorical <- renderPlotly({
-        d2 <- xgithub[input$selectProvince0, ]  %>% 
+        d2 <- x[input$selectProvince0, ]  %>% 
             mutate(cum_dead = as.integer(cum_dead)) %>%
             select( city, time, cum_confirm, cum_dead, cum_heal) %>%
             group_by(time) %>%
@@ -512,7 +512,7 @@ function(input, output, session) {
     #城市细节 历史图 -------------------------------------------
     output$cities_in_proviences_selected <- renderPlotly({
 
-            d2 <- subset(xgithub[input$selectProvince,], city == input$selectCity)  %>% 
+            d2 <- subset(x[input$selectProvince,], city == input$selectCity)  %>% 
                 mutate(cum_dead = as.integer(cum_dead)) %>%
                 select( time, cum_confirm, cum_dead, cum_heal) %>%
                 mutate( cum_confirm = meanImput(cum_confirm, 2)) %>%
@@ -549,7 +549,7 @@ function(input, output, session) {
     #城市细节 历史图 新增-------------------------------------------
     output$cities_in_proviences_selectedAdd <- renderPlotly({
         
-        d2 <- subset(xgithub[input$selectProvince,], city == input$selectCity)  %>% 
+        d2 <- subset(x[input$selectProvince,], city == input$selectCity)  %>% 
             mutate(cum_dead = as.integer(cum_dead)) %>%
             select( time, cum_confirm, cum_dead, cum_heal) %>%
             mutate( cum_confirm = meanImput(cum_confirm, 2)) %>%
@@ -595,7 +595,7 @@ function(input, output, session) {
     
     #城市细节 历史图 Plotly-------------------------------------------
     output$cities_in_proviences_selected_plotly <- renderPlotly({
-            d2 <- subset(xgithub[input$selectProvince,], city == input$selectCity)  %>% 
+            d2 <- subset(x[input$selectProvince,], city == input$selectCity)  %>% 
                 mutate(dead = as.integer(dead)) %>%
                 select( time, confirmed, dead, heal) 
 
@@ -806,7 +806,7 @@ function(input, output, session) {
         # issues with Chinese characters solved
         # http://kevinushey.github.io/blog/2018/02/21/string-encoding-and-r/
         con <- file(file, open = "w+", encoding = "native.enc")
-        df <- xgithub["global"]
+        df <- x["global"]
         df$time <- as.character(format(df$time))
         writeLines( paste( colnames(df), collapse = "\t"), con = con, useBytes = TRUE)
         for(i in 1:nrow( df) )

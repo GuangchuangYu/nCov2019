@@ -78,10 +78,10 @@ library(dplyr)
 library(tidyr) # for gather function
 if(isEnglish) {
   try( y <- get_nCov2019(lang="en"), silent = TRUE)  # load real time data from Tencent
-  xgithub <- load_nCov2019(lang="en", source = "github") #load historical data
+  x <- load_nCov2019(lang="en", source = "github") #load historical data
 } else {
   try( y <- get_nCov2019(lang="zh"), silent = TRUE)  # load real time data from Tencent
-  xgithub <- load_nCov2019(lang="zh", source = "github") #load historical data
+  x <- load_nCov2019(lang="zh", source = "github") #load historical data
   }
 x$data <- x$data %>%
   filter( time > as.Date("2020-1-10")) %>%
@@ -91,9 +91,9 @@ x$data <- x$data %>%
 #  filter( time > as.Date("2020-1-10"))
 
 # correct an erorr in data "四川 " "四川"
-x$data$province <- gsub(" ", "", x$data$province)
+#x$data$province <- gsub(" ", "", x$data$province)
 #x$data$province <- gsub("省|市", "", x$data$province)
-x$data$city <- gsub(" ", "", x$data$city)
+#x$data$city <- gsub(" ", "", x$data$city)
 
 #Get a list of sorted provinces
 provinceNames <- x$data %>%
@@ -134,7 +134,7 @@ rownames(todayTotal) <- c("确诊","痊愈","死亡","nowConfirm","疑似","nowS
 #ChinaHistory <- summary(y) %>%
 #  mutate(time = as.Date( gsub("\\.","-",paste0("2020-",date) )) )
 
-ChinaHistory <- xgithub$data %>%
+ChinaHistory <- x$data %>%
                 mutate(cum_dead = as.integer(cum_dead)) %>%
                group_by(time) %>%
                summarise( confirm = sum(cum_confirm, na.rm = TRUE), # missing values in some cities
@@ -170,15 +170,15 @@ z2 <- function (ChineseNames)
   }
 }
 
-tem <- table(xgithub$global$country)
-tem2 <- xgithub$global %>%
+tem <- table(x$global$country)
+tem2 <- x$global %>%
   group_by(country) %>%
   summarise(max = max(cum_confirm)) %>%
   arrange(desc(max)) %>%
   filter(max > 30) %>%
   pull(country)
 
-contriesPrediction <- xgithub$global %>%
+contriesPrediction <- x$global %>%
   #filter(country !='中国') %>%
   #filter(country !='China') %>%
   filter(  country %in%  names(tem)[tem > 20]    ) %>% # only keep contries with 20 more data points.
