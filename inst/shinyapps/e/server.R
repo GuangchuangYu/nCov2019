@@ -48,7 +48,7 @@ function(input, output, session) {
     #省内各城市 确诊 历史数  -------------------------------------------    
     output$cities_in_proviences <- renderPlot({
 
-        d <- x[input$selectProvince0, ]
+        d <- xgithub[input$selectProvince0, ]
         if(isEnglish) d$city <- py2( d$city )  # translate into Pinyin
         p <- ggplot(d,
                aes(time, as.numeric(cum_confirm), group=city, color=city)) +
@@ -131,7 +131,7 @@ function(input, output, session) {
     
     #各个城市死亡率  -------------------------------------------
     output$deathRatesCities <- renderPlotly({
-      d = x$data %>% 
+      d = xgithub$data %>% 
         arrange( desc(time, city))  %>%
         filter(!duplicated(city)) %>% 
         filter(province != city ) %>%
@@ -180,7 +180,7 @@ function(input, output, session) {
     
     #各个城市死亡率  -------------------------------------------
     output$deathRatesCitiesCountries <- renderPlotly({
-      d = x$data %>% 
+      d = xgithub$data %>% 
         arrange( desc(time, city))  %>%
         filter(!duplicated(city)) %>% 
         filter(province != city ) %>%
@@ -421,7 +421,7 @@ function(input, output, session) {
     
     #省 历史图 新增-------------------------------------------
     output$provienceHistoricalAdd <- renderPlotly({
-        d2 <- x[input$selectProvince0, ]  %>% 
+        d2 <- xgithub[input$selectProvince0, ]  %>% 
             mutate(cum_dead = as.integer(cum_dead)) %>%
             select( city, time, cum_confirm, cum_dead, cum_heal) %>%
             group_by(time) %>%
@@ -470,7 +470,7 @@ function(input, output, session) {
     
     #省 历史图  -------------------------------------------
     output$provienceHistorical <- renderPlotly({
-        d2 <- x[input$selectProvince0, ]  %>% 
+        d2 <- xgithub[input$selectProvince0, ]  %>% 
             mutate(cum_dead = as.integer(cum_dead)) %>%
             select( city, time, cum_confirm, cum_dead, cum_heal) %>%
             group_by(time) %>%
@@ -512,7 +512,7 @@ function(input, output, session) {
     #城市细节 历史图 -------------------------------------------
     output$cities_in_proviences_selected <- renderPlotly({
 
-            d2 <- subset(x[input$selectProvince,], city == input$selectCity)  %>% 
+            d2 <- subset(xgithub[input$selectProvince,], city == input$selectCity)  %>% 
                 mutate(cum_dead = as.integer(cum_dead)) %>%
                 select( time, cum_confirm, cum_dead, cum_heal) %>%
                 mutate( cum_confirm = meanImput(cum_confirm, 2)) %>%
@@ -549,7 +549,7 @@ function(input, output, session) {
     #城市细节 历史图 新增-------------------------------------------
     output$cities_in_proviences_selectedAdd <- renderPlotly({
         
-        d2 <- subset(x[input$selectProvince,], city == input$selectCity)  %>% 
+        d2 <- subset(xgithub[input$selectProvince,], city == input$selectCity)  %>% 
             mutate(cum_dead = as.integer(cum_dead)) %>%
             select( time, cum_confirm, cum_dead, cum_heal) %>%
             mutate( cum_confirm = meanImput(cum_confirm, 2)) %>%
@@ -595,7 +595,7 @@ function(input, output, session) {
     
     #城市细节 历史图 Plotly-------------------------------------------
     output$cities_in_proviences_selected_plotly <- renderPlotly({
-            d2 <- subset(x[input$selectProvince,], city == input$selectCity)  %>% 
+            d2 <- subset(xgithub[input$selectProvince,], city == input$selectCity)  %>% 
                 mutate(dead = as.integer(dead)) %>%
                 select( time, confirmed, dead, heal) 
 

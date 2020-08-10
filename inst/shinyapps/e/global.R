@@ -78,11 +78,9 @@ library(dplyr)
 library(tidyr) # for gather function
 if(isEnglish) {
   try( y <- get_nCov2019(lang="en"), silent = TRUE)  # load real time data from Tencent
-  x <- load_nCov2019(lang="en", source = "dxy") #load historical data
   xgithub <- load_nCov2019(lang="en", source = "github") #load historical data
 } else {
   try( y <- get_nCov2019(lang="zh"), silent = TRUE)  # load real time data from Tencent
-  x <- load_nCov2019(lang="zh", source = "dxy") #load historical data
   xgithub <- load_nCov2019(lang="zh", source = "github") #load historical data
   }
 x$data <- x$data %>%
@@ -130,13 +128,13 @@ if(isEnglish)
 todayTotal <- do.call(rbind, Map(data.frame, total=y$chinaTotal,add=y$chinaAdd))
 colnames(todayTotal) <- c("总数","增加")
 #rownames(todayTotal) <- c("确诊","疑似","死亡","痊愈","New Confirmed","NewSever")
-rownames(todayTotal) <- c("确诊","痊愈","死亡","nowConfirm","疑似","nowSevere", "importedCase")
+rownames(todayTotal) <- c("确诊","痊愈","死亡","nowConfirm","疑似","nowSevere", "importedCase",'noInfect')
 
 # Use data from Tencent for historical China data
 #ChinaHistory <- summary(y) %>%
 #  mutate(time = as.Date( gsub("\\.","-",paste0("2020-",date) )) )
 
-ChinaHistory <- x$data %>%
+ChinaHistory <- xgithub$data %>%
                 mutate(cum_dead = as.integer(cum_dead)) %>%
                group_by(time) %>%
                summarise( confirm = sum(cum_confirm, na.rm = TRUE), # missing values in some cities
