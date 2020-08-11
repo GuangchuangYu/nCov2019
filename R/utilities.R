@@ -59,12 +59,10 @@ extract_province <- function(object, i, by) {
   data$chinaDayAddList <- y2$chinaDayAddList
   
   # get oversea data
-  url3 <- 'https://view.inews.qq.com/g2/getOnsInfo?name=disease_foreign'
+  url3 <- 'https://api.inews.qq.com/newsqa/v1/automation/foreign/country/ranklist'
   x3 <- suppressWarnings(readLines(url3, encoding="UTF-8"))
-  y3 = jsonlite::fromJSON(x3, flatten = TRUE)
-  y3 = jsonlite::fromJSON(y3$data,flatten = T)
-  tmp <- y3$foreignList
-  df <- tmp[c('name','confirm','suspect','dead','heal')]
+  y3 = jsonlite::fromJSON(x3, flatten = TRUE)$data
+  df <- y3[c('name','confirm','suspect','dead','heal')]
   df$deadRate <- round(df$dead*100/df$confirm,2)
   df$healRate <- round(df$heal*100/df$confirm,2)
   df$showRate <- 'FALSE'
