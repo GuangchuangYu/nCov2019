@@ -79,6 +79,11 @@ plot_world <- function(x, region = "world", continuous_scale=TRUE, palette = "Re
     nn <- names(d)
     names(d)[nn == "country"] <- "name"
 
+    d$name <- sub("United\\sStates.*", "USA", d$name)
+    d$name <- sub("Republic\\sof\\sKorea", "South Korea", d$name)
+    d$name <- sub("United\\sKingdom.*", "UK", d$name)
+    d$name <- sub("Republika\\sSeverna\\sMakedonija", "Macedonia", d$name)
+
     if (region == "world") {
         total <- sum(d$confirm)                
     } else {
@@ -100,10 +105,7 @@ plot_world <- function(x, region = "world", continuous_scale=TRUE, palette = "Re
         TW$name <- 'Taiwan'
         d <- rbind(d,TW)
     }
-    d$name <- sub("United\\sStates.*", "USA", d$name)
-    d$name <- sub("Republic\\sof\\sKorea", "South Korea", d$name)
-    d$name <- sub("United\\sKingdom.*", "UK", d$name)
-    d$name <- sub("Republika\\sSeverna\\sMakedonija", "Macedonia", d$name)
+
     if (region == "world") region <- "."
     world <- map_data('world', region = region)
     world <- world[world$region != "Antarctica", ]
