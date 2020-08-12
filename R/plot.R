@@ -11,7 +11,8 @@
 plot_city <- function(x, region, chinamap, 
                     continuous_scale=TRUE, label=TRUE, date, palette = "Reds",
                     font.size = 3.8, font.family = "", title) {
-    map <- tibble::as_tibble(chinamap)
+    #map <- tibble::as_tibble(chinamap)
+    map <- chinamap
 
     if (x$lang == "zh") {                    
         load(system.file("ncovEnv.rda", package="nCov2019"))
