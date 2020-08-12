@@ -141,7 +141,7 @@ ui <- fluidPage(
          a("余光创教授",  href="http://portal.smu.edu.cn/jcyxy/info/1084/2203.htm"),
         "(微信公众号biobabble）写了一个功能强大的下载实时数据的软件包：",
         a("nCov2019。", href="https://mp.weixin.qq.com/s?__biz=MzI5NjUyNzkxMg==&mid=2247488621&idx=1&sn=727f8bdec2801ddc0315b9fedaa40acc&scene=21"),
-        "实时数据来自腾讯API，历史数据整合自丁香园，",a("Github",href="https://github.com/canghailan/Wuhan-2019-nCoV"),"以及中国国家卫生健康委员会。")
+        "实时数据来自腾讯API，历史数据整合自今日头条疫情专题网页。")
     ,h5("有意见或建议可以给我发"
         ,a("邮件",href="mailto:xijin.ge@sdstate.edu?Subject=疫情网站" ),"。 ",
         "我做生物信息学方面的研究，用计算的方法探索生命的奥秘 (",

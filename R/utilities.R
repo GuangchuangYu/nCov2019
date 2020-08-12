@@ -59,12 +59,10 @@ extract_province <- function(object, i, by) {
   data$chinaDayAddList <- y2$chinaDayAddList
   
   # get oversea data
-  url3 <- 'https://view.inews.qq.com/g2/getOnsInfo?name=disease_foreign'
+  url3 <- 'https://api.inews.qq.com/newsqa/v1/automation/foreign/country/ranklist'
   x3 <- suppressWarnings(readLines(url3, encoding="UTF-8"))
-  y3 = jsonlite::fromJSON(x3, flatten = TRUE)
-  y3 = jsonlite::fromJSON(y3$data,flatten = T)
-  tmp <- y3$foreignList
-  df <- tmp[c('name','confirm','suspect','dead','heal')]
+  y3 = jsonlite::fromJSON(x3, flatten = TRUE)$data
+  df <- y3[c('name','confirm','suspect','dead','heal')]
   df$deadRate <- round(df$dead*100/df$confirm,2)
   df$healRate <- round(df$heal*100/df$confirm,2)
   df$showRate <- 'FALSE'
@@ -81,22 +79,24 @@ extract_province <- function(object, i, by) {
 ##' @importFrom RColorBrewer brewer.pal
 fill_scale_continuous <- function(palette = "Reds") {
     cols = RColorBrewer::brewer.pal(6, palette)
-    breaks = c(1, 10, 100, 1000, 10000)
+    breaks = c(1, 10, 100, 1000, 10000, 100000, 1000000, 10000000)
     scale_fill_gradient(low=cols[1], high=cols[6],
                 na.value='white', trans='log',
                 breaks=breaks, labels=breaks)
 }
 
-discrete_breaks <- c(1,10,100,500,10^3,10^4, 10^5)
+discrete_breaks <- c(1,10,100,500,10^3,10^4, 10^5, 10^6,10^7)
 
 ##' @importFrom ggplot2 scale_fill_brewer
 fill_scale_discrete <- function(palette = "Reds") {
     scale_fill_brewer(palette=palette, name='confirm',
             na.translate = FALSE,
             breaks = c('[1,10)', '[10,100)', '[100,500)', 
-                      '[500,1e+03)', '[1e+03,1e+04)', '[1e+04,1e+05]'),
+                      '[500,1e+03)', '[1e+03,1e+04)', '[1e+04,1e+05)',
+                      '[1e+05,1e+06]','[1e+06,1e+07]'),
             labels = c("<10", "10-100", "100-500", "500-1000", 
-                        "1000-10000", ">10000"))
+                        "1000-10000", "10000-100000","100000-1000000",
+                        ">1000000"))
 }
 
 

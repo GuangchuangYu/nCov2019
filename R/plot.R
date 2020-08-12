@@ -11,7 +11,8 @@
 plot_city <- function(x, region, chinamap, 
                     continuous_scale=TRUE, label=TRUE, date, palette = "Reds",
                     font.size = 3.8, font.family = "", title) {
-    map <- tibble::as_tibble(chinamap)
+    #map <- tibble::as_tibble(chinamap)
+    map <- chinamap
 
     if (x$lang == "zh") {                    
         load(system.file("ncovEnv.rda", package="nCov2019"))
@@ -79,6 +80,11 @@ plot_world <- function(x, region = "world", continuous_scale=TRUE, palette = "Re
     nn <- names(d)
     names(d)[nn == "country"] <- "name"
 
+    d$name <- sub("United\\sStates.*", "USA", d$name)
+    d$name <- sub("Republic\\sof\\sKorea", "South Korea", d$name)
+    d$name <- sub("United\\sKingdom.*", "UK", d$name)
+    d$name <- sub("Republika\\sSeverna\\sMakedonija", "Macedonia", d$name)
+
     if (region == "world") {
         total <- sum(d$confirm)                
     } else {
@@ -100,10 +106,7 @@ plot_world <- function(x, region = "world", continuous_scale=TRUE, palette = "Re
         TW$name <- 'Taiwan'
         d <- rbind(d,TW)
     }
-    d$name <- sub("United\\sStates.*", "USA", d$name)
-    d$name <- sub("Republic\\sof\\sKorea", "South Korea", d$name)
-    d$name <- sub("United\\sKingdom.*", "UK", d$name)
-    d$name <- sub("Republika\\sSeverna\\sMakedonija", "Macedonia", d$name)
+
     if (region == "world") region <- "."
     world <- map_data('world', region = region)
     world <- world[world$region != "Antarctica", ]

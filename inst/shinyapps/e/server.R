@@ -26,7 +26,7 @@ function(input, output, session) {
     #各个省 确诊 历史数  -------------------------------------------    
     output$confirmedByProvincesHistorical <- renderPlot({
 
-            d2 <- xgithub$province %>%
+            d2 <- x$province %>%
               filter( province != "湖北") %>%
               filter( province != "Hubei") 
             
@@ -37,7 +37,7 @@ function(input, output, session) {
                 geom_text_repel(aes(label=province),  family="SimSun",data=d2[d2$time == time(x), ], hjust=1) +
                 theme_gray(base_size = 14) + theme(legend.position='none') +
                 xlab(NULL) + ylab(NULL) + 
-                ggtitle(paste( z(entireCountry),  z("湖北以外"),  xgithub$time ) )         
+                ggtitle(paste( z(entireCountry),  z("湖北以外"),  x$time ) )         
 
         if(input$logScale) 
             p <- p + scale_y_log10() 
@@ -289,15 +289,15 @@ function(input, output, session) {
     #世界细节 历史图 -------------------------------------------
     output$historicalWorld <- renderPlotly({
       
-      tem <- table(xgithub$global$country)
+      tem <- table(x$global$country)
       
-      tem2 <- xgithub$global %>%
+      tem2 <- x$global %>%
         group_by(country) %>%
         summarise(max = max(cum_confirm)) %>%
         filter(max > 20) %>%
         pull(country)
       
-      d <- xgithub$global %>%
+      d <- x$global %>%
         filter(country !=z('中国')) %>%
         filter(  country %in%  names(tem)[tem > 10]    ) %>% # only keep contries with 20 more data points.
         filter(  country %in%  tem2   ) %>%  # at least 20 cases
@@ -806,7 +806,7 @@ function(input, output, session) {
         # issues with Chinese characters solved
         # http://kevinushey.github.io/blog/2018/02/21/string-encoding-and-r/
         con <- file(file, open = "w+", encoding = "native.enc")
-        df <- xgithub["global"]
+        df <- x["global"]
         df$time <- as.character(format(df$time))
         writeLines( paste( colnames(df), collapse = "\t"), con = con, useBytes = TRUE)
         for(i in 1:nrow( df) )
