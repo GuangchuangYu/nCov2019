@@ -16,10 +16,9 @@ library(lubridate) # for showing up time correctly
 ui <- dashboardPage(
   dashboardHeader(title = "nCov2019 Dashboard"),
 
-  # 侧边作为统一的控制板
   dashboardSidebar(
   
-      # 选择国家
+      # choose country
     selectizeInput(
       'country', 'Choose Country', choices = NULL,
       options = list(
@@ -29,14 +28,14 @@ ui <- dashboardPage(
     ),
     
 
-    # 如果选择的国家有进一步的数据 province 
+    # choose province 
     conditionalPanel('["China", "South Korea", "United States", "Japan", "Iran", "Italy", "Germany", "United Kingdom"].indexOf(input.country) > -1', 
                     selectizeInput('province', 'Choose Province', 
                         choices = c("Select Province" =  NULL  ),
                         options = list( placeholder = 'Province')),
                     tags$p("")),
 
-    # 如果选择的国家有进一步的数据  city
+    # choose city
     conditionalPanel('["China"].indexOf(input.country) > -1', 
                     selectizeInput('city', 'Choose City', 
                     choices = NULL,
@@ -211,7 +210,6 @@ valueBox(
     )
 
 
-    # 
       output$top_plot <- renderPlot({
           d = data$global
           dd <- filter(d, time == t) %>% 
@@ -247,16 +245,14 @@ valueBox(
         options(scipen=999)
         options(warn=-1)
         par(mar = c(4, 3, 0, 2))
-        # missing data with average of neighbors
-        # d2$confirm<- meanImput(d2$cum_confirm, 2)
+
         
         confirm <- ts(d2$cum_confirm, # percent change
                       start = c(year(min(d2$time)), yday(min(d2$time))  ), frequency=100  )
         forecasted <- forecast(ets(confirm), num())
 
         plot(forecasted, xaxt="n", main="") + ylim(0,NA)
-        #a = seq(as.Date(min(d2$time)), by="days", length=input$daysForcasted + nrow(d2) -1 )
-        #axis(1, at = decimal_date(a), labels = format(a, "%b %d"))
+ 
       }) 
 
 ### end
