@@ -80,6 +80,11 @@ plot_world <- function(x, region = "world", continuous_scale=TRUE, palette = "Re
     nn <- names(d)
     names(d)[nn == "country"] <- "name"
 
+    if (x$lang == "zh") {
+        nn <- readRDS(system.file("country_translate.rds", package="nCov2019"))
+        d$name <- nn[as.character(d$name)]
+    }
+
     d$name <- sub("United\\sStates.*", "USA", d$name)
     d$name <- sub("Republic\\sof\\sKorea", "South Korea", d$name)
     d$name <- sub("United\\sKingdom.*", "UK", d$name)
@@ -92,10 +97,6 @@ plot_world <- function(x, region = "world", continuous_scale=TRUE, palette = "Re
     }
 
 
-    if (x$lang == "zh") {
-        nn <- readRDS(system.file("country_translate.rds", package="nCov2019"))
-        d$name <- nn[as.character(d$name)]
-    }
     if ('Taiwan' %in% d$name) {
         TW <- d[which(d$name == 'Taiwan'), "confirm"]
         CN <- d[which(d$name == 'China'), "confirm"]
