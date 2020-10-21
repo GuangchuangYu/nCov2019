@@ -59,7 +59,7 @@ load_nCov2019 <- function(lang = 'auto', source="github") {
     message("Historical data downloaded failed. \
     You will use locally stored data. \
     To get the latest data, please check your network connection or try again later.")
-    readRDS(system.file("nCov2019History_3_11.rds", package="nCov2019"))[[source]]
+    readRDS(system.file("nCov2019History_offline.rds", package="nCov2019"))
   })
   ## data <- readRDS(system.file("nCov2019History.rds", package="nCov2019"))
   
