@@ -15,9 +15,7 @@ open_dashboard <- function(lang="auto", remote=FALSE) {
             utils::browseURL('http://www.bcloud.org/e/')
         }
     } else {
-        package_need <- c('forcats', 'forecast', 'ggrepel', 'lubridate', 
-              'shinydashboard', 'plotly', 'ggplot2', 'shiny', 'shinyBS', 'DT', 'tidyr',
-              'dplyr', "shiny")
+        package_need <- c('forcats','lubridate','scales','shinydashboard', 'plotly', 'ggplot2', 'shiny', 'shinyBS', 'DT', 'tidyr')
         
         package_no <-  package_need[!is.installed(package_need)]
         
@@ -48,8 +46,11 @@ open_dashboard <- function(lang="auto", remote=FALSE) {
         options(nCov2019_dashboard = TRUE)
 
     # run shinyApp
-    
-     shiny::runApp(appDir = system.file("shinyapps" ,package="nCov2019"))
+    if (lang == 'zh') {
+        shiny::runApp(appDir = system.file("shinyapps_zh" ,package="nCov2019"))
+    } else {
+        shiny::runApp(appDir = system.file("shinyapps_en" ,package="nCov2019"))
+    }
     }
 }
 
