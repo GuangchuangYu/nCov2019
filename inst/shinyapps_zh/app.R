@@ -78,7 +78,8 @@ ui <- dashboardPage(
       tabPanel("Global Mortality Rate", plotlyOutput("Mortality_plot")),
       tabPanel("Global Health Rate", plotlyOutput("Health_plot")),
       tabPanel("Country Statistics", plotOutput("country_plot")),
-      tabPanel("Forecast", plotOutput("forecast"))
+      tabPanel("Growth Rate", plotlyOutput("growth_rate")),
+      tabPanel("Forecast", plotOutput("forecast")) 
     )
     ) # end row
   ) # end dashboard body 
@@ -287,12 +288,48 @@ server <- function(input, output, session, ...) {
         options(scipen=999)
         options(warn=-1)
         par(mar = c(4, 3, 0, 2))
-        confirm <- ts(d2$cum_confirm, # percent change
-                        start = c(year(min(d2$time)), yday(min(d2$time))  ), frequency=100  )
-        forecasted <- forecast(ets(confirm), num())
-        plot(forecasted, xaxt="n", main="") + ylim(0,NA)
+        smooth_confirm = stats::filter(d2$cum_confirm, rep(1/10,10), sides=1 )
+        #smooth_heal = stats::filter(d2$cum_heal, rep(1/10,10), sides=1 )
+        #smooth_dead = stats::filter(d2$cum_dead, rep(1/10,10), sides=1 )
+        confirm <- smooth_confirm %>%
+            ets() %>%
+            forecast(num())
+        plot(confirm, xaxt="n", main="") + ylim(0,NA)
 
     }) 
+
+    output$growth_rate <- renderPlotly ({
+        d2 <- data$global
+        smooth_confirm = stats::filter(d2$cum_confirm, rep(1/10,10), sides=1 )
+        #seq(from =  nrow(J), to = 1,-7) %>% rev -> idx
+        # plot(confirm, xaxt="n", main="") + ylim(0,NA)
+        diff_rate <- function(x){
+                return(diff(x)/x[1])
+            }
+
+        d2 %>% na.omit() %>% group_by(country) %>% 
+            filter(as.Date(t) %in% time & (as.Date(t)-1) %in% time) %>% 
+            filter(time == as.Date(t)|time == (as.Date(t)-1)) %>% 
+            mutate(growth_rate = round(diff_rate(cum_confirm),3)) %>% 
+            ungroup() -> d3
+
+        dd <- filter(d3, time == t) %>% 
+        arrange(desc(cum_confirm)) %>% .[1:100, ] %>%
+        arrange(desc(growth_rate)) 
+        dd$country = factor(dd$country, levels=dd$country)
+        
+        percent <- function(x, digits = 2, format = "f", ...) {
+            paste0(formatC(100 * x, format = format, digits = digits, ...), "%")
+            }
+
+        dd$rate <- percent(dd$growth_rate)
+        p = ggplot(dd,aes(x=country,y= growth_rate,color = growth_rate,size = cum_confirm, label = rate, alpha = .6)) + geom_point() +
+        scale_color_gradientn(colors=c('green',"darkgreen","orange","firebrick","red")) + 
+        scale_size_continuous() + guides(alpha = F) +
+        theme_bw() + scale_y_continuous(labels = scales::percent_format(accuracy = 2)) +
+        theme(axis.text.x = element_blank(),axis.ticks.x = element_blank()) + labs(title = "Current Growth Rate")
+        ggplotly(p,tooltip = c("x","label","size"))
+    })
 
 ### end
 }
