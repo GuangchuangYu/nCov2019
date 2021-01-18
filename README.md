@@ -1,5 +1,10 @@
 # nCov2019: An R package with real-time data, historical data and Shiny app
 
+![](https://img.shields.io/badge/lifecycle-dormant-blue.svg)
+
+**Please visit <https://github.com/YuLab-SMU/nCov2019> for an up-to-date version.**
+
+
 ## :house: Data Sources
 
 #### Real-time data 
