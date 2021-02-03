@@ -70,7 +70,8 @@ extract_province <- function(object, i, by) {
   
   # get China data 
   name <- data$areaTree[1]$name
-  CN <- cbind(name=name, data$areaTree$total)[1,][,-2]
+  idx = c("name","confirm","suspect","dead","heal","deadRate","healRate","showRate","showHeal")
+  CN <- cbind(name = name, data$areaTree$total)[1, ][,idx]
   data$global = rbind(CN, df)
   return(data)  
 }
