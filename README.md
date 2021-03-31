@@ -4,6 +4,9 @@
 
 **Please visit <https://github.com/YuLab-SMU/nCov2019> for an up-to-date version.**
 
+This package is one of the earliest R packages that designed to query COVID data. It is available since **Jan. 2020**, at the time there were few data resources available (see [our blog post (in Chinese)](https://mp.weixin.qq.com/s/_0D8ENb-4lGm4UV16Ok28A) (Feb. 03, 2020) and [another blog post by third party (in English)](https://towardsdatascience.com/an-r-package-to-explore-the-novel-coronavirus-590055738ad6) (Feb. 11, 2020)).
+
+
 
 ## :house: Data Sources
 
