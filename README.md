@@ -56,10 +56,9 @@ This package is one of the earliest R packages that designed to query COVID data
 + Tianzhi Wu, Erqiang Hu and Patrick Tung (contributors)
 
 
-If you use `nCov2019`, please cite the following preprint:
+If you use `nCov2019`, please cite the following paper:
 
-Tianzhi Wu, Erqiang Hu, Xijin Ge<sup>\*</sup>, Guangchuang Yu<sup>\*</sup>. [Open-source analytics tools for studying the COVID-19 coronavirus outbreak](https://www.medrxiv.org/content/10.1101/2020.02.25.20027433v2). **medRxiv**, 2020.02.25.20027433. doi: <https://doi.org/10.1101/2020.02.25.20027433> 
-
+Wu T, Hu E, Ge X<sup>\*</sup>, Yu G<sup>\*</sup>. 2021. nCov2019: an R package for studying the COVID-19 coronavirus pandemic. PeerJ 9:e11421 <https://doi.org/10.7717/peerj.11421>
 
 ## :arrow\_double\_down: Installation
 
